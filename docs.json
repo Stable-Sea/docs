@@ -57,6 +57,18 @@
             ]
           }
         ]
+      },
+      {
+        "tab": "Guides",
+        "groups": [
+          {
+            "group": "Guides",
+            "pages": [
+              "guides/order-flow-walkthrough",
+              "guides/failed-states"
+            ]
+          }
+        ]
       }
     ]
   },

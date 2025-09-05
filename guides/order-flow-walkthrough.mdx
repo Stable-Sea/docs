@@ -1,0 +1,161 @@
+---
+title: "Order Flow Walkthrough"
+description: "Complete guide to the Stable Sea order flow from offering to execution"
+---
+
+<Note>
+  This is a placeholder guide to demonstrate the structure and components we
+  would use for comprehensive integration documentation.
+</Note>
+
+## Overview
+
+Learn how to integrate with the Stable Sea Terminal API to process orders from start to finish. This guide walks through the complete flow with code examples and visual explanations.
+
+<Steps>
+  <Step title="Get Available Offerings">
+    Start by discovering what payment corridors and rates are available.
+
+    ```javascript
+    const offerings = await fetch('/api/offerings', {
+      headers: { 'Authorization': 'Bearer your-token' }
+    });
+    ```
+
+    <Tip>
+      Filter offerings by currency pair and payment method to find the best rates for your use case.
+    </Tip>
+
+  </Step>
+
+  <Step title="Request a Quote">
+    Get a firm quote with locked-in rates and expiration times.
+
+    ```javascript
+    const quote = await fetch('/api/quotes', {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer your-token' },
+      body: JSON.stringify({
+        offering_id: 'off_123',
+        payin_amount: '1000.00'
+      })
+    });
+    ```
+
+    <Warning>
+      Quotes expire! Check the `submission_expires_at` and `funding_expires_at` timestamps.
+    </Warning>
+
+  </Step>
+
+  <Step title="Submit Order">
+    Convert your quote into an executable order.
+
+    ```javascript
+    const order = await fetch('/api/orders', {
+      method: 'POST',
+      headers: {
+        'Authorization': 'Bearer your-token',
+        'Idempotency-Key': generateUUID()
+      },
+      body: JSON.stringify({
+        quote_id: 'quo_456',
+        external_reference_id: 'your-ref-123'
+      })
+    });
+    ```
+
+  </Step>
+
+  <Step title="Monitor Status">
+    Track your order through the settlement process.
+
+    ```javascript
+    // Order progresses through these statuses:
+    // STEP_1_AWAITING_FUNDING → STEP_2_FILLING_FX →
+    // STEP_3_SETTLING_PAYOUT → STEP_4_COMPLETED
+    ```
+
+    <Card title="Status Updates" icon="bell">
+      Set up webhooks to receive real-time status notifications instead of polling.
+    </Card>
+
+  </Step>
+</Steps>
+
+## Interactive Playground
+
+<Note>
+  In a real guide, we would embed an interactive sandbox here where developers
+  can test the API flow with sample data.
+</Note>
+
+## Code Examples by Language
+
+<CodeGroup>
+```javascript Node.js
+// Complete order flow example
+const stableSeaClient = new StableSeaClient('your-api-key');
+
+const offering = await stableSeaClient.getOfferingById('off_123');
+const quote = await stableSeaClient.createQuote({
+offering_id: offering.id,
+payin_amount: '1000.00'
+});
+const order = await stableSeaClient.createOrder({
+quote_id: quote.id
+});
+
+````
+
+```python Python
+# Complete order flow example
+client = StableSeaClient('your-api-key')
+
+offering = client.get_offering('off_123')
+quote = client.create_quote(
+    offering_id=offering.id,
+    payin_amount='1000.00'
+)
+order = client.create_order(quote_id=quote.id)
+````
+
+```curl cURL
+# Step 1: Get offering
+curl -X GET "https://api.stablesea.com/terminal/v1/offerings/off_123" \
+  -H "Authorization: Bearer your-token"
+
+# Step 2: Create quote
+curl -X POST "https://api.stablesea.com/terminal/v1/quotes" \
+  -H "Authorization: Bearer your-token" \
+  -d '{"offering_id":"off_123","payin_amount":"1000.00"}'
+
+# Step 3: Create order
+curl -X POST "https://api.stablesea.com/terminal/v1/orders" \
+  -H "Authorization: Bearer your-token" \
+  -d '{"quote_id":"quo_456"}'
+```
+
+</CodeGroup>
+
+## Best Practices
+
+<CardGroup cols={2}>
+  <Card title="Error Handling" icon="shield-alert">
+    Always implement retry logic with exponential backoff for network failures.
+  </Card>
+
+{" "}
+<Card title="Idempotency" icon="refresh-cw">
+  Use idempotency keys to safely retry order creation without duplicates.
+</Card>
+
+{" "}
+<Card title="Rate Limits" icon="gauge">
+  Monitor rate limit headers and implement client-side throttling.
+</Card>
+
+  <Card title="Webhooks" icon="webhook">
+    Use webhooks for real-time updates instead of constant polling.
+  </Card>
+</CardGroup>
