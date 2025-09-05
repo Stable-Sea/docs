@@ -19,6 +19,580 @@
     }
   ],
   "paths": {
+    "/hours-of-operation": {
+      "get": {
+        "summary": "List Hours of Operation",
+        "description": "Returns hours of operation for liquidity providers",
+        "responses": {
+          "200": {
+            "description": "Hours of operation response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/HoursOfOperation"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers": {
+      "post": {
+        "summary": "Create Customer",
+        "description": "Creates a new customer",
+        "requestBody": {
+          "description": "Customer to create",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewCustomer"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Customer created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List Customers",
+        "description": "Returns all customers",
+        "responses": {
+          "200": {
+            "description": "Customers response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Customer"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/{customer_id}": {
+      "get": {
+        "summary": "Get Customer",
+        "description": "Retrieve details for a specific customer",
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "path",
+            "description": "ID of customer to retrieve",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Customer details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Customer"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/{customer_id}/external_payment_instruments": {
+      "post": {
+        "summary": "Create External Payment Instrument",
+        "description": "Creates an external account for a customer to receive payouts",
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "path",
+            "description": "ID of customer",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "External payment instrument to create",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewExternalPaymentInstrument"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "External payment instrument created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ExternalPaymentInstrument"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List External Payment Instruments",
+        "description": "Fetch all external payment instruments for a customer",
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "path",
+            "description": "ID of customer",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "External payment instruments response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ExternalPaymentInstrument"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/{customer_id}/external_payment_instruments/{external_payment_instrument_id}": {
+      "get": {
+        "summary": "Get External Payment Instrument",
+        "description": "Fetch a specific external payment instrument for a customer",
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "path",
+            "description": "ID of customer",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "external_payment_instrument_id",
+            "in": "path",
+            "description": "ID of external payment instrument",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "External payment instrument details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ExternalPaymentInstrument"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Archive External Payment Instrument",
+        "description": "Archive an external account for a customer",
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "path",
+            "description": "ID of customer",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "external_payment_instrument_id",
+            "in": "path",
+            "description": "ID of external payment instrument",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "External payment instrument archived successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "External payment instrument archived successfully"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/{customer_id}/offerings": {
+      "post": {
+        "summary": "Create Offerings",
+        "description": "Creates offerings for a customer",
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "path",
+            "description": "ID of customer",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Offerings created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Offering"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/{customer_id}/offerings/{offering_id}": {
+      "get": {
+        "summary": "Get Offering",
+        "description": "Retrieve details for a specific offering",
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "path",
+            "description": "ID of customer",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offering_id",
+            "in": "path",
+            "description": "ID of offering",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Offering details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Offering"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/{customer_id}/quotes": {
+      "post": {
+        "summary": "Create Quote",
+        "description": "Creates a quote for a customer",
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "path",
+            "description": "ID of customer",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Quote request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewQuote"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Quote created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Quote"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/{customer_id}/quotes/{quote_id}": {
+      "get": {
+        "summary": "Get Quote",
+        "description": "Retrieve details for a specific quote",
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "path",
+            "description": "ID of customer",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "quote_id",
+            "in": "path",
+            "description": "ID of quote",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Quote details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Quote"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/{customer_id}/orders": {
+      "post": {
+        "summary": "Create Order",
+        "description": "Creates an order for a customer",
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "path",
+            "description": "ID of customer",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Order request",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewOrder"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Order created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List Orders",
+        "description": "Returns all orders for a customer",
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "path",
+            "description": "ID of customer",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Orders response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Order"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/customers/{customer_id}/orders/{order_id}": {
+      "get": {
+        "summary": "Get Order",
+        "description": "Retrieve details for a specific order",
+        "parameters": [
+          {
+            "name": "customer_id",
+            "in": "path",
+            "description": "ID of customer",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "order_id",
+            "in": "path",
+            "description": "ID of order",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Order details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/Order"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/organizations": {
       "get": {
         "summary": "List organizations",
@@ -468,6 +1042,396 @@
               "pending"
             ],
             "example": "active"
+          }
+        }
+      },
+      "HoursOfOperation": {
+        "type": "object",
+        "properties": {
+          "liquidity_provider": {
+            "type": "string"
+          },
+          "payin_currency": {
+            "type": "string"
+          },
+          "payout_currency": {
+            "type": "string"
+          },
+          "hours_of_operation": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "calendar_date": {
+                  "type": "string"
+                },
+                "open_time": {
+                  "type": "string"
+                },
+                "close_time": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "Customer": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "status": {
+            "type": "object",
+            "properties": {
+              "current_status": {
+                "type": "string"
+              },
+              "status_history": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          }
+        }
+      },
+      "NewCustomer": {
+        "type": "object",
+        "required": [
+          "name"
+        ],
+        "properties": {
+          "name": {
+            "type": "string"
+          }
+        }
+      },
+      "ExternalPaymentInstrument": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "alias": {
+            "type": "string"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "method": {
+            "type": "string"
+          },
+          "status": {
+            "type": "object",
+            "properties": {
+              "current_status": {
+                "type": "string"
+              },
+              "status_history": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "details": {
+            "type": "object"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          }
+        }
+      },
+      "NewExternalPaymentInstrument": {
+        "type": "object",
+        "required": [
+          "currency",
+          "method",
+          "details"
+        ],
+        "properties": {
+          "currency": {
+            "type": "string"
+          },
+          "method": {
+            "type": "string"
+          },
+          "details": {
+            "type": "object"
+          }
+        }
+      },
+      "Offering": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "payin": {
+            "type": "object",
+            "properties": {
+              "external_payment_instrument_id": {
+                "type": "string"
+              },
+              "limits": {
+                "type": "object",
+                "properties": {
+                  "min": {
+                    "type": "string"
+                  },
+                  "max": {
+                    "type": "string"
+                  }
+                }
+              },
+              "indicative_cost_tiers": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "min": {
+                      "type": "string"
+                    },
+                    "max": {
+                      "type": "string"
+                    },
+                    "bps": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "payout": {
+            "type": "object",
+            "properties": {
+              "external_payment_instrument_id": {
+                "type": "string"
+              }
+            }
+          },
+          "indicative_exchange_rate": {
+            "type": "string"
+          },
+          "current_day_hours_of_operation": {
+            "type": "object",
+            "properties": {
+              "open": {
+                "type": "string"
+              },
+              "close": {
+                "type": "string"
+              }
+            }
+          },
+          "liquidity_provider": {
+            "type": "string"
+          },
+          "estimated_settlement_time": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          }
+        }
+      },
+      "Quote": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "offering_id": {
+            "type": "string"
+          },
+          "exchange_rate": {
+            "type": "string"
+          },
+          "payin": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "string"
+              },
+              "fee": {
+                "type": "string"
+              },
+              "tax": {
+                "type": "string"
+              }
+            }
+          },
+          "payout": {
+            "type": "object",
+            "properties": {
+              "total": {
+                "type": "string"
+              }
+            }
+          },
+          "submission_expires_at": {
+            "type": "string"
+          },
+          "funding_expires_at": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          }
+        }
+      },
+      "NewQuote": {
+        "type": "object",
+        "required": [
+          "offering_id"
+        ],
+        "properties": {
+          "offering_id": {
+            "type": "string"
+          },
+          "payin_amount": {
+            "type": "string"
+          },
+          "payout_amount": {
+            "type": "string"
+          }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "quote_id": {
+            "type": "string"
+          },
+          "offering_id": {
+            "type": "string"
+          },
+          "reference_number": {
+            "type": "string"
+          },
+          "external_reference_id": {
+            "type": "string"
+          },
+          "exchange_rate": {
+            "type": "string"
+          },
+          "effective_exchange_rate": {
+            "type": "string"
+          },
+          "payin": {
+            "type": "object",
+            "properties": {
+              "external_payment_instrument_id": {
+                "type": "string"
+              },
+              "currency": {
+                "type": "string"
+              },
+              "method": {
+                "type": "string"
+              },
+              "total": {
+                "type": "string"
+              },
+              "fee": {
+                "type": "string"
+              },
+              "tax": {
+                "type": "string"
+              }
+            }
+          },
+          "payout": {
+            "type": "object",
+            "properties": {
+              "external_payment_instrument_id": {
+                "type": "string"
+              },
+              "currency": {
+                "type": "string"
+              },
+              "method": {
+                "type": "string"
+              }
+            }
+          },
+          "status": {
+            "type": "object",
+            "properties": {
+              "current_status": {
+                "type": "string"
+              },
+              "status_history": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "status": {
+                      "type": "string"
+                    },
+                    "created_at": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "retry_order_id": {
+            "type": "string"
+          },
+          "created_at": {
+            "type": "string"
+          },
+          "updated_at": {
+            "type": "string"
+          }
+        }
+      },
+      "NewOrder": {
+        "type": "object",
+        "required": [
+          "quote_id"
+        ],
+        "properties": {
+          "quote_id": {
+            "type": "string"
           }
         }
       },

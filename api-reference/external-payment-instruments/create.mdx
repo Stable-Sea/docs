@@ -1,0 +1,72 @@
+---
+title: "Create External Payment Instrument"
+api: "POST /customers/{customer_id}/external_payment_instruments"
+description: "Creates an external account for a customer to receive payouts"
+---
+
+This endpoint is used to create an external account for a customer. External accounts are used to receive payouts from Stable Sea.
+
+<Warning>
+  Stable Sea will perform diligence on the external account to ensure it is
+  valid and compliant with regulations prior to approving it for usage.
+</Warning>
+
+## Common Headers
+
+| Header          | Value              | Required | Description                     |
+| :-------------- | :----------------- | :------- | :------------------------------ |
+| `Authorization` | `Bearer <api-key>` | true     | Your API key for authentication |
+| `Content-Type`  | `application/json` | true     | Content type of the request     |
+
+## Path
+
+<ParamField path="customer_id" type="string" required>
+  ID of customer
+</ParamField>
+
+## Body
+
+<ParamField body="currency" type="string" required>
+  Currency of the payment instrument (see Currency Symbols in Resources)
+</ParamField>
+
+<ParamField body="method" type="string" required>
+  Payment method (see Payment Methods in Resources)
+</ParamField>
+
+<ParamField body="details" type="object" required>
+  Payment instrument details - structure varies by method
+</ParamField>
+
+<Warning>
+  The `method` field will be used to determine the `details` object schema
+</Warning>
+
+## Response
+
+<ResponseExample>
+
+```json Response
+{
+  "data": {
+    "id": "string",
+    "alias": "string",
+    "currency": "string",
+    "method": "string",
+    "status": {
+      "current_status": "string",
+      "status_history": [
+        {
+          "status": "string",
+          "created_at": "string"
+        }
+      ]
+    },
+    "details": {},
+    "created_at": "string",
+    "updated_at": "string"
+  }
+}
+```
+
+</ResponseExample>

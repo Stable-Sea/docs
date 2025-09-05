@@ -1,0 +1,66 @@
+---
+title: "Create Quote"
+api: "POST /customers/{customer_id}/quotes"
+description: "Creates a quote for a customer"
+---
+
+Creates a quote for a customer.
+
+## Common Headers
+
+| Header          | Value              | Required | Description                     |
+| :-------------- | :----------------- | :------- | :------------------------------ |
+| `Authorization` | `Bearer <api-key>` | true     | Your API key for authentication |
+| `Content-Type`  | `application/json` | true     | Content type of the request     |
+
+## Path
+
+<ParamField path="customer_id" type="string" required>
+  ID of customer
+</ParamField>
+
+## Body
+
+<ParamField body="offering_id" type="string" required>
+  ID of the offering to quote
+</ParamField>
+
+<ParamField body="payin_amount" type="string">
+  Amount to pay in (specify either payin_amount or payout_amount, not both)
+</ParamField>
+
+<ParamField body="payout_amount" type="string">
+  Amount to receive as payout (specify either payin_amount or payout_amount, not
+  both)
+</ParamField>
+
+<Warning>
+  Either `payin_amount` or `payout_amount` may be specified but not both.
+</Warning>
+
+## Response
+
+<ResponseExample>
+
+```json Response
+{
+  "data": {
+    "id": "string",
+    "offering_id": "string",
+    "exchange_rate": "string",
+    "payin": {
+      "total": "string",
+      "fee": "string",
+      "tax": "string"
+    },
+    "payout": {
+      "total": "string"
+    },
+    "submission_expires_at": "string",
+    "funding_expires_at": "string",
+    "created_at": "string"
+  }
+}
+```
+
+</ResponseExample>

@@ -1,0 +1,69 @@
+---
+title: "Get Order"
+api: "GET /customers/{customer_id}/orders/{order_id}"
+description: "Retrieve details for a specific order"
+---
+
+Retrieve details for a specific order.
+
+## Common Headers
+
+| Header          | Value              | Required | Description                     |
+| :-------------- | :----------------- | :------- | :------------------------------ |
+| `Authorization` | `Bearer <api-key>` | true     | Your API key for authentication |
+| `Content-Type`  | `application/json` | true     | Content type of the request     |
+
+## Path
+
+<ParamField path="customer_id" type="string" required>
+  ID of customer
+</ParamField>
+
+<ParamField path="order_id" type="string" required>
+  ID of order
+</ParamField>
+
+## Response
+
+<ResponseExample>
+
+```json Response
+{
+  "data": {
+    "id": "string",
+    "quote_id": "string",
+    "offering_id": "string",
+    "reference_number": "string",
+    "external_reference_id": "string",
+    "exchange_rate": "string",
+    "effective_exchange_rate": "string",
+    "payin": {
+      "external_payment_instrument_id": "string",
+      "currency": "string",
+      "method": "string",
+      "total": "string",
+      "fee": "string",
+      "tax": "string"
+    },
+    "payout": {
+      "external_payment_instrument_id": "string",
+      "currency": "string",
+      "method": "string"
+    },
+    "status": {
+      "current_status": "string",
+      "status_history": [
+        {
+          "status": "string",
+          "created_at": "string"
+        }
+      ]
+    },
+    "retry_order_id": "string",
+    "created_at": "string",
+    "updated_at": "string"
+  }
+}
+```
+
+</ResponseExample>

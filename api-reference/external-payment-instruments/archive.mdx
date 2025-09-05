@@ -1,0 +1,36 @@
+---
+title: "Archive External Payment Instrument"
+api: "DELETE /customers/{customer_id}/external_payment_instruments/{external_payment_instrument_id}"
+description: "Archive an external account for a customer"
+---
+
+This endpoint is used to _archive_ an external account for a customer. The external account will remain accessible in the API for historical purposes, but will no longer be available for use when submitting Orders.
+
+## Common Headers
+
+| Header          | Value              | Required | Description                     |
+| :-------------- | :----------------- | :------- | :------------------------------ |
+| `Authorization` | `Bearer <api-key>` | true     | Your API key for authentication |
+| `Content-Type`  | `application/json` | true     | Content type of the request     |
+
+## Path
+
+<ParamField path="customer_id" type="string" required>
+  ID of customer
+</ParamField>
+
+<ParamField path="external_payment_instrument_id" type="string" required>
+  ID of external payment instrument
+</ParamField>
+
+## Response
+
+<ResponseExample>
+
+```json Response
+{
+  "message": "External payment instrument archived successfully"
+}
+```
+
+</ResponseExample>

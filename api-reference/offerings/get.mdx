@@ -1,0 +1,63 @@
+---
+title: "Get Offering"
+api: "GET /customers/{customer_id}/offerings/{offering_id}"
+description: "Retrieve details for a specific offering"
+---
+
+Retrieve details for a specific offering.
+
+## Common Headers
+
+| Header          | Value              | Required | Description                     |
+| :-------------- | :----------------- | :------- | :------------------------------ |
+| `Authorization` | `Bearer <api-key>` | true     | Your API key for authentication |
+| `Content-Type`  | `application/json` | true     | Content type of the request     |
+
+## Path
+
+<ParamField path="customer_id" type="string" required>
+  ID of customer
+</ParamField>
+
+<ParamField path="offering_id" type="string" required>
+  ID of offering
+</ParamField>
+
+## Response
+
+<ResponseExample>
+
+```json Response
+{
+  "data": {
+    "id": "string",
+    "payin": {
+      "external_payment_instrument_id": "string",
+      "limits": {
+        "min": "string",
+        "max": "string"
+      },
+      "indicative_cost_tiers": [
+        {
+          "min": "string",
+          "max": "string",
+          "bps": "string"
+        }
+      ]
+    },
+    "payout": {
+      "external_payment_instrument_id": "string"
+    },
+    "indicative_exchange_rate": "string",
+    "current_day_hours_of_operation": {
+      "open": "string",
+      "close": "string"
+    },
+    "liquidity_provider": "string",
+    "estimated_settlement_time": "string",
+    "created_at": "string"
+  }
+}
+```
+
+</ResponseExample>

@@ -1,0 +1,75 @@
+---
+title: "Getting Started"
+description: "Learn how to authenticate and use the Stable Sea Terminal API"
+---
+
+# Overview
+
+The Stable Sea Terminal API provides programmatic access to terminal operations, enabling you to integrate shipping and logistics services directly into your applications.
+
+# Authentication
+
+Stable Sea uses API keys to authenticate your requests. You can generate them from the **Terminal**.
+
+<Warning>
+  API keys are shown only once at the time of creation. Be sure to copy and
+  store them securely — they cannot be retrieved from the dashboard after
+  creation.
+</Warning>
+
+All API requests must include an `Authorization` header with: `Bearer <api-key>`
+
+# Making Requests
+
+## Base URL
+
+```
+https://api.stablesea.com/terminal/v1
+```
+
+## Request Format
+
+- All requests must be made over HTTPS TLS v1.2+
+- Request bodies must be valid JSON with `Content-Type: application/json`
+- All response bodies are returned as JSON
+
+## HTTP Methods
+
+- `GET` - Retrieve data (query parameters for filtering/pagination)
+- `POST` - Create new resources
+- `PATCH` - Update existing resources
+- `DELETE` - Remove resources
+
+# Error Handling
+
+The API returns standard HTTP status codes:
+
+- **2xx** - Success
+- **4xx** - Client errors (invalid request, authentication, etc.)
+- **5xx** - Server errors
+
+## Error Response Format
+
+```json
+{
+  "error": {
+    "code": "string",
+    "message": "string",
+    "details": {}
+  }
+}
+```
+
+<Tip>
+  `400` errors are typically developer errors that can be fixed by updating your
+  request. `422` errors contain user-friendly messages that can be shown to end
+  users.
+</Tip>
+
+# Idempotency
+
+Some endpoints support idempotency to prevent duplicate operations during retries.
+
+- Include an `Idempotency-Key` header with a unique UUID
+- Retries with the same key return the original response for 24 hours
+- Use UUIDs for new requests, reuse the same UUID when retrying failed requests

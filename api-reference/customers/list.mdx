@@ -1,0 +1,42 @@
+---
+title: "List Customers"
+api: "GET /customers"
+description: "Returns all customers"
+---
+
+Returns all customers for the organization.
+
+## Common Headers
+
+| Header          | Value              | Required | Description                     |
+| :-------------- | :----------------- | :------- | :------------------------------ |
+| `Authorization` | `Bearer <api-key>` | true     | Your API key for authentication |
+| `Content-Type`  | `application/json` | true     | Content type of the request     |
+
+## Response
+
+<ResponseExample>
+
+```json Response
+{
+  "data": [
+    {
+      "id": "string",
+      "name": "string",
+      "status": {
+        "current_status": "string",
+        "status_history": [
+          {
+            "status": "string",
+            "created_at": "string"
+          }
+        ]
+      },
+      "created_at": "string",
+      "updated_at": "string"
+    }
+  ]
+}
+```
+
+</ResponseExample>

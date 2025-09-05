@@ -1,0 +1,46 @@
+---
+title: "Get Customer"
+api: "GET /customers/{customer_id}"
+description: "Retrieve details for a specific customer"
+---
+
+Retrieve details for a specific customer.
+
+## Common Headers
+
+| Header          | Value              | Required | Description                     |
+| :-------------- | :----------------- | :------- | :------------------------------ |
+| `Authorization` | `Bearer <api-key>` | true     | Your API key for authentication |
+| `Content-Type`  | `application/json` | true     | Content type of the request     |
+
+## Path
+
+<ParamField path="customer_id" type="string" required>
+  ID of customer to retrieve
+</ParamField>
+
+## Response
+
+<ResponseExample>
+
+```json Response
+{
+  "data": {
+    "id": "string",
+    "name": "string",
+    "status": {
+      "current_status": "string",
+      "status_history": [
+        {
+          "status": "string",
+          "created_at": "string"
+        }
+      ]
+    },
+    "created_at": "string",
+    "updated_at": "string"
+  }
+}
+```
+
+</ResponseExample>

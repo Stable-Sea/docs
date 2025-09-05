@@ -1,0 +1,53 @@
+---
+title: "Get External Payment Instrument"
+api: "GET /customers/{customer_id}/external_payment_instruments/{external_payment_instrument_id}"
+description: "Fetch a specific external payment instrument for a customer"
+---
+
+This endpoint is used to fetch a specific external payment instrument for a customer.
+
+## Common Headers
+
+| Header          | Value              | Required | Description                     |
+| :-------------- | :----------------- | :------- | :------------------------------ |
+| `Authorization` | `Bearer <api-key>` | true     | Your API key for authentication |
+| `Content-Type`  | `application/json` | true     | Content type of the request     |
+
+## Path
+
+<ParamField path="customer_id" type="string" required>
+  ID of customer
+</ParamField>
+
+<ParamField path="external_payment_instrument_id" type="string" required>
+  ID of external payment instrument
+</ParamField>
+
+## Response
+
+<ResponseExample>
+
+```json Response
+{
+  "data": {
+    "id": "string",
+    "alias": "string",
+    "currency": "string",
+    "method": "string",
+    "status": {
+      "current_status": "string",
+      "status_history": [
+        {
+          "status": "string",
+          "created_at": "string"
+        }
+      ]
+    },
+    "details": {},
+    "created_at": "string",
+    "updated_at": "string"
+  }
+}
+```
+
+</ResponseExample>

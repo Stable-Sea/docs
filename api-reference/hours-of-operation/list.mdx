@@ -1,0 +1,39 @@
+---
+title: "List Hours of Operation"
+api: "GET /hours-of-operation"
+description: "Returns hours of operation for liquidity providers"
+---
+
+Returns hours of operation for liquidity providers.
+
+## Common Headers
+
+| Header          | Value              | Required | Description                     |
+| :-------------- | :----------------- | :------- | :------------------------------ |
+| `Authorization` | `Bearer <api-key>` | true     | Your API key for authentication |
+| `Content-Type`  | `application/json` | true     | Content type of the request     |
+
+## Response
+
+<ResponseExample>
+
+```json Response
+{
+  "data": [
+    {
+      "liquidity_provider": "string",
+      "payin_currency": "string",
+      "payout_currency": "string",
+      "hours_of_operation": [
+        {
+          "calendar_date": "string",
+          "open_time": "string",
+          "close_time": "string"
+        }
+      ]
+    }
+  ]
+}
+```
+
+</ResponseExample>
