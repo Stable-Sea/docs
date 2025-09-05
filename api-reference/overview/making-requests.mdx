@@ -1,0 +1,72 @@
+---
+title: "Making Requests"
+description: "How to make requests to the Stable Sea Terminal API"
+---
+
+## Base URL
+
+```
+https://api.stablesea.com/terminal/v1
+```
+
+## Request Format
+
+- All requests must be made over HTTPS TLS v1.2+
+- Request bodies must be valid JSON with `Content-Type: application/json`
+- All response bodies are returned as JSON
+- Maximum request body size: 10MB
+- Request timeout: 30 seconds
+
+## HTTP Methods
+
+- `GET` - Retrieve data (query parameters for filtering/pagination)
+- `POST` - Create new resources
+- `PATCH` - Update existing resources
+- `DELETE` - Remove resources
+
+## Rate Limits
+
+The API enforces the following rate limits per organization:
+
+| Tier       | Requests per minute | Burst limit |
+| ---------- | ------------------- | ----------- |
+| Standard   | 1,000               | 1,500       |
+| Enterprise | 5,000               | 7,500       |
+
+Rate limit headers are included in all responses:
+
+- `X-RateLimit-Limit` - Request limit per window
+- `X-RateLimit-Remaining` - Requests remaining in current window
+- `X-RateLimit-Reset` - Unix timestamp when the rate limit resets
+
+## Service Level Agreement
+
+- **Uptime**: 99.9% availability (excluding scheduled maintenance)
+- **Response Time**: 95th percentile under 500ms for standard endpoints
+- **Support Response**: Enterprise customers receive 24/7 support with 1-hour response time for critical issues
+
+## Pagination
+
+List endpoints support cursor-based pagination:
+
+```json
+{
+  "data": [...],
+  "pagination": {
+    "next_cursor": "eyJpZCI6MTIzfQ==",
+    "has_more": true,
+    "limit": 100
+  }
+}
+```
+
+- Default page size: 20 items
+- Maximum page size: 100 items
+- Use `limit` parameter to specify page size
+- Use `cursor` parameter for pagination
+
+## Regional Availability
+
+- **Primary**: US East (us-east-1)
+- **Secondary**: EU West (eu-west-1) - Available for Enterprise tier
+- Data residency options available for compliance requirements

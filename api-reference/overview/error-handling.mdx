@@ -1,0 +1,89 @@
+## HTTP Status Codes
+
+The API returns standard HTTP status codes:
+
+- **2xx** - Success
+- **4xx** - Client errors (invalid request, authentication, etc.)
+- **5xx** - Server errors
+
+## Error Response Format
+
+```json
+{
+  "error": {
+    "code": "string",
+    "message": "string",
+    "details": {},
+    "request_id": "req_123456789",
+    "timestamp": "2024-01-15T10:30:00Z"
+  }
+}
+```
+
+### Error Code Categories
+
+| Status | Error Code            | Description                | Retryable |
+| ------ | --------------------- | -------------------------- | --------- |
+| 400    | `INVALID_REQUEST`     | Malformed request syntax   | No        |
+| 401    | `UNAUTHORIZED`        | Invalid or missing API key | No        |
+| 403    | `FORBIDDEN`           | Insufficient permissions   | No        |
+| 404    | `NOT_FOUND`           | Resource does not exist    | No        |
+| 409    | `CONFLICT`            | Resource state conflict    | No        |
+| 422    | `VALIDATION_ERROR`    | Request validation failed  | No        |
+| 429    | `RATE_LIMIT_EXCEEDED` | Too many requests          | Yes       |
+| 500    | `INTERNAL_ERROR`      | Server error               | Yes       |
+| 502    | `BAD_GATEWAY`         | Upstream service error     | Yes       |
+| 503    | `SERVICE_UNAVAILABLE` | Temporary service outage   | Yes       |
+| 504    | `TIMEOUT`             | Request timeout            | Yes       |
+
+## Retry Strategy
+
+### Recommended Retry Logic
+
+```javascript
+const MAX_RETRIES = 3;
+const BASE_DELAY = 1000; // 1 second
+
+async function apiRequestWithRetry(request, attempt = 1) {
+  try {
+    return await makeRequest(request);
+  } catch (error) {
+    if (attempt >= MAX_RETRIES || !isRetryable(error)) {
+      throw error;
+    }
+
+    const delay = BASE_DELAY * Math.pow(2, attempt - 1);
+    await sleep(delay);
+    return apiRequestWithRetry(request, attempt + 1);
+  }
+}
+```
+
+### Retry Guidelines
+
+- **Exponential Backoff**: Start with 1s, double each retry (1s, 2s, 4s)
+- **Jitter**: Add randomization to prevent thundering herd
+- **Maximum Retries**: Limit to 3 attempts for 5xx errors
+- **Non-Retryable**: Do not retry 4xx errors (except 429)
+
+## Circuit Breaker Pattern
+
+For high-volume integrations, implement circuit breaker pattern:
+
+- **Failure Threshold**: 5 consecutive failures
+- **Timeout Period**: 30 seconds
+- **Recovery**: Gradual recovery with limited requests
+
+<Tip>
+  `400` errors are typically developer errors that can be fixed by updating your
+  request. `422` errors contain user-friendly messages that can be shown to end
+  users. Always log the `request_id` for support inquiries.
+</Tip>
+
+## Request Tracking
+
+Each error response includes a unique `request_id` for debugging:
+
+- Include this ID when contacting support
+- Request IDs are retained for 30 days
+- Correlate client-side errors with server-side logs

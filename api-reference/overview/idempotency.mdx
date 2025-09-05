@@ -1,0 +1,12 @@
+---
+title: "Idempotency"
+description: "Preventing duplicate operations with idempotency keys"
+---
+
+# Idempotency
+
+Some endpoints support idempotency to prevent duplicate operations during retries.
+
+- Include an `Idempotency-Key` header with a unique UUID
+- Retries with the same key return the original response for 24 hours
+- Use UUIDs for new requests, reuse the same UUID when retrying failed requests
