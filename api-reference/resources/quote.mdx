@@ -1,0 +1,52 @@
+---
+title: "Quote"
+description: "Quote resource schema"
+---
+
+<ResponseField name="id" type="string">
+  Unique identifier for the quote
+</ResponseField>
+
+<ResponseField name="offering_id" type="string">
+  ID of the associated offering
+</ResponseField>
+
+<ResponseField name="exchange_rate" type="string">
+  The quoted exchange rate
+</ResponseField>
+
+<ResponseField name="payin" type="object">
+  Payment input details
+</ResponseField>
+
+<ResponseField name="payin.total" type="string">
+  Total amount to be paid in
+</ResponseField>
+
+<ResponseField name="payin.fee" type="string">
+  Fee amount
+</ResponseField>
+
+<ResponseField name="payin.tax" type="string">
+  Tax amount
+</ResponseField>
+
+<ResponseField name="payout" type="object">
+  Payment output details
+</ResponseField>
+
+<ResponseField name="payout.total" type="string">
+  Total amount to be paid out
+</ResponseField>
+
+<ResponseField name="submission_expires_at" type="string">
+  When the quote expires for submission
+</ResponseField>
+
+<ResponseField name="funding_expires_at" type="string">
+  When the quote expires for funding
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  When the quote was created
+</ResponseField>

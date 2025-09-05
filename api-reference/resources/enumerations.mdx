@@ -1,0 +1,51 @@
+---
+title: "Enumerations"
+description: "Enumeration values used throughout the API"
+---
+
+## Customer Statuses
+
+| Status            | Description                                                         |
+| ----------------- | ------------------------------------------------------------------- |
+| `COMPLIANCE_HOLD` | Customer is under compliance review and cannot perform transactions |
+| `ACTIVE`          | Customer has been approved and can perform transactions             |
+
+## Currency Symbols
+
+| Currency | Description         |
+| -------- | ------------------- |
+| `USDC`   | USD Coin stablecoin |
+| `COP`    | Colombian Peso      |
+| `MXN`    | Mexican Peso        |
+| `BRL`    | Brazilian Real      |
+
+## Payment Methods
+
+| Method              | Description                                                 |
+| ------------------- | ----------------------------------------------------------- |
+| `ETHEREUM`          | Ethereum blockchain transactions                            |
+| `SOLANA`            | Solana blockchain transactions                              |
+| `COP_BANK_TRANSFER` | Colombian Peso bank transfer                                |
+| `MXN_SPEI`          | Mexican SPEI (Sistema de Pagos Electrónicos Interbancarios) |
+| `BRL_BANK_TRANSFER` | Brazilian Real bank transfer                                |
+
+## External Payment Instrument Statuses
+
+| Status            | Description                                    |
+| ----------------- | ---------------------------------------------- |
+| `COMPLIANCE_HOLD` | Payment instrument is under compliance review  |
+| `ACTIVE`          | Payment instrument is approved and can be used |
+| `ARCHIVED`        | Payment instrument has been deactivated        |
+
+## Order Statuses
+
+| Status                            | Description                                                                            |
+| --------------------------------- | -------------------------------------------------------------------------------------- |
+| `STEP_1_AWAITING_FUNDING`         | Order submitted but funds have not arrived                                             |
+| `STEP_2_FILLING_FX`               | Funds have arrived in time and FX is being filled                                      |
+| `STEP_3_SETTLING_PAYOUT`          | FX has been filled and final payout is in progress                                     |
+| `STEP_4_COMPLETED`                | Terminal success state                                                                 |
+| `FAILED_FUNDING_EXPIRED`          | Failure state where funds did not arrive by the Quote's `funding_expires_at` timestamp |
+| `FAILED_DECLINED_BY_LIQ_PROVIDER` | Failure state where discretionary measure taken by the Liquidity Provider              |
+| `FAILED_REFUND_REQUESTED`         | Failure state wherein a refund was requested by the Customer                           |
+| `FAILED_REFUND_PROCESSED`         | Terminal failure state where the refund has settled                                    |

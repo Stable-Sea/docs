@@ -35,7 +35,14 @@
           {
             "group": "Resources",
             "pages": [
-              "api-reference/resources"
+              "api-reference/resources/organization",
+              "api-reference/resources/customer",
+              "api-reference/resources/external-payment-instrument",
+              "api-reference/resources/offering",
+              "api-reference/resources/quote",
+              "api-reference/resources/order",
+              "api-reference/resources/hours-of-operation",
+              "api-reference/resources/enumerations"
             ]
           },
           {

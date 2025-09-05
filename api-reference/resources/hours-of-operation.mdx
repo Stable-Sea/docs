@@ -1,0 +1,32 @@
+---
+title: "Hours of Operation"
+description: "Hours of Operation resource schema"
+---
+
+<ResponseField name="liquidity_provider" type="string">
+  The liquidity provider identifier
+</ResponseField>
+
+<ResponseField name="payin_currency" type="string">
+  Currency for incoming payments
+</ResponseField>
+
+<ResponseField name="payout_currency" type="string">
+  Currency for outgoing payments
+</ResponseField>
+
+<ResponseField name="hours_of_operation" type="object[]">
+  Array of operating hours by date
+</ResponseField>
+
+<ResponseField name="hours_of_operation[].calendar_date" type="string">
+  The specific date
+</ResponseField>
+
+<ResponseField name="hours_of_operation[].open_time" type="string">
+  Opening time for this date
+</ResponseField>
+
+<ResponseField name="hours_of_operation[].close_time" type="string">
+  Closing time for this date
+</ResponseField>

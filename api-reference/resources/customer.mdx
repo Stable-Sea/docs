@@ -1,0 +1,50 @@
+---
+title: "Customer"
+description: "Customer resource schema"
+---
+
+A customer represents the customer _of an organization_. A customer must be created by the respective organization prior to leveraging Stable Sea's APIs to facilitate payouts or other services on behalf of that customers.
+
+The customer will undergo KYX procedures prior to being approved by Stable Sea.
+
+<Warning>
+  A customer that represents the organization itself will automatically be
+  created when the organization is successfully onboarded. This customer can be
+  used to submit RFQs on behalf of the organization itself.
+</Warning>
+
+<ResponseField name="id" type="string">
+  Unique identifier for the customer
+</ResponseField>
+
+<ResponseField name="name" type="string">
+  The name of the customer
+</ResponseField>
+
+<ResponseField name="status" type="object">
+  Current status information for the customer
+</ResponseField>
+
+<ResponseField name="status.current_status" type="string">
+  Current status of the customer (see Customer Statuses)
+</ResponseField>
+
+<ResponseField name="status.status_history" type="object[]">
+  Historical record of status changes
+</ResponseField>
+
+<ResponseField name="status.status_history[].status" type="string">
+  The status value for this history entry
+</ResponseField>
+
+<ResponseField name="status.status_history[].created_at" type="string">
+  Timestamp when this status change occurred
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  Timestamp when the customer was initially created
+</ResponseField>
+
+<ResponseField name="updated_at" type="string">
+  When the customer was last updated
+</ResponseField>

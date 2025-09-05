@@ -1,0 +1,82 @@
+---
+title: "Offering"
+description: "Offering resource schema"
+---
+
+An offering represents instructive material for placing an order.
+
+<ResponseField name="id" type="string">
+  Unique identifier for the offering
+</ResponseField>
+
+<ResponseField name="payin" type="object">
+  Information about the payment input
+</ResponseField>
+
+<ResponseField name="payin.external_payment_instrument_id" type="string">
+  ID of the payment instrument for incoming payments
+</ResponseField>
+
+<ResponseField name="payin.limits" type="object">
+  Transaction limits
+</ResponseField>
+
+<ResponseField name="payin.limits.min" type="string">
+  Minimum transaction amount
+</ResponseField>
+
+<ResponseField name="payin.limits.max" type="string">
+  Maximum transaction amount
+</ResponseField>
+
+<ResponseField name="payin.indicative_cost_tiers" type="object[]">
+  Cost structure by transaction size
+</ResponseField>
+
+<ResponseField name="payin.indicative_cost_tiers[].min" type="string">
+  Minimum amount for this tier
+</ResponseField>
+
+<ResponseField name="payin.indicative_cost_tiers[].max" type="string">
+  Maximum amount for this tier
+</ResponseField>
+
+<ResponseField name="payin.indicative_cost_tiers[].bps" type="string">
+  Basis points (fee) for this tier
+</ResponseField>
+
+<ResponseField name="payout" type="object">
+  Information about the payment output
+</ResponseField>
+
+<ResponseField name="payout.external_payment_instrument_id" type="string">
+  ID of the payment instrument for outgoing payments
+</ResponseField>
+
+<ResponseField name="indicative_exchange_rate" type="string">
+  Estimated exchange rate
+</ResponseField>
+
+<ResponseField name="current_day_hours_of_operation" type="object">
+  Operating hours for today
+</ResponseField>
+
+<ResponseField name="current_day_hours_of_operation.open" type="string">
+  Opening time
+</ResponseField>
+
+<ResponseField name="current_day_hours_of_operation.close" type="string">
+  Closing time
+</ResponseField>
+
+<ResponseField name="liquidity_provider" type="string">
+  The liquidity provider for this offering
+</ResponseField>
+
+<ResponseField name="estimated_settlement_time" type="string">
+  Expected time for settlement
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  When the offering was created
+</ResponseField>

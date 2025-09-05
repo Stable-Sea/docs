@@ -1,0 +1,54 @@
+---
+title: "External Payment Instrument"
+description: "External Payment Instrument resource schema"
+---
+
+An External Payment Instrument represents a payment instrument that a customer can use to receive payouts.
+
+<ResponseField name="id" type="string">
+  Unique identifier for the payment instrument
+</ResponseField>
+
+<ResponseField name="alias" type="string">
+  User-friendly name for the payment instrument
+</ResponseField>
+
+<ResponseField name="currency" type="string">
+  Currency code (see Currency Symbols)
+</ResponseField>
+
+<ResponseField name="method" type="string">
+  Payment method type (see Payment Methods)
+</ResponseField>
+
+<ResponseField name="status" type="object">
+  Current status information
+</ResponseField>
+
+<ResponseField name="status.current_status" type="string">
+  Current status (see External Payment Instrument Statuses)
+</ResponseField>
+
+<ResponseField name="status.status_history" type="object[]">
+  Historical record of status changes
+</ResponseField>
+
+<ResponseField name="status.status_history[].status" type="string">
+  The status value for this history entry
+</ResponseField>
+
+<ResponseField name="status.status_history[].created_at" type="string">
+  Timestamp when this status change occurred
+</ResponseField>
+
+<ResponseField name="details" type="object">
+  Payment method-specific details. Structure varies by method type.
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  Timestamp when the payment instrument was initially created
+</ResponseField>
+
+<ResponseField name="updated_at" type="string">
+  When the payment instrument was last updated
+</ResponseField>

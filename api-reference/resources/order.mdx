@@ -1,0 +1,108 @@
+---
+title: "Order"
+description: "Order resource schema"
+---
+
+<ResponseField name="id" type="string">
+  Unique identifier for the order
+</ResponseField>
+
+<ResponseField name="quote_id" type="string">
+  ID of the associated quote
+</ResponseField>
+
+<ResponseField name="offering_id" type="string">
+  ID of the associated offering
+</ResponseField>
+
+<ResponseField name="reference_number" type="string">
+  Internal reference number for the order
+</ResponseField>
+
+<ResponseField name="external_reference_id" type="string">
+  External reference ID provided by the customer
+</ResponseField>
+
+<ResponseField name="exchange_rate" type="string">
+  The exchange rate used for this order
+</ResponseField>
+
+<ResponseField name="effective_exchange_rate" type="string">
+  The actual effective exchange rate after execution
+</ResponseField>
+
+<ResponseField name="payin" type="object">
+  Payment input details
+</ResponseField>
+
+<ResponseField name="payin.external_payment_instrument_id" type="string">
+  ID of the payment instrument for incoming payments
+</ResponseField>
+
+<ResponseField name="payin.currency" type="string">
+  Currency of the incoming payment
+</ResponseField>
+
+<ResponseField name="payin.method" type="string">
+  Payment method used
+</ResponseField>
+
+<ResponseField name="payin.total" type="string">
+  Total amount paid in
+</ResponseField>
+
+<ResponseField name="payin.fee" type="string">
+  Fee amount
+</ResponseField>
+
+<ResponseField name="payin.tax" type="string">
+  Tax amount
+</ResponseField>
+
+<ResponseField name="payout" type="object">
+  Payment output details
+</ResponseField>
+
+<ResponseField name="payout.external_payment_instrument_id" type="string">
+  ID of the payment instrument for outgoing payments
+</ResponseField>
+
+<ResponseField name="payout.currency" type="string">
+  Currency of the outgoing payment
+</ResponseField>
+
+<ResponseField name="payout.method" type="string">
+  Payment method used for payout
+</ResponseField>
+
+<ResponseField name="status" type="object">
+  Current status information
+</ResponseField>
+
+<ResponseField name="status.current_status" type="string">
+  Current status of the order (see Order Statuses)
+</ResponseField>
+
+<ResponseField name="status.status_history" type="object[]">
+  Historical record of status changes
+</ResponseField>
+
+<ResponseField name="status.status_history[].status" type="string">
+  The status value for this history entry
+</ResponseField>
+
+<ResponseField name="status.status_history[].created_at" type="string">
+  Timestamp when this status change occurred
+</ResponseField>
+
+<ResponseField name="retry_order_id" type="string">
+  ID of the retry order if this order was retried
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  Timestamp when the order was initially created
+</ResponseField>
+
+<ResponseField name="updated_at" type="string">
+  When the order was last updated
+</ResponseField>
