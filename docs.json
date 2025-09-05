@@ -11,10 +11,20 @@
     "light": "/favicon-light.png",
     "dark": "/favicon-dark.png"
   },
+  "api": {
+    "baseUrl": "https://sandbox.stablesea.com/terminal/v1",
+    "auth": {
+      "method": "bearer"
+    },
+    "playground": {
+      "mode": "show"
+    }
+  },
   "navigation": {
     "tabs": [
       {
         "tab": "API reference",
+        "openapi": "api-reference/openapi.json",
         "groups": [
           {
             "group": "Getting Started",
