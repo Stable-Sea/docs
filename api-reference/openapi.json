@@ -1011,7 +1011,8 @@
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "description": "Use your API key as the bearer token"
+        "description": "Use your API key as the bearer token",
+        "x-default": "DEFAULT-TOKEN-HERE"
       }
     }
   }

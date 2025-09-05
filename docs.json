@@ -14,7 +14,8 @@
   "api": {
     "baseUrl": "https://sandbox.stablesea.com/terminal/v1",
     "auth": {
-      "method": "bearer"
+      "method": "bearer",
+      "default": "DEFAULT-TOKEN-HERE"
     },
     "playground": {
       "mode": "show"
