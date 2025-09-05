@@ -33,11 +33,22 @@ The API enforces the following rate limits per organization:
 | Standard   | 1,000               | 1,500       |
 | Enterprise | 5,000               | 7,500       |
 
+<Note>
+  Rate limits are calculated per organization, not per API key. All requests
+  from your organization count toward the same limit regardless of which API key
+  is used.
+</Note>
+
 Rate limit headers are included in all responses:
 
 - `X-RateLimit-Limit` - Request limit per window
 - `X-RateLimit-Remaining` - Requests remaining in current window
 - `X-RateLimit-Reset` - Unix timestamp when the rate limit resets
+
+<Tip>
+  Monitor the rate limit headers in your application to implement proactive
+  throttling and avoid hitting rate limits.
+</Tip>
 
 ## Service Level Agreement
 
@@ -47,23 +58,35 @@ Rate limit headers are included in all responses:
 
 ## Pagination
 
-List endpoints support cursor-based pagination:
+List endpoints support cursor-based pagination with the following response structure:
 
-```json
-{
-  "data": [...],
-  "pagination": {
-    "next_cursor": "eyJpZCI6MTIzfQ==",
-    "has_more": true,
-    "limit": 100
-  }
-}
-```
+<ResponseField name="data" type="array">
+  Array containing the requested resources
+</ResponseField>
 
-- Default page size: 20 items
-- Maximum page size: 100 items
-- Use `limit` parameter to specify page size
-- Use `cursor` parameter for pagination
+<ResponseField name="pagination" type="object">
+  Pagination metadata for navigating through results
+</ResponseField>
+
+<ResponseField name="pagination.next_cursor" type="string">
+  Base64-encoded cursor for the next page of results. Null if no more pages
+  available.
+</ResponseField>
+
+<ResponseField name="pagination.has_more" type="boolean">
+  Indicates whether additional pages of results are available
+</ResponseField>
+
+<ResponseField name="pagination.limit" type="number">
+  The maximum number of items returned in this response
+</ResponseField>
+
+### Pagination Parameters
+
+- **Default page size**: 20 items
+- **Maximum page size**: 100 items
+- **`limit`**: Query parameter to specify page size (1-100)
+- **`cursor`**: Query parameter to specify starting position for next page
 
 ## Regional Availability
 

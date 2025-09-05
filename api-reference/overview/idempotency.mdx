@@ -3,10 +3,176 @@ title: "Idempotency"
 description: "Preventing duplicate operations with idempotency keys"
 ---
 
-# Idempotency
+## Overview
 
-Some endpoints support idempotency to prevent duplicate operations during retries.
+Idempotency ensures that duplicate requests have the same effect as a single request, preventing unintended side effects from network issues, retries, or user errors.
 
-- Include an `Idempotency-Key` header with a unique UUID
-- Retries with the same key return the original response for 24 hours
-- Use UUIDs for new requests, reuse the same UUID when retrying failed requests
+## How Idempotency Works
+
+### Supported Endpoints
+
+The following endpoints support idempotency:
+
+- `POST /customers` - Customer creation
+- `POST /external-payment-instruments` - Payment instrument creation
+- `POST /quotes` - Quote creation
+- `POST /orders` - Order creation
+
+### Implementation
+
+Include an `Idempotency-Key` header with a unique identifier:
+
+```bash
+curl -X POST "https://api.stablesea.com/terminal/v1/customers" \
+  -H "Authorization: Bearer sk_live_1234567890abcdef" \
+  -H "Content-Type: application/json" \
+  -H "Idempotency-Key: 550e8400-e29b-41d4-a716-446655440000" \
+  -d '{
+    "name": "Example Customer"
+  }'
+```
+
+### Key Requirements
+
+- **Format**: Use UUID v4 format for maximum uniqueness
+- **Uniqueness**: Each unique operation requires a different key
+- **Retention**: Keys are stored for 24 hours after first use
+- **Scope**: Keys are scoped to the API endpoint and organization
+
+## Best Practices
+
+### Key Generation
+
+```javascript
+import { v4 as uuidv4 } from "uuid";
+
+// Generate a new key for each unique operation
+const idempotencyKey = uuidv4();
+
+// For retries, reuse the same key
+const response = await fetch("/api/orders", {
+  method: "POST",
+  headers: {
+    Authorization: "Bearer " + apiKey,
+    "Content-Type": "application/json",
+    "Idempotency-Key": idempotencyKey,
+  },
+  body: JSON.stringify(orderData),
+});
+```
+
+### Retry Strategy Integration
+
+```javascript
+async function createOrderWithIdempotency(orderData, maxRetries = 3) {
+  const idempotencyKey = uuidv4(); // Single key for all retries
+
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: {
+          Authorization: "Bearer " + apiKey,
+          "Idempotency-Key": idempotencyKey,
+        },
+        body: JSON.stringify(orderData),
+      });
+
+      if (response.ok) {
+        return await response.json();
+      }
+
+      // Don't retry 4xx errors (except 429)
+      if (
+        response.status >= 400 &&
+        response.status < 500 &&
+        response.status !== 429
+      ) {
+        throw new Error(`Client error: ${response.status}`);
+      }
+    } catch (error) {
+      if (attempt === maxRetries) throw error;
+      await sleep(1000 * Math.pow(2, attempt - 1)); // Exponential backoff
+    }
+  }
+}
+```
+
+## Response Behavior
+
+### First Request (HTTP 201)
+
+<ResponseField name="id" type="string">
+  Unique identifier for the created resource
+</ResponseField>
+
+<ResponseField name="status" type="string">
+  Current status of the created resource
+</ResponseField>
+
+<ResponseField name="idempotency_key" type="string">
+  The idempotency key used for this request
+</ResponseField>
+
+### Duplicate Request (HTTP 200)
+
+<Note>
+  Same response returned with HTTP 200 (not 201), indicating the resource was
+  not created again but the original response is returned.
+</Note>
+
+## Error Scenarios
+
+### Invalid Key Format (HTTP 400)
+
+<ResponseField name="error.code" type="string">
+  Error code: `INVALID_IDEMPOTENCY_KEY`
+</ResponseField>
+
+<ResponseField name="error.message" type="string">
+  Human-readable error message explaining the key format requirements
+</ResponseField>
+
+<ResponseField name="error.details.provided_key" type="string">
+  The invalid key that was provided in the request
+</ResponseField>
+
+### Key Conflict (HTTP 409)
+
+When the same key is used with different request bodies:
+
+<ResponseField name="error.code" type="string">
+  Error code: `IDEMPOTENCY_KEY_CONFLICT`
+</ResponseField>
+
+<ResponseField name="error.message" type="string">
+  Explains that the key was already used with different parameters
+</ResponseField>
+
+<ResponseField name="error.details.original_request_hash" type="string">
+  Hash of the original request body for comparison
+</ResponseField>
+
+<ResponseField name="error.details.current_request_hash" type="string">
+  Hash of the current request body showing the difference
+</ResponseField>
+
+## Enterprise Considerations
+
+### Compliance & Auditing
+
+- All idempotency key usage is logged for audit purposes
+- Request hashes are stored (not full request bodies) for privacy
+- Logs include timestamps, API keys (masked), and response status
+
+### High-Volume Integration
+
+- Consider implementing client-side deduplication before API calls
+- Use persistent storage for idempotency keys across application restarts
+- Monitor idempotency key conflicts as they may indicate integration issues
+
+### Key Management
+
+- **Development**: Use predictable keys for testing (e.g., `test-{scenario}`)
+- **Production**: Always use cryptographically secure UUIDs
+- **Monitoring**: Track idempotency key usage patterns for optimization

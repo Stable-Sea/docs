@@ -27,10 +27,21 @@ curl -X GET "https://api.stablesea.com/terminal/v1/customers" \
 
 ### Security Best Practices
 
+<Warning>
+  Never commit API keys to version control or include them in client-side code.
+  Always use environment variables or secure secret management systems.
+</Warning>
+
 - **Environment Variables**: Store keys in environment variables, never in code
 - **Key Rotation**: Rotate keys every 90 days for enhanced security
 - **Scope Limitation**: Use separate keys for different services/environments
 - **Access Monitoring**: Monitor API key usage through dashboard analytics
+
+<Tip>
+  For production environments, consider using a secrets management service like
+  AWS Secrets Manager, HashiCorp Vault, or Azure Key Vault to automatically
+  rotate keys.
+</Tip>
 
 ### Key Permissions
 

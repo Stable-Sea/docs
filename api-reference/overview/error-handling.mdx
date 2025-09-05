@@ -8,17 +8,31 @@ The API returns standard HTTP status codes:
 
 ## Error Response Format
 
-```json
-{
-  "error": {
-    "code": "string",
-    "message": "string",
-    "details": {},
-    "request_id": "req_123456789",
-    "timestamp": "2024-01-15T10:30:00Z"
-  }
-}
-```
+All error responses follow a consistent structure:
+
+<ResponseField name="error" type="object">
+  Error information container
+</ResponseField>
+
+<ResponseField name="error.code" type="string">
+  Machine-readable error code for programmatic handling
+</ResponseField>
+
+<ResponseField name="error.message" type="string">
+  Human-readable error description
+</ResponseField>
+
+<ResponseField name="error.details" type="object">
+  Additional context-specific error information
+</ResponseField>
+
+<ResponseField name="error.request_id" type="string">
+  Unique identifier for this request, used for support and debugging
+</ResponseField>
+
+<ResponseField name="error.timestamp" type="string">
+  ISO 8601 timestamp when the error occurred
+</ResponseField>
 
 ### Error Code Categories
 
