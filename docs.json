@@ -3,9 +3,9 @@
   "theme": "mint",
   "name": "Stable Sea Terminal API",
   "colors": {
-    "primary": "#16A34A",
-    "light": "#07C983",
-    "dark": "#15803D"
+    "primary": "#3b82f6",
+    "light": "#3b82f6",
+    "dark": "#3b82f6"
   },
   "favicon": {
     "light": "/favicon-light.png",
