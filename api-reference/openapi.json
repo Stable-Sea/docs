@@ -1,8 +1,8 @@
 {
   "openapi": "3.1.0",
   "info": {
-    "title": "OpenAPI Plant Store",
-    "description": "A sample API that uses a plant store as an example to demonstrate features in the OpenAPI specification",
+    "title": "Stable Sea Terminal API",
+    "description": "A comprehensive API for managing terminal operations, organizations, quotes, and orders in the Stable Sea shipping platform",
     "license": {
       "name": "MIT"
     },
@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "http://sandbox.mintlify.com"
+      "url": "https://api.stablesea.com/terminal/v1"
     }
   ],
   "security": [
@@ -19,9 +19,10 @@
     }
   ],
   "paths": {
-    "/plants": {
+    "/organizations": {
       "get": {
-        "description": "Returns all plants from the system that the user has access to",
+        "summary": "List organizations",
+        "description": "Returns all organizations from the system that the user has access to",
         "parameters": [
           {
             "name": "limit",
@@ -29,19 +30,33 @@
             "description": "The maximum number of results to return",
             "schema": {
               "type": "integer",
-              "format": "int32"
+              "format": "int32",
+              "default": 50
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "Filter by organization type",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "shipper",
+                "carrier",
+                "terminal"
+              ]
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Plant response",
+            "description": "Organization response",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/Plant"
+                    "$ref": "#/components/schemas/Organization"
                   }
                 }
               }
@@ -60,13 +75,103 @@
         }
       },
       "post": {
-        "description": "Creates a new plant in the store",
+        "summary": "Create organization",
+        "description": "Creates a new organization in the Terminal system",
         "requestBody": {
-          "description": "Plant to add to the store",
+          "description": "Organization to add to the system",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewPlant"
+                "$ref": "#/components/schemas/NewOrganization"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "201": {
+            "description": "Organization created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Organization"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Validation error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/organizations/{id}": {
+      "get": {
+        "summary": "Get organization",
+        "description": "Retrieve details for a specific organization",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of organization to retrieve",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^org_[a-zA-Z0-9]+$"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Organization details",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Organization"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Organization not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Error"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update organization",
+        "description": "Update an existing organization in the Terminal system",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "description": "ID of organization to update",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "pattern": "^org_[a-zA-Z0-9]+$"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Organization fields to update",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateOrganization"
               }
             }
           },
@@ -74,17 +179,17 @@
         },
         "responses": {
           "200": {
-            "description": "plant response",
+            "description": "Organization updated successfully",
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/Plant"
+                  "$ref": "#/components/schemas/Organization"
                 }
               }
             }
           },
-          "400": {
-            "description": "unexpected error",
+          "404": {
+            "description": "Organization not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -94,30 +199,49 @@
             }
           }
         }
-      }
-    },
-    "/plants/{id}": {
+      },
       "delete": {
-        "description": "Deletes a single plant based on the ID supplied",
+        "summary": "Delete organization",
+        "description": "Deletes a single organization based on the ID supplied. This action is irreversible.",
         "parameters": [
           {
             "name": "id",
             "in": "path",
-            "description": "ID of plant to delete",
+            "description": "ID of organization to delete",
             "required": true,
             "schema": {
-              "type": "integer",
-              "format": "int64"
+              "type": "string",
+              "pattern": "^org_[a-zA-Z0-9]+$"
             }
           }
         ],
         "responses": {
-          "204": {
-            "description": "Plant deleted",
-            "content": {}
+          "200": {
+            "description": "Organization deleted successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Organization deleted successfully"
+                    },
+                    "id": {
+                      "type": "string",
+                      "example": "org_12345"
+                    },
+                    "deleted_at": {
+                      "type": "string",
+                      "format": "date-time"
+                    }
+                  }
+                }
+              }
+            }
           },
-          "400": {
-            "description": "unexpected error",
+          "404": {
+            "description": "Organization not found",
             "content": {
               "application/json": {
                 "schema": {
@@ -125,28 +249,6 @@
                 }
               }
             }
-          }
-        }
-      }
-    }
-  },
-  "webhooks": {
-    "/plant/webhook": {
-      "post": {
-        "description": "Information about a new plant added to the store",
-        "requestBody": {
-          "description": "Plant added to the store",
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewPlant"
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Return a 200 status to indicate that the data was received successfully"
           }
         }
       }
@@ -154,55 +256,238 @@
   },
   "components": {
     "schemas": {
-      "Plant": {
-        "required": [
-          "name"
-        ],
+      "Organization": {
         "type": "object",
+        "required": [
+          "id",
+          "name",
+          "type",
+          "status"
+        ],
         "properties": {
-          "name": {
-            "description": "The name of the plant",
-            "type": "string"
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the organization",
+            "pattern": "^org_[a-zA-Z0-9]+$",
+            "example": "org_12345"
           },
-          "tag": {
-            "description": "Tag to specify the type",
-            "type": "string"
+          "name": {
+            "type": "string",
+            "description": "The name of the organization",
+            "example": "ACME Shipping Co."
+          },
+          "type": {
+            "type": "string",
+            "description": "Type of organization",
+            "enum": [
+              "shipper",
+              "carrier",
+              "terminal"
+            ],
+            "example": "shipper"
+          },
+          "contact": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email",
+                "example": "contact@acmeshipping.com"
+              },
+              "phone": {
+                "type": "string",
+                "example": "+1-555-123-4567"
+              }
+            }
+          },
+          "address": {
+            "type": "object",
+            "properties": {
+              "street": {
+                "type": "string",
+                "example": "123 Harbor Lane"
+              },
+              "city": {
+                "type": "string",
+                "example": "Port City"
+              },
+              "state": {
+                "type": "string",
+                "example": "CA"
+              },
+              "zip": {
+                "type": "string",
+                "example": "90210"
+              },
+              "country": {
+                "type": "string",
+                "example": "USA"
+              }
+            }
+          },
+          "status": {
+            "type": "string",
+            "description": "Current status of the organization",
+            "enum": [
+              "active",
+              "inactive",
+              "pending"
+            ],
+            "example": "active"
+          },
+          "created_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the organization was created",
+            "example": "2024-01-15T10:30:00Z"
+          },
+          "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "When the organization was last updated",
+            "example": "2024-01-15T10:30:00Z"
           }
         }
       },
-      "NewPlant": {
-        "allOf": [
-          {
-            "$ref": "#/components/schemas/Plant"
+      "NewOrganization": {
+        "type": "object",
+        "required": [
+          "name",
+          "type"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the organization",
+            "example": "ACME Shipping Co."
           },
-          {
-            "required": [
-              "id"
+          "type": {
+            "type": "string",
+            "description": "Type of organization",
+            "enum": [
+              "shipper",
+              "carrier",
+              "terminal"
             ],
+            "example": "shipper"
+          },
+          "contact": {
             "type": "object",
             "properties": {
-              "id": {
-                "description": "Identification number of the plant",
-                "type": "integer",
-                "format": "int64"
+              "email": {
+                "type": "string",
+                "format": "email",
+                "example": "contact@acmeshipping.com"
+              },
+              "phone": {
+                "type": "string",
+                "example": "+1-555-123-4567"
+              }
+            }
+          },
+          "address": {
+            "type": "object",
+            "properties": {
+              "street": {
+                "type": "string",
+                "example": "123 Harbor Lane"
+              },
+              "city": {
+                "type": "string",
+                "example": "Port City"
+              },
+              "state": {
+                "type": "string",
+                "example": "CA"
+              },
+              "zip": {
+                "type": "string",
+                "example": "90210"
+              },
+              "country": {
+                "type": "string",
+                "example": "USA"
               }
             }
           }
-        ]
+        }
+      },
+      "UpdateOrganization": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the organization",
+            "example": "ACME Shipping Co. Ltd."
+          },
+          "contact": {
+            "type": "object",
+            "properties": {
+              "email": {
+                "type": "string",
+                "format": "email",
+                "example": "newcontact@acmeshipping.com"
+              },
+              "phone": {
+                "type": "string",
+                "example": "+1-555-987-6543"
+              }
+            }
+          },
+          "address": {
+            "type": "object",
+            "properties": {
+              "street": {
+                "type": "string",
+                "example": "456 New Harbor Blvd"
+              },
+              "city": {
+                "type": "string",
+                "example": "Port City"
+              },
+              "state": {
+                "type": "string",
+                "example": "CA"
+              },
+              "zip": {
+                "type": "string",
+                "example": "90211"
+              },
+              "country": {
+                "type": "string",
+                "example": "USA"
+              }
+            }
+          },
+          "status": {
+            "type": "string",
+            "description": "Current status of the organization",
+            "enum": [
+              "active",
+              "inactive",
+              "pending"
+            ],
+            "example": "active"
+          }
+        }
       },
       "Error": {
+        "type": "object",
         "required": [
           "error",
           "message"
         ],
-        "type": "object",
         "properties": {
           "error": {
             "type": "integer",
-            "format": "int32"
+            "format": "int32",
+            "description": "Error code",
+            "example": 400
           },
           "message": {
-            "type": "string"
+            "type": "string",
+            "description": "Error description",
+            "example": "Invalid organization data provided"
           }
         }
       }
@@ -210,7 +495,8 @@
     "securitySchemes": {
       "bearerAuth": {
         "type": "http",
-        "scheme": "bearer"
+        "scheme": "bearer",
+        "description": "Use your API key as the bearer token"
       }
     }
   }
