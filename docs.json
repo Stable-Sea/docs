@@ -18,6 +18,13 @@
     },
     "playground": {
       "mode": "show"
+    },
+    "mdx": {
+      "server": "https://sandbox.stablesea.com/terminal/v1",
+      "auth": {
+        "method": "bearer",
+        "default": "DEFAULT-TOKEN-HERE"
+      }
     }
   },
   "navigation": {
@@ -39,7 +46,6 @@
           {
             "group": "Resources",
             "pages": [
-              "api-reference/resources/organization",
               "api-reference/resources/customer",
               "api-reference/resources/external-payment-instrument",
               "api-reference/resources/offering",
