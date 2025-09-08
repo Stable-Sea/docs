@@ -55,6 +55,51 @@
               "api-reference/resources/hours-of-operation",
               "api-reference/resources/enumerations"
             ]
+          },
+          {
+            "group": "Hours of Operation",
+            "pages": [
+              "api-reference/hours-of-operation/list"
+            ]
+          },
+          {
+            "group": "Customers",
+            "pages": [
+              "api-reference/customers/create",
+              "api-reference/customers/get",
+              "api-reference/customers/list"
+            ]
+          },
+          {
+            "group": "External Payment Instruments",
+            "pages": [
+              "api-reference/external-payment-instruments/create",
+              "api-reference/external-payment-instruments/get",
+              "api-reference/external-payment-instruments/list",
+              "api-reference/external-payment-instruments/archive"
+            ]
+          },
+          {
+            "group": "Offerings",
+            "pages": [
+              "api-reference/offerings/create",
+              "api-reference/offerings/get"
+            ]
+          },
+          {
+            "group": "Quotes",
+            "pages": [
+              "api-reference/quotes/create",
+              "api-reference/quotes/get"
+            ]
+          },
+          {
+            "group": "Orders",
+            "pages": [
+              "api-reference/orders/create",
+              "api-reference/orders/get",
+              "api-reference/orders/list"
+            ]
           }
         ]
       },
