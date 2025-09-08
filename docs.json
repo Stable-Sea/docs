@@ -110,7 +110,7 @@
             "group": "Guides",
             "pages": [
               "guides/order-flow-walkthrough",
-              "guides/failed-states"
+              "guides/understanding-order-states"
             ]
           }
         ]
