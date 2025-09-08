@@ -41,7 +41,7 @@
               "api-reference/overview/making-requests",
               "api-reference/overview/error-handling",
               "api-reference/overview/idempotency",
-              "api-reference/overview/reliability-compliance"
+              "api-reference/overview/reliability"
             ]
           },
           {
