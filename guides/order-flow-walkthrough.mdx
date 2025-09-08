@@ -14,6 +14,10 @@ This guide provides a comprehensive walkthrough for implementing the Stable Sea 
 - Understanding of financial services compliance
 - Secure infrastructure for API key management
 
+## Step-by-Step Integration
+
+Follow these steps to implement the complete order flow from customer creation to settlement:
+
 <Steps>
   <Step title="Authentication">
     All API requests require Bearer token authentication. Your API key serves as the bearer token.
@@ -370,65 +374,6 @@ Store API keys securely using environment variables or secure key management sys
 ### Monitoring
 
 Implement logging and monitoring for all API interactions. Track order lifecycles and settlement times for operational insights.
-
-## Advanced Integration Patterns
-
-### Bulk Operations
-
-For high-volume scenarios, you can create multiple payment instruments for different currencies:
-
-```bash
-# Create multiple payment instruments for different currencies
-curl -X POST "https://sandbox.stablesea.com/terminal/v1/customers/cust_7f8b9c2d3e4f5a6b/external_payment_instruments" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "currency": "USD",
-    "method": "BANK_TRANSFER",
-    "details": {
-      "account_number": "123456789",
-      "routing_number": "021000021",
-      "account_holder_name": "Acme Corporation"
-    }
-  }'
-
-curl -X POST "https://sandbox.stablesea.com/terminal/v1/customers/cust_7f8b9c2d3e4f5a6b/external_payment_instruments" \
-  -H "Authorization: Bearer YOUR_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "currency": "EUR",
-    "method": "BANK_TRANSFER",
-    "details": {
-      "iban": "DE89370400440532013000",
-      "account_holder_name": "Acme Corporation"
-    }
-  }'
-```
-
-### Error Recovery
-
-Implement proper error recovery patterns:
-
-```bash
-# Retry with exponential backoff
-retry_count=0
-max_retries=3
-
-while [ $retry_count -lt $max_retries ]; do
-  response=$(curl -w "%{http_code}" -X POST "https://sandbox.stablesea.com/terminal/v1/customers/cust_id/orders" \
-    -H "Authorization: Bearer YOUR_API_KEY" \
-    -H "Idempotency-Key: $(uuidgen)" \
-    -d '{"quote_id":"quo_id"}')
-
-  if [ "${response: -3}" == "201" ]; then
-    echo "Order created successfully"
-    break
-  fi
-
-  retry_count=$((retry_count + 1))
-  sleep $((2 ** retry_count))  # Exponential backoff
-done
-```
 
 ## Production Considerations
 
