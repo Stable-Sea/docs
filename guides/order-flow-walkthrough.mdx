@@ -1,161 +1,466 @@
 ---
-title: "Order Flow Walkthrough"
-description: "Complete guide to the Stable Sea order flow from offering to execution"
+title: "Order Flow Integration Guide"
+description: "Production-ready integration guide for implementing the Stable Sea Terminal API"
 ---
-
-<Note>
-  This is a placeholder guide to demonstrate the structure and components we
-  would use for comprehensive integration documentation.
-</Note>
 
 ## Overview
 
-Learn how to integrate with the Stable Sea Terminal API to process orders from start to finish. This guide walks through the complete flow with code examples and visual explanations.
+This guide provides a comprehensive walkthrough for implementing the Stable Sea Terminal API in production. It covers the complete order flow from authentication to settlement, including security, monitoring, error handling, and best practices.
+
+### Prerequisites
+
+- API access credentials
+- Experience with REST API integration
+- Understanding of financial services compliance
+- Secure infrastructure for API key management
 
 <Steps>
-  <Step title="Get Available Offerings">
-    Start by discovering what payment corridors and rates are available.
+  <Step title="Authentication">
+    All API requests require Bearer token authentication. Your API key serves as the bearer token.
 
-    ```javascript
-    const offerings = await fetch('/api/offerings', {
-      headers: { 'Authorization': 'Bearer your-token' }
-    });
+    ```bash
+    # Test authentication
+    curl -X GET "https://sandbox.stablesea.com/terminal/v1/hours-of-operation" \
+      -H "Authorization: Bearer YOUR_API_KEY" \
+      -H "Content-Type: application/json"
+    ```
+
+    <Note>
+      Replace `YOUR_API_KEY` with your actual API key. Store this securely and never expose it in client-side code.
+    </Note>
+
+  </Step>
+
+  <Step title="Create Customer">
+    Create a customer entity to associate with your orders and payment instruments.
+
+    ```bash
+    curl -X POST "https://sandbox.stablesea.com/terminal/v1/customers" \
+      -H "Authorization: Bearer YOUR_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "name": "Acme Corporation"
+      }'
+    ```
+
+    **Response:**
+    ```json
+    {
+      "data": {
+        "id": "cust_7f8b9c2d3e4f5a6b",
+        "name": "Acme Corporation",
+        "status": {
+          "current_status": "ACTIVE",
+          "status_history": [
+            {
+              "status": "ACTIVE",
+              "created_at": "2024-01-15T10:30:00Z"
+            }
+          ]
+        },
+        "created_at": "2024-01-15T10:30:00Z",
+        "updated_at": "2024-01-15T10:30:00Z"
+      }
+    }
     ```
 
     <Tip>
-      Filter offerings by currency pair and payment method to find the best rates for your use case.
+      Save the customer `id` as you'll need it for subsequent API calls.
     </Tip>
 
   </Step>
 
-  <Step title="Request a Quote">
-    Get a firm quote with locked-in rates and expiration times.
+  <Step title="Create External Payment Instruments">
+    Set up both payin and payout payment methods for your customer.
 
-    ```javascript
-    const quote = await fetch('/api/quotes', {
-      method: 'POST',
-      headers: { 'Authorization': 'Bearer your-token' },
-      body: JSON.stringify({
-        offering_id: 'off_123',
-        payin_amount: '1000.00'
-      })
-    });
+    **Create Payin Payment Instrument (Source):**
+    ```bash
+    curl -X POST "https://sandbox.stablesea.com/terminal/v1/customers/cust_7f8b9c2d3e4f5a6b/external_payment_instruments" \
+      -H "Authorization: Bearer YOUR_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "currency": "USD",
+        "method": "BANK_TRANSFER",
+        "details": {
+          "account_number": "123456789",
+          "routing_number": "021000021",
+          "account_holder_name": "Acme Corporation"
+        }
+      }'
+    ```
+
+    **Create Payout Payment Instrument (Destination):**
+    ```bash
+    curl -X POST "https://sandbox.stablesea.com/terminal/v1/customers/cust_7f8b9c2d3e4f5a6b/external_payment_instruments" \
+      -H "Authorization: Bearer YOUR_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "currency": "KES",
+        "method": "MOBILE_MONEY",
+        "details": {
+          "phone_number": "+254712345678",
+          "provider": "M-PESA"
+        }
+      }'
+    ```
+
+    **Response:**
+    ```json
+    {
+      "data": {
+        "id": "epi_abc123def456",
+        "alias": null,
+        "currency": "USD",
+        "method": "BANK_TRANSFER",
+        "status": {
+          "current_status": "ACTIVE",
+          "status_history": [
+            {
+              "status": "ACTIVE",
+              "created_at": "2024-01-15T10:35:00Z"
+            }
+          ]
+        },
+        "details": {
+          "account_number": "***6789",
+          "routing_number": "021000021",
+          "account_holder_name": "Acme Corporation"
+        },
+        "created_at": "2024-01-15T10:35:00Z",
+        "updated_at": "2024-01-15T10:35:00Z"
+      }
+    }
     ```
 
     <Warning>
-      Quotes expire! Check the `submission_expires_at` and `funding_expires_at` timestamps.
+      Payment instrument details are partially masked in responses for security. Store the returned IDs for creating offerings.
     </Warning>
 
   </Step>
 
-  <Step title="Submit Order">
-    Convert your quote into an executable order.
+  <Step title="Check Hours of Operation">
+    Verify that liquidity providers are operating before creating offerings.
 
-    ```javascript
-    const order = await fetch('/api/orders', {
-      method: 'POST',
-      headers: {
-        'Authorization': 'Bearer your-token',
-        'Idempotency-Key': generateUUID()
-      },
-      body: JSON.stringify({
-        quote_id: 'quo_456',
-        external_reference_id: 'your-ref-123'
-      })
-    });
+    ```bash
+    curl -X GET "https://sandbox.stablesea.com/terminal/v1/hours-of-operation" \
+      -H "Authorization: Bearer YOUR_API_KEY" \
+      -H "Content-Type: application/json"
     ```
+
+    **Response:**
+    ```json
+    {
+      "data": [
+        {
+          "liquidity_provider": "Provider_A",
+          "payin_currency": "USD",
+          "payout_currency": "KES",
+          "hours_of_operation": [
+            {
+              "calendar_date": "2024-01-15",
+              "open_time": "08:00:00",
+              "close_time": "17:00:00"
+            }
+          ]
+        }
+      ]
+    }
+    ```
+
+    <Tip>
+      Only create offerings when liquidity providers are within their operating hours for optimal execution.
+    </Tip>
 
   </Step>
 
-  <Step title="Monitor Status">
-    Track your order through the settlement process.
+  <Step title="Create Offerings">
+    Generate available payment corridors and rates for your customer.
 
-    ```javascript
-    // Order progresses through these statuses:
-    // STEP_1_AWAITING_FUNDING → STEP_2_FILLING_FX →
-    // STEP_3_SETTLING_PAYOUT → STEP_4_COMPLETED
+    ```bash
+    curl -X POST "https://sandbox.stablesea.com/terminal/v1/customers/cust_7f8b9c2d3e4f5a6b/offerings" \
+      -H "Authorization: Bearer YOUR_API_KEY" \
+      -H "Content-Type: application/json"
     ```
 
-    <Card title="Status Updates" icon="bell">
-      Set up webhooks to receive real-time status notifications instead of polling.
-    </Card>
+    **Response:**
+    ```json
+    {
+      "data": [
+        {
+          "id": "off_789xyz456abc",
+          "payin": {
+            "external_payment_instrument_id": "epi_abc123def456",
+            "limits": {
+              "min": "100.00",
+              "max": "50000.00"
+            },
+            "indicative_cost_tiers": [
+              {
+                "min": "100.00",
+                "max": "1000.00",
+                "bps": "150"
+              },
+              {
+                "min": "1000.01",
+                "max": "50000.00",
+                "bps": "100"
+              }
+            ]
+          },
+          "payout": {
+            "external_payment_instrument_id": "epi_def456ghi789"
+          },
+          "indicative_exchange_rate": "129.50",
+          "current_day_hours_of_operation": {
+            "open": "08:00:00",
+            "close": "17:00:00"
+          },
+          "liquidity_provider": "Provider_A",
+          "estimated_settlement_time": "2-4 hours",
+          "created_at": "2024-01-15T10:40:00Z"
+        }
+      ]
+    }
+    ```
+
+    <Note>
+      Offerings contain indicative rates and fees. Final rates are locked when creating quotes.
+    </Note>
+
+  </Step>
+
+  <Step title="Create Quote">
+    Get firm pricing with locked exchange rates and expiration times.
+
+    ```bash
+    curl -X POST "https://sandbox.stablesea.com/terminal/v1/customers/cust_7f8b9c2d3e4f5a6b/quotes" \
+      -H "Authorization: Bearer YOUR_API_KEY" \
+      -H "Content-Type: application/json" \
+      -d '{
+        "offering_id": "off_789xyz456abc",
+        "payin_amount": "1000.00"
+      }'
+    ```
+
+    **Response:**
+    ```json
+    {
+      "data": {
+        "id": "quo_mno456pqr789",
+        "offering_id": "off_789xyz456abc",
+        "exchange_rate": "129.45",
+        "payin": {
+          "total": "1000.00",
+          "fee": "15.00",
+          "tax": "0.00"
+        },
+        "payout": {
+          "total": "127508.25"
+        },
+        "submission_expires_at": "2024-01-15T11:00:00Z",
+        "funding_expires_at": "2024-01-15T15:00:00Z",
+        "created_at": "2024-01-15T10:45:00Z"
+      }
+    }
+    ```
+
+    <Warning>
+      Quotes have two expiration times:
+      - `submission_expires_at`: Deadline to create an order
+      - `funding_expires_at`: Deadline to fund the order after creation
+    </Warning>
+
+  </Step>
+
+  <Step title="Create Order">
+    Convert your quote into an executable order before expiration.
+
+    ```bash
+    curl -X POST "https://sandbox.stablesea.com/terminal/v1/customers/cust_7f8b9c2d3e4f5a6b/orders" \
+      -H "Authorization: Bearer YOUR_API_KEY" \
+      -H "Content-Type: application/json" \
+      -H "Idempotency-Key: $(uuidgen)" \
+      -d '{
+        "quote_id": "quo_mno456pqr789"
+      }'
+    ```
+
+    **Response:**
+    ```json
+    {
+      "data": {
+        "id": "ord_stu789vwx012",
+        "quote_id": "quo_mno456pqr789",
+        "offering_id": "off_789xyz456abc",
+        "reference_number": "SS240115-001",
+        "external_reference_id": null,
+        "exchange_rate": "129.45",
+        "effective_exchange_rate": "129.45",
+        "payin": {
+          "external_payment_instrument_id": "epi_abc123def456",
+          "currency": "USD",
+          "method": "BANK_TRANSFER",
+          "total": "1000.00",
+          "fee": "15.00",
+          "tax": "0.00"
+        },
+        "payout": {
+          "external_payment_instrument_id": "epi_def456ghi789",
+          "currency": "KES",
+          "method": "MOBILE_MONEY"
+        },
+        "status": {
+          "current_status": "STEP_1_AWAITING_FUNDING",
+          "status_history": [
+            {
+              "status": "STEP_1_AWAITING_FUNDING",
+              "created_at": "2024-01-15T10:50:00Z"
+            }
+          ]
+        },
+        "retry_order_id": null,
+        "created_at": "2024-01-15T10:50:00Z",
+        "updated_at": "2024-01-15T10:50:00Z"
+      }
+    }
+    ```
+
+    <Tip>
+      Use the `Idempotency-Key` header to safely retry order creation without creating duplicates.
+    </Tip>
+
+  </Step>
+
+  <Step title="Monitor Order Status">
+    Track your order through the complete settlement lifecycle.
+
+    ```bash
+    curl -X GET "https://sandbox.stablesea.com/terminal/v1/customers/cust_7f8b9c2d3e4f5a6b/orders/ord_stu789vwx012" \
+      -H "Authorization: Bearer YOUR_API_KEY" \
+      -H "Content-Type: application/json"
+    ```
+
+    **Order Status Progression:**
+    - `STEP_1_AWAITING_FUNDING` - Waiting for payin funds
+    - `STEP_2_FILLING_FX` - Executing foreign exchange
+    - `STEP_3_SETTLING_PAYOUT` - Processing payout settlement
+    - `STEP_4_COMPLETED` - Order successfully completed
+
+    <Note>
+      Poll the order status endpoint periodically to monitor order progress. Consider implementing exponential backoff between polling requests.
+    </Note>
 
   </Step>
 </Steps>
 
-## Interactive Playground
+## Best Practices & Integration Guidelines
 
-<Note>
-  In a real guide, we would embed an interactive sandbox here where developers
-  can test the API flow with sample data.
-</Note>
+### Error Handling
 
-## Code Examples by Language
+Implement comprehensive error handling with exponential backoff retry logic. Handle rate limits, network timeouts, and API errors gracefully.
 
-<CodeGroup>
-```javascript Node.js
-// Complete order flow example
-const stableSeaClient = new StableSeaClient('your-api-key');
+### Idempotency
 
-const offering = await stableSeaClient.getOfferingById('off_123');
-const quote = await stableSeaClient.createQuote({
-offering_id: offering.id,
-payin_amount: '1000.00'
-});
-const order = await stableSeaClient.createOrder({
-quote_id: quote.id
-});
+Always use idempotency keys for order creation to prevent duplicate transactions. Generate unique UUIDs for each request.
 
-````
+### Security
 
-```python Python
-# Complete order flow example
-client = StableSeaClient('your-api-key')
+Store API keys securely using environment variables or secure key management systems. Never expose keys in client-side code.
 
-offering = client.get_offering('off_123')
-quote = client.create_quote(
-    offering_id=offering.id,
-    payin_amount='1000.00'
-)
-order = client.create_order(quote_id=quote.id)
-````
+### Monitoring
 
-```curl cURL
-# Step 1: Get offering
-curl -X GET "https://api.stablesea.com/terminal/v1/offerings/off_123" \
-  -H "Authorization: Bearer your-token"
+Implement logging and monitoring for all API interactions. Track order lifecycles and settlement times for operational insights.
 
-# Step 2: Create quote
-curl -X POST "https://api.stablesea.com/terminal/v1/quotes" \
-  -H "Authorization: Bearer your-token" \
-  -d '{"offering_id":"off_123","payin_amount":"1000.00"}'
+## Advanced Integration Patterns
 
-# Step 3: Create order
-curl -X POST "https://api.stablesea.com/terminal/v1/orders" \
-  -H "Authorization: Bearer your-token" \
-  -d '{"quote_id":"quo_456"}'
+### Bulk Operations
+
+For high-volume scenarios, you can create multiple payment instruments for different currencies:
+
+```bash
+# Create multiple payment instruments for different currencies
+curl -X POST "https://sandbox.stablesea.com/terminal/v1/customers/cust_7f8b9c2d3e4f5a6b/external_payment_instruments" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "currency": "USD",
+    "method": "BANK_TRANSFER",
+    "details": {
+      "account_number": "123456789",
+      "routing_number": "021000021",
+      "account_holder_name": "Acme Corporation"
+    }
+  }'
+
+curl -X POST "https://sandbox.stablesea.com/terminal/v1/customers/cust_7f8b9c2d3e4f5a6b/external_payment_instruments" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "currency": "EUR",
+    "method": "BANK_TRANSFER",
+    "details": {
+      "iban": "DE89370400440532013000",
+      "account_holder_name": "Acme Corporation"
+    }
+  }'
 ```
 
-</CodeGroup>
+### Error Recovery
 
-## Best Practices
+Implement proper error recovery patterns:
 
-<CardGroup cols={2}>
-  <Card title="Error Handling" icon="shield-alert">
-    Always implement retry logic with exponential backoff for network failures.
-  </Card>
+```bash
+# Retry with exponential backoff
+retry_count=0
+max_retries=3
 
-{" "}
-<Card title="Idempotency" icon="refresh-cw">
-  Use idempotency keys to safely retry order creation without duplicates.
-</Card>
+while [ $retry_count -lt $max_retries ]; do
+  response=$(curl -w "%{http_code}" -X POST "https://sandbox.stablesea.com/terminal/v1/customers/cust_id/orders" \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Idempotency-Key: $(uuidgen)" \
+    -d '{"quote_id":"quo_id"}')
 
-{" "}
-<Card title="Rate Limits" icon="gauge">
-  Monitor rate limit headers and implement client-side throttling.
-</Card>
+  if [ "${response: -3}" == "201" ]; then
+    echo "Order created successfully"
+    break
+  fi
 
-  <Card title="Webhooks" icon="webhook">
-    Use webhooks for real-time updates instead of constant polling.
-  </Card>
-</CardGroup>
+  retry_count=$((retry_count + 1))
+  sleep $((2 ** retry_count))  # Exponential backoff
+done
+```
+
+## Production Considerations
+
+### API Key Security
+
+- Store API keys in environment variables, not code
+- Use different keys for sandbox and production
+- Rotate keys regularly for security
+
+### Error Handling
+
+```javascript
+// Simple retry with exponential backoff
+async function apiCallWithRetry(requestFn, maxRetries = 3) {
+  for (let attempt = 1; attempt <= maxRetries; attempt++) {
+    try {
+      return await requestFn();
+    } catch (error) {
+      if (attempt === maxRetries || error.status < 500) {
+        throw error;
+      }
+      await new Promise((resolve) =>
+        setTimeout(resolve, 1000 * Math.pow(2, attempt))
+      );
+    }
+  }
+}
+```
+
+### Monitoring
+
+- Track order success rates
+- Monitor API response times
+- Set up alerts for high error rates
+- Log all API interactions with correlation IDs
