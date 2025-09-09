@@ -600,27 +600,31 @@
         "type": "object",
         "properties": {
           "liquidity_provider": {
-            "type": "string"
+            "type": "string",
+            "enum": ["ALPHA"]
           },
           "payin_currency": {
-            "type": "string"
+            "type": "string",
+            "enum": ["USDC", "COP"]
           },
           "payout_currency": {
-            "type": "string"
+            "type": "string",
+            "enum": ["USDC", "COP"]
           },
           "hours_of_operation": {
             "type": "array",
             "items": {
               "type": "object",
               "properties": {
-                "calendar_date": {
-                  "type": "string"
+                "open_time_utc": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "ISO 8601 UTC timestamp (RFC3339) for when operations open"
                 },
-                "open_time": {
-                  "type": "string"
-                },
-                "close_time": {
-                  "type": "string"
+                "close_time_utc": {
+                  "type": "string",
+                  "format": "date-time",
+                  "description": "ISO 8601 UTC timestamp (RFC3339) for when operations close"
                 }
               }
             }
