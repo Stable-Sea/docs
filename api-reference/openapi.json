@@ -596,6 +596,23 @@
   },
   "components": {
     "schemas": {
+      "DateTime": {
+        "type": "string",
+        "format": "date-time",
+        "description": "ISO 8601 UTC timestamp (RFC3339)"
+      },
+      "PayinCurrency": {
+        "type": "string",
+        "enum": ["USDC", "...more to come..."]
+      },
+      "PayoutCurrency": {
+        "type": "string",
+        "enum": ["COP", "...more to come..."]
+      },
+      "LiquidityProvider": {
+        "type": "string",
+        "enum": ["ALPHA"]
+      },
       "HoursOfOperation": {
         "type": "object",
         "required": [
@@ -606,16 +623,13 @@
         ],
         "properties": {
           "liquidity_provider": {
-            "type": "string",
-            "enum": ["ALPHA"]
+            "$ref": "#/components/schemas/LiquidityProvider"
           },
           "payin_currency": {
-            "type": "string",
-            "enum": ["USDC", "COP"]
+            "$ref": "#/components/schemas/PayinCurrency"
           },
           "payout_currency": {
-            "type": "string",
-            "enum": ["USDC", "COP"]
+            "$ref": "#/components/schemas/PayoutCurrency"
           },
           "hours_of_operation": {
             "type": "array",
@@ -627,19 +641,19 @@
               ],
               "properties": {
                 "open_time_utc": {
-                  "type": "string",
-                  "format": "date-time",
-                  "description": "ISO 8601 UTC timestamp (RFC3339) for when operations open"
+                  "$ref": "#/components/schemas/DateTime"
                 },
                 "close_time_utc": {
-                  "type": "string",
-                  "format": "date-time",
-                  "description": "ISO 8601 UTC timestamp (RFC3339) for when operations close"
+                  "$ref": "#/components/schemas/DateTime"
                 }
               }
             }
           }
         }
+      },
+      "CustomerStatus": {
+        "type": "string",
+        "enum": ["ACTIVE", "COMPLIANCE_HOLD"]
       },
       "Customer": {
         "type": "object",
@@ -663,30 +677,28 @@
           },
           "status": {
             "type": "object",
+            "required": [
+              "current_status",
+              "status_history"
+            ],
             "properties": {
               "current_status": {
-                "type": "string",
-                "enum": [
-                  "ACTIVE",
-                  "COMPLIANCE_HOLD"
-                ]
+                "$ref": "#/components/schemas/CustomerStatus"
               },
               "status_history": {
                 "type": "array",
                 "items": {
                   "type": "object",
+                  "required": [
+                    "status",
+                    "created_at"
+                  ],
                   "properties": {
                     "status": {
-                      "type": "string",
-                      "enum": [
-                        "ACTIVE",
-                        "COMPLIANCE_HOLD"
-                      ]
+                      "$ref": "#/components/schemas/CustomerStatus"
                     },
                     "created_at": {
-                      "type": "string",
-                      "format": "date-time",
-                      "description": "ISO 8601 UTC timestamp (RFC3339) for when this status change occurred"
+                      "$ref": "#/components/schemas/DateTime"
                     }
                   }
                 }
@@ -694,14 +706,10 @@
             }
           },
           "created_at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "ISO 8601 UTC timestamp (RFC3339) for when this customer was initially created"
+            "$ref": "#/components/schemas/DateTime"
           },
           "updated_at": {
-            "type": "string",
-            "format": "date-time",
-            "description": "ISO 8601 UTC timestamp (RFC3339) for when this customer was last updated"
+            "$ref": "#/components/schemas/DateTime"
           }
         }
       },
