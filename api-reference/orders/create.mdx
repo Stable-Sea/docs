@@ -8,10 +8,11 @@ Creates an order for an organization based on a quote.
 
 ## Common Headers
 
-| Header          | Value              | Required | Description                     |
-| :-------------- | :----------------- | :------- | :------------------------------ |
-| `Authorization` | `Bearer <api-key>` | true     | Your API key for authentication |
-| `Content-Type`  | `application/json` | true     | Content type of the request     |
+| Header            | Value              | Required | Description                                |
+| :---------------- | :----------------- | :------- | :----------------------------------------- |
+| `Authorization`   | `Bearer <api-key>` | true     | Your API key for authentication            |
+| `Content-Type`    | `application/json` | true     | Content type of the request                |
+| `Idempotency-Key` | `<unique-uuid>`    | true     | Unique key to prevent duplicate operations |
 
 ## Path
 
@@ -32,16 +33,16 @@ Creates an order for an organization based on a quote.
 ```json Response
 {
   "data": {
-    "id": "order_123456789abcdef",
-    "quote_id": "quote_123456789abcdef",
-    "offering_id": "off_123456789abcdef",
+    "id": "ord_01k4qn3cxdefkargtccm4ycxsf",
+    "quote_id": "qt_01k4qpmvgxfsg9db9mjrtq9tk2",
+    "offering_id": "off_01k4qph5ezfsga7fkvbygsqq93",
     "reference_number": "SS-ORD-20240115-001",
     "external_reference_id": null,
     "exchange_rate": "4250.00",
     "effective_exchange_rate": "4250.00",
     "payin": {
       "external_payment_instrument": {
-        "id": "epi_123456789abcdef",
+        "id": "mnyacctcm_01k4r01nm4f41tcsws4sr9k8nn",
         "alias": "My Solana Wallet",
         "currency": "USDC",
         "method": "SOLANA_ADDRESS",
@@ -66,7 +67,7 @@ Creates an order for an organization based on a quote.
     },
     "payout": {
       "external_payment_instrument": {
-        "id": "epi_987654321zyxwvu",
+        "id": "mnyacctcop_01k4r01nkxf41vpxc3nekphrx8",
         "alias": "My COP Bank Account",
         "currency": "COP",
         "method": "COP_BANK_ACCOUNT",

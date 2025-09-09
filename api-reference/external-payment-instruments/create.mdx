@@ -13,10 +13,11 @@ This endpoint is used to create an external account for an organization. Externa
 
 ## Common Headers
 
-| Header          | Value              | Required | Description                     |
-| :-------------- | :----------------- | :------- | :------------------------------ |
-| `Authorization` | `Bearer <api-key>` | true     | Your API key for authentication |
-| `Content-Type`  | `application/json` | true     | Content type of the request     |
+| Header            | Value              | Required | Description                                |
+| :---------------- | :----------------- | :------- | :----------------------------------------- |
+| `Authorization`   | `Bearer <api-key>` | true     | Your API key for authentication            |
+| `Content-Type`    | `application/json` | true     | Content type of the request                |
+| `Idempotency-Key` | `<unique-uuid>`    | true     | Unique key to prevent duplicate operations |
 
 ## Path
 
@@ -49,7 +50,7 @@ This endpoint is used to create an external account for an organization. Externa
 ```json Response
 {
   "data": {
-    "id": "epi_123456789abcdef",
+    "id": "mnyacctcop_01k4r01nkxf41vpxc3nekphrx8",
     "alias": "My COP Bank Account",
     "currency": "COP",
     "method": "COP_BANK_ACCOUNT",

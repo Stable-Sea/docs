@@ -802,7 +802,7 @@
         "properties": {
           "id": {
             "type": "string",
-            "example": "org_123456789abcdef"
+            "example": "org_01k2cm4r59e5z8k5ggrbbxjcwy"
           },
           "name": {
             "type": "string",

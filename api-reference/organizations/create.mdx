@@ -8,10 +8,11 @@ Creates a new organization in the system.
 
 ## Common Headers
 
-| Header          | Value              | Required | Description                     |
-| :-------------- | :----------------- | :------- | :------------------------------ |
-| `Authorization` | `Bearer <api-key>` | true     | Your API key for authentication |
-| `Content-Type`  | `application/json` | true     | Content type of the request     |
+| Header            | Value              | Required | Description                                |
+| :---------------- | :----------------- | :------- | :----------------------------------------- |
+| `Authorization`   | `Bearer <api-key>` | true     | Your API key for authentication            |
+| `Content-Type`    | `application/json` | true     | Content type of the request                |
+| `Idempotency-Key` | `<unique-uuid>`    | true     | Unique key to prevent duplicate operations |
 
 ## Body
 

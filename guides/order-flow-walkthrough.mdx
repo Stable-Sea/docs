@@ -49,7 +49,7 @@ Follow these steps to implement the complete order flow from organization creati
     ```json
     {
       "data": {
-        "id": "org_01k4qmbcd5efk9zkhv32cqzjhq",
+        "id": "org_01k2cm4r59e5z8k5ggrbbxjcwy",
         "name": "Test Organization Corp",
         "contact": {
           "email": "contact@testorganization.com",
@@ -113,7 +113,7 @@ Follow these steps to implement the complete order flow from organization creati
           "doc_type": "CC",
           "doc_id": "901458.6527",
           "physical_address": "Calle 123 #45-67, Bogotá, Colombia",
-          "account_type": "savings"
+          "account_type": "CHECKING"
         }
       }'
     ```
@@ -146,7 +146,7 @@ Follow these steps to implement the complete order flow from organization creati
     ```json
     {
       "data": {
-        "id": "mnyacctcop_01k4qmx3fcefkaswg60jq2eafk",
+        "id": "mnyacctcop_01k4r01nkxf41vpxc3nekphrx8",
         "alias": "Test COP Bank Account",
         "currency": "COP",
         "method": "COP_BANK_ACCOUNT",
@@ -168,7 +168,7 @@ Follow these steps to implement the complete order flow from organization creati
           "doc_type": "CC",
           "doc_id": "901458.6527",
           "physical_address": "Calle 123 #45-67, Bogotá, Colombia",
-          "account_type": "savings"
+          "account_type": "CHECKING"
         }
       }
     }
@@ -270,11 +270,11 @@ Follow these steps to implement the complete order flow from organization creati
     {
       "data": [
         {
-          "id": "off_01k4qmyaxsefkargtccm4ycxsf",
+          "id": "off_01k4r0qt0mf41v68zh6w7de845",
           "order_type": "QUOTED",
           "payin": {
             "external_payment_instrument": {
-              "id": "mnyacct_01k4qmv28kefk8mgxje22f360y",
+              "id": "mnyacctcm_01k4r01nm4f41tcsws4sr9k8nn",
               "alias": "Test Solana Address",
               "currency": "USDC",
               "method": "SOLANA_ADDRESS",
@@ -315,7 +315,7 @@ Follow these steps to implement the complete order flow from organization creati
           },
           "payout": {
             "external_payment_instrument": {
-              "id": "mnyacctcop_01k4qmx3fcefkaswg60jq2eafk",
+              "id": "mnyacctcop_01k4r01nkxf41vpxc3nekphrx8",
               "alias": "Test COP Bank Account",
               "currency": "COP",
               "method": "COP_BANK_ACCOUNT",
@@ -337,15 +337,11 @@ Follow these steps to implement the complete order flow from organization creati
                 "doc_type": "CC",
                 "doc_id": "901458.6527",
                 "physical_address": "Calle 123 #45-67, Bogotá, Colombia",
-                "account_type": "savings"
+                "account_type": "CHECKING"
               }
             }
           },
           "indicative_exchange_rate": "3290.5",
-          "current_day_hours_of_operation": {
-            "open_utc": "2025-09-09T13:30:00Z",
-            "close_utc": "2025-09-09T20:00:00Z"
-          },
           "liquidity_provider": "DLOCAL",
           "estimated_settlement_time": "T+0",
           "created_at": "2025-09-09T12:29:01-04:00"
@@ -368,8 +364,8 @@ Follow these steps to implement the complete order flow from organization creati
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json" \
       -d '{
-        "offering_id": "string",
-        "payin_amount": "string"
+        "offering_id": "off_01k4qph5ezfsga7fkvbygsqq93",
+        "payin_amount": "0.01"
       }'
     ```
 
@@ -377,20 +373,20 @@ Follow these steps to implement the complete order flow from organization creati
     ```json
     {
       "data": {
-        "id": "quo_mno456pqr789",
-        "offering_id": "off_789xyz456abc",
-        "exchange_rate": "129.45",
+        "id": "qt_01k4qpmvgxfsg9db9mjrtq9tk2",
+        "offering_id": "off_01k4qph5ezfsga7fkvbygsqq93",
+        "exchange_rate": "3290.5",
         "payin": {
-          "total": "1000.00",
-          "fee": "15.00",
+          "total": "0.01",
+          "fee": "0.00",
           "tax": "0.00"
         },
         "payout": {
-          "total": "127508.25"
+          "total": "32.91"
         },
-        "submission_expires_at": "2024-01-15T11:00:00Z",
-        "funding_expires_at": "2024-01-15T15:00:00Z",
-        "created_at": "2024-01-15T10:45:00Z"
+        "submission_expires_at": "2025-09-09T16:59:48Z",
+        "funding_expires_at": "2025-09-09T16:59:48Z",
+        "created_at": "2025-09-09T16:58:48Z"
       }
     }
     ```
@@ -412,7 +408,7 @@ Follow these steps to implement the complete order flow from organization creati
       -H "Content-Type: application/json" \
       -H "Idempotency-Key: $(uuidgen)" \
       -d '{
-        "quote_id": "string"
+        "quote_id": "qt_01k4qpmvgxfsg9db9mjrtq9tk2"
       }'
     ```
 
@@ -420,25 +416,68 @@ Follow these steps to implement the complete order flow from organization creati
     ```json
     {
       "data": {
-        "id": "ord_stu789vwx012",
-        "quote_id": "quo_mno456pqr789",
-        "offering_id": "off_789xyz456abc",
+        "id": "ord_01k4qn3cxdefkargtccm4ycxsf",
+        "quote_id": "qt_01k4qpmvgxfsg9db9mjrtq9tk2",
+        "offering_id": "off_01k4qph5ezfsga7fkvbygsqq93",
         "reference_number": "SS240115-001",
         "external_reference_id": null,
-        "exchange_rate": "129.45",
-        "effective_exchange_rate": "129.45",
+        "exchange_rate": "3290.5",
+        "effective_exchange_rate": "3290.5",
         "payin": {
-          "external_payment_instrument_id": "epi_abc123def456",
-          "currency": "USD",
-          "method": "BANK_TRANSFER",
-          "total": "1000.00",
-          "fee": "15.00",
+          "external_payment_instrument": {
+            "id": "mnyacctcm_01k4r01nm4f41tcsws4sr9k8nn",
+            "alias": "Test Solana Address",
+            "currency": "USDC",
+            "method": "SOLANA_ADDRESS",
+            "status": {
+              "current_status": "ACTIVE",
+              "status_history": [
+                {
+                  "status": "ACTIVE",
+                  "created_at": "2024-01-15T10:00:00Z"
+                }
+              ]
+            },
+            "details": {
+              "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+            },
+            "created_at": "2024-01-15T10:00:00Z",
+            "updated_at": "2024-01-15T10:00:00Z"
+          },
+          "total": "0.01",
+          "fee": "0.00",
           "tax": "0.00"
         },
         "payout": {
-          "external_payment_instrument_id": "epi_def456ghi789",
-          "currency": "KES",
-          "method": "MOBILE_MONEY"
+          "external_payment_instrument": {
+            "id": "mnyacctcop_01k4r01nkxf41vpxc3nekphrx8",
+            "alias": "Test COP Bank Account",
+            "currency": "COP",
+            "method": "COP_BANK_ACCOUNT",
+            "status": {
+              "current_status": "ACTIVE",
+              "status_history": [
+                {
+                  "status": "ACTIVE",
+                  "created_at": "2024-01-15T11:00:00Z"
+                }
+              ]
+            },
+            "details": {
+              "bank_account_number": "1234567890",
+              "bank_code": "001",
+              "account_holder_first_name": "Juan",
+              "account_holder_last_name": "Perez",
+              "legal_entity_name": "Juan Perez Empresa",
+              "doc_type": "CC",
+              "doc_id": "901458.6527",
+              "physical_address": "Calle 123 #45-67, Bogotá, Colombia",
+              "account_type": "CHECKING"
+            },
+            "created_at": "2024-01-15T11:00:00Z",
+            "updated_at": "2024-01-15T11:00:00Z"
+          },
+          "total": "32.91"
         },
         "status": {
           "current_status": "STEP_1_AWAITING_FUNDING",
@@ -448,6 +487,13 @@ Follow these steps to implement the complete order flow from organization creati
               "created_at": "2024-01-15T10:50:00Z"
             }
           ]
+        },
+        "funding_instructions": {
+          "currency": "USDC",
+          "method": "SOLANA_ADDRESS",
+          "details": {
+            "address": "B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6A1"
+          }
         },
         "retry_order_id": null,
         "created_at": "2024-01-15T10:50:00Z",

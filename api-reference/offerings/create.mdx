@@ -8,10 +8,11 @@ Creates offerings for an organization.
 
 ## Common Headers
 
-| Header          | Value              | Required | Description                     |
-| :-------------- | :----------------- | :------- | :------------------------------ |
-| `Authorization` | `Bearer <api-key>` | true     | Your API key for authentication |
-| `Content-Type`  | `application/json` | true     | Content type of the request     |
+| Header            | Value              | Required | Description                                |
+| :---------------- | :----------------- | :------- | :----------------------------------------- |
+| `Authorization`   | `Bearer <api-key>` | true     | Your API key for authentication            |
+| `Content-Type`    | `application/json` | true     | Content type of the request                |
+| `Idempotency-Key` | `<unique-uuid>`    | true     | Unique key to prevent duplicate operations |
 
 ## Path
 
@@ -27,11 +28,11 @@ Creates offerings for an organization.
 {
   "data": [
     {
-      "id": "off_123456789abcdef",
+      "id": "off_01k4qph5ezfsga7fkvbygsqq93",
       "order_type": "QUOTED",
       "payin": {
         "external_payment_instrument": {
-          "id": "epi_123456789abcdef",
+          "id": "mnyacctcm_01k4r01nm4f41tcsws4sr9k8nn",
           "alias": "My Solana Wallet",
           "currency": "USDC",
           "method": "SOLANA_ADDRESS"
@@ -55,7 +56,7 @@ Creates offerings for an organization.
       },
       "payout": {
         "external_payment_instrument": {
-          "id": "epi_987654321zyxwvu",
+          "id": "mnyacctcop_01k4r01nkxf41vpxc3nekphrx8",
           "alias": "My COP Bank Account",
           "currency": "COP",
           "method": "COP_BANK_ACCOUNT"

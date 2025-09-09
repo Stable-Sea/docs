@@ -8,10 +8,11 @@ Creates a quote for an organization.
 
 ## Common Headers
 
-| Header          | Value              | Required | Description                     |
-| :-------------- | :----------------- | :------- | :------------------------------ |
-| `Authorization` | `Bearer <api-key>` | true     | Your API key for authentication |
-| `Content-Type`  | `application/json` | true     | Content type of the request     |
+| Header            | Value              | Required | Description                                |
+| :---------------- | :----------------- | :------- | :----------------------------------------- |
+| `Authorization`   | `Bearer <api-key>` | true     | Your API key for authentication            |
+| `Content-Type`    | `application/json` | true     | Content type of the request                |
+| `Idempotency-Key` | `<unique-uuid>`    | true     | Unique key to prevent duplicate operations |
 
 ## Path
 
@@ -45,8 +46,8 @@ Creates a quote for an organization.
 ```json Response
 {
   "data": {
-    "id": "quote_123456789abcdef",
-    "offering_id": "off_123456789abcdef",
+    "id": "qt_01k4qpmvgxfsg9db9mjrtq9tk2",
+    "offering_id": "off_01k4qph5ezfsga7fkvbygsqq93",
     "exchange_rate": "4250.00",
     "payin": {
       "total": "1015.00",
