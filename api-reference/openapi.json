@@ -760,6 +760,62 @@
         "type": "string",
         "enum": ["ACTIVE", "COMPLIANCE_HOLD", "ARCHIVED"]
       },
+      "PaymentMethodSolanaAddress": {
+        "type": "object",
+        "title": "SOLANA_ADDRESS",
+        "required": [
+          "address"
+        ],
+        "properties": {
+          "address": {
+            "type": "string"
+          }
+        }
+      },
+      "PaymentMethodCopBankAccount": {
+        "type": "object",
+        "title": "COP_BANK_ACCOUNT",
+        "required": [
+          "bank_account_number",
+          "bank_code",
+          "account_holder_first_name",
+          "account_holder_last_name",
+          "legal_entity_name",
+          "doc_type",
+          "doc_id",
+          "physical_address",
+          "account_type"
+        ],
+        "properties": {
+          "bank_account_number": {
+            "type": "string"
+          },
+          "bank_code": {
+            "type": "string"
+          },
+          "account_holder_first_name": {
+            "type": "string"
+          },
+          "account_holder_last_name": {
+            "type": "string"
+          },
+          "legal_entity_name": {
+            "type": "string"
+          },
+          "doc_type": {
+            "type": "string"
+          },
+          "doc_id": {
+            "type": "string"
+          },
+          "physical_address": {
+            "type": "string"
+          },
+          "account_type": {
+            "type": "string"
+          }
+        }
+      },
       "ExternalPaymentInstrument": {
         "type": "object",
         "required": [
@@ -808,7 +864,14 @@
             }
           },
           "details": {
-            "type": "object"
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PaymentMethodSolanaAddress"
+              },
+              {
+                "$ref": "#/components/schemas/PaymentMethodCopBankAccount"
+              }
+            ]
           },
           "created_at": {
             "$ref": "#/components/schemas/DateTime"
@@ -827,13 +890,20 @@
         ],
         "properties": {
           "currency": {
-            "type": "string"
+            "$ref": "#/components/schemas/Currency"
           },
           "method": {
-            "type": "string"
+            "$ref": "#/components/schemas/PaymentMethod"
           },
           "details": {
-            "type": "object"
+            "oneOf": [
+              {
+                "$ref": "#/components/schemas/PaymentMethodSolanaAddress"
+              },
+              {
+                "$ref": "#/components/schemas/PaymentMethodCopBankAccount"
+              }
+            ]
           }
         }
       },
