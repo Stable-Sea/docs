@@ -12,35 +12,3 @@ Returns all available liquidity providers with their supported trading pairs and
 | :-------------- | :----------------- | :------- | :------------------------------ |
 | `Authorization` | `Bearer <api-key>` | true     | Your API key for authentication |
 | `Content-Type`  | `application/json` | true     | Content type of the request     |
-
-## Response
-
-<ResponseExample>
-
-```json Response
-{
-  "data": [
-    {
-      "name": "ALPHA",
-      "trading_pairs": [
-        {
-          "payin_currency": "USDC",
-          "payout_currency": "COP",
-          "hours_of_operation": [
-            {
-              "open_time_utc": "2025-09-09T13:30:00Z",
-              "close_time_utc": "2025-09-09T20:00:00Z"
-            },
-            {
-              "open_time_utc": "2025-09-10T13:30:00Z",
-              "close_time_utc": "2025-09-10T20:00:00Z"
-            }
-          ]
-        }
-      ]
-    }
-  ]
-}
-```
-
-</ResponseExample>

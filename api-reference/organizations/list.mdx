@@ -12,36 +12,3 @@ Returns all organizations for the enterprise.
 | :-------------- | :----------------- | :------- | :------------------------------ |
 | `Authorization` | `Bearer <api-key>` | true     | Your API key for authentication |
 | `Content-Type`  | `application/json` | true     | Content type of the request     |
-
-## Response
-
-<ResponseExample>
-
-```json Response
-{
-  "data": [
-    {
-      "id": "org_123456789abcdef",
-      "name": "Acme Corporation",
-      "contact": {
-        "email": "john.doe@acme.com",
-        "first_name": "John",
-        "last_name": "Doe"
-      },
-      "status": {
-        "current_status": "ACTIVE",
-        "status_history": [
-          {
-            "status": "ACTIVE",
-            "created_at": "2024-01-15T10:00:00Z"
-          }
-        ]
-      },
-      "created_at": "2024-01-15T10:00:00Z",
-      "updated_at": "2024-01-15T10:00:00Z"
-    }
-  ]
-}
-```
-
-</ResponseExample>
