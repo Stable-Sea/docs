@@ -354,6 +354,10 @@ Follow these steps to implement the complete order flow from organization creati
       Offerings contain indicative rates and fees. Final rates are locked when creating quotes.
     </Note>
 
+    <Warning>
+      In order to create offerings you must have compatible External Payment Instruments set up where compatibility is determined by the `currency`. For example, to create USDC→COP offerings, you need both a USDC payin instrument (like SOLANA_ADDRESS) and a COP payout instrument (like COP_BANK_ACCOUNT).
+    </Warning>
+
   </Step>
 
   <Step title="Create Quote">
