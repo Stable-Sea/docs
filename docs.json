@@ -52,14 +52,14 @@
               "api-reference/resources/offering",
               "api-reference/resources/quote",
               "api-reference/resources/order",
-              "api-reference/resources/hours-of-operation",
               "api-reference/resources/enumerations"
             ]
           },
           {
-            "group": "Hours of Operation",
+            "group": "Liquidity Providers",
             "pages": [
-              "api-reference/hours-of-operation/list"
+              "api-reference/liquidity-providers/list",
+              "api-reference/liquidity-providers/get-exchange-rate"
             ]
           },
           {

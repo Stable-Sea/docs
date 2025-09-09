@@ -1,0 +1,40 @@
+---
+title: "Get Exchange Rate"
+openapi: "GET /liquidity-providers/{provider_name}/exchange-rate"
+description: "Get current exchange rate for a specific liquidity provider"
+---
+
+Get the current exchange rate for a specific liquidity provider. This endpoint is useful for displaying real-time rates to end users.
+
+## Common Headers
+
+| Header          | Value              | Required | Description                     |
+| :-------------- | :----------------- | :------- | :------------------------------ |
+| `Authorization` | `Bearer <api-key>` | true     | Your API key for authentication |
+| `Content-Type`  | `application/json` | true     | Content type of the request     |
+
+## Path
+
+<ParamField path="provider_name" type="string" required>
+  Name of the liquidity provider (e.g., "ALPHA")
+</ParamField>
+
+## Response
+
+<ResponseExample>
+
+```json Response
+{
+  "data": {
+    "payin_currency": "USDC",
+    "payout_currency": "COP",
+    "exchange_rate": "3921.8"
+  }
+}
+```
+
+</ResponseExample>
+
+<Note>
+  Exchange rates are indicative and may change frequently. Use this endpoint for display purposes only. Actual rates are locked in when creating quotes through the quote endpoint.
+</Note>

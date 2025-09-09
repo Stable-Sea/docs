@@ -17,7 +17,7 @@ Follow these steps to implement the complete order flow from organization creati
 
     ```bash
     # Test authentication
-    curl -X GET "https://api-sandbox.stablesea.xyz/v1/hours-of-operations" \
+    curl -X GET "https://api-sandbox.stablesea.xyz/v1/liquidity-providers" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json"
     ```
@@ -180,11 +180,11 @@ Follow these steps to implement the complete order flow from organization creati
 
   </Step>
 
-  <Step title="Check Hours of Operation">
-    Verify that liquidity providers are operating before creating offerings.
+  <Step title="Check Liquidity Providers">
+    Get available liquidity providers with their trading pairs and operating hours.
 
     ```bash
-    curl -X GET "https://api-sandbox.stablesea.xyz/v1/hours-of-operations" \
+    curl -X GET "https://api-sandbox.stablesea.xyz/v1/liquidity-providers" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json"
     ```
@@ -194,10 +194,12 @@ Follow these steps to implement the complete order flow from organization creati
     {
       "data": [
         {
-          "liquidity_provider": "ALPHA",
-          "payin_currency": "USDC",
-          "payout_currency": "COP",
-          "hours_of_operation": [
+          "name": "ALPHA",
+          "trading_pairs": [
+            {
+              "payin_currency": "USDC",
+              "payout_currency": "COP",
+              "hours_of_operation": [
             {
               "open_time_utc": "2025-09-09T13:30:00Z",
               "close_time_utc": "2025-09-09T20:00:00Z"
@@ -215,14 +217,42 @@ Follow these steps to implement the complete order flow from organization creati
               "close_time_utc": "2025-09-12T20:00:00Z"
             }
           ]
+            }
+          ]
         }
       ]
     }
     ```
 
     <Tip>
-      Only create offerings when liquidity providers are within their operating hours for optimal execution.
+      Only create offerings when liquidity providers are within their operating hours for optimal execution. You can also use the exchange rate endpoint to display current rates to users.
     </Tip>
+
+  </Step>
+
+  <Step title="Get Current Exchange Rate (Optional)">
+    Optionally fetch current exchange rates to display to end users. This is useful for showing indicative rates before creating formal quotes.
+
+    ```bash
+    curl -X GET "https://api-sandbox.stablesea.xyz/v1/liquidity-providers/ALPHA/exchange-rate" \
+      -H "Authorization: Bearer YOUR_API_KEY" \
+      -H "Content-Type: application/json"
+    ```
+
+    **Response:**
+    ```json
+    {
+      "data": {
+        "payin_currency": "USDC",
+        "payout_currency": "COP",
+        "exchange_rate": "3921.8"
+      }
+    }
+    ```
+
+    <Note>
+      Exchange rates are indicative and may change frequently. For guaranteed rates, use the quote endpoint to lock in a rate for order execution.
+    </Note>
 
   </Step>
 

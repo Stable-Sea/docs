@@ -19,13 +19,13 @@
     }
   ],
   "paths": {
-    "/hours-of-operation": {
+    "/liquidity-providers": {
       "get": {
-        "summary": "List Hours of Operation",
-        "description": "Returns hours of operation for liquidity providers",
+        "summary": "List Liquidity Providers",
+        "description": "Returns all available liquidity providers with their trading pairs and hours of operation",
         "responses": {
           "200": {
-            "description": "Hours of operation response",
+            "description": "Liquidity providers response",
             "content": {
               "application/json": {
                 "schema": {
@@ -34,8 +34,43 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/HoursOfOperation"
+                        "$ref": "#/components/schemas/LiquidityProvider"
                       }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/liquidity-providers/{provider_name}/exchange-rate": {
+      "get": {
+        "summary": "Get Exchange Rate",
+        "description": "Get current exchange rate for a specific liquidity provider",
+        "parameters": [
+          {
+            "name": "provider_name",
+            "in": "path",
+            "description": "Name of the liquidity provider",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "ALPHA"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Exchange rate response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ExchangeRate"
                     }
                   }
                 }
@@ -635,10 +670,78 @@
         ]
       },
       "LiquidityProvider": {
-        "type": "string",
-        "enum": [
-          "ALPHA"
-        ]
+        "type": "object",
+        "required": [
+          "name",
+          "trading_pairs"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "ALPHA"
+          },
+          "trading_pairs": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TradingPair"
+            }
+          }
+        }
+      },
+      "TradingPair": {
+        "type": "object",
+        "required": [
+          "payin_currency",
+          "payout_currency",
+          "hours_of_operation"
+        ],
+        "properties": {
+          "payin_currency": {
+            "$ref": "#/components/schemas/PayinCurrency"
+          },
+          "payout_currency": {
+            "$ref": "#/components/schemas/PayoutCurrency"
+          },
+          "hours_of_operation": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "required": [
+                "open_time_utc",
+                "close_time_utc"
+              ],
+              "properties": {
+                "open_time_utc": {
+                  "$ref": "#/components/schemas/DateTime"
+                },
+                "close_time_utc": {
+                  "$ref": "#/components/schemas/DateTime"
+                }
+              }
+            }
+          }
+        }
+      },
+      "ExchangeRate": {
+        "type": "object",
+        "required": [
+          "payin_currency",
+          "payout_currency",
+          "exchange_rate"
+        ],
+        "properties": {
+          "payin_currency": {
+            "$ref": "#/components/schemas/PayinCurrency"
+          },
+          "payout_currency": {
+            "$ref": "#/components/schemas/PayoutCurrency"
+          },
+          "exchange_rate": {
+            "type": "string",
+            "example": "3921.8",
+            "description": "Current exchange rate as a string to preserve precision"
+          }
+        }
       },
       "HoursOfOperation": {
         "type": "object",
