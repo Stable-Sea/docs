@@ -598,6 +598,12 @@
     "schemas": {
       "HoursOfOperation": {
         "type": "object",
+        "required": [
+          "liquidity_provider",
+          "payin_currency",
+          "payout_currency",
+          "hours_of_operation"
+        ],
         "properties": {
           "liquidity_provider": {
             "type": "string",
@@ -615,6 +621,10 @@
             "type": "array",
             "items": {
               "type": "object",
+              "required": [
+                "open_time_utc",
+                "close_time_utc"
+              ],
               "properties": {
                 "open_time_utc": {
                   "type": "string",
