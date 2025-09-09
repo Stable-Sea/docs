@@ -1,6 +1,6 @@
 ---
 title: "Get Offering"
-openapi: "GET /customers/{customer_id}/offerings/{offering_id}"
+openapi: "GET /organizations/{organization_id}/offerings/{offering_id}"
 description: "Retrieve details for a specific offering"
 ---
 
@@ -15,8 +15,8 @@ Retrieve details for a specific offering.
 
 ## Path
 
-<ParamField path="customer_id" type="string" required>
-  ID of customer
+<ParamField path="organization_id" type="string" required>
+  ID of organization
 </ParamField>
 
 <ParamField path="offering_id" type="string" required>

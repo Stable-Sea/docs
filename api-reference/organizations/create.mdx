@@ -1,10 +1,10 @@
 ---
-title: "Create Customer"
-openapi: "POST /customers"
-description: "Creates a new customer"
+title: "Create Organization"
+openapi: "POST /organizations"
+description: "Creates a new organization"
 ---
 
-Creates a new customer in the system.
+Creates a new organization in the system.
 
 ## Common Headers
 
@@ -16,23 +16,23 @@ Creates a new customer in the system.
 ## Body
 
 <ParamField body="name" type="string" required>
-  The name of the customer
+  The name of the organization
 </ParamField>
 
 <ParamField body="contact" type="object" required>
-  Contact information for the customer
+  Contact information for the organization
 </ParamField>
 
 <ParamField body="contact.email" type="string" required>
-  Email address of the customer contact
+  Email address of the organization contact
 </ParamField>
 
 <ParamField body="contact.first_name" type="string" required>
-  First name of the customer contact
+  First name of the organization contact
 </ParamField>
 
 <ParamField body="contact.last_name" type="string" required>
-  Last name of the customer contact
+  Last name of the organization contact
 </ParamField>
 
 ## Response
@@ -42,7 +42,7 @@ Creates a new customer in the system.
 ```json Response
 {
   "data": {
-    "id": "cust_123456789abcdef",
+    "id": "org_123456789abcdef",
     "name": "Acme Corporation",
     "contact": {
       "email": "john.doe@acme.com",

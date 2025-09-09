@@ -6,7 +6,7 @@ description: "A comprehensive guide to order lifecycle states and what to expect
 <Note>
   Every order follows a predictable lifecycle. Understanding each state—both
   successful and failed—helps you build robust integrations and set proper
-  customer expectations.
+  organization expectations.
 </Note>
 
 ## Order Lifecycle Overview
@@ -20,7 +20,7 @@ Orders in the Stable Sea Terminal API progress through a series of states from c
 
 ## Just-in-Time Funding & Timing Considerations
 
-The Stable Sea API uses **just-in-time (JIT) funding**, meaning customers send payment **after** creating an order from a quote. This creates a time-sensitive window where several factors can impact success:
+The Stable Sea API uses **just-in-time (JIT) funding**, meaning organizations send payment **after** creating an order from a quote. This creates a time-sensitive window where several factors can impact success:
 
 ### Why Timing Matters
 
@@ -31,22 +31,22 @@ The Stable Sea API uses **just-in-time (JIT) funding**, meaning customers send p
 
 ### Common Timing Challenges
 
-**Blockchain Congestion** is the most frequent cause of funding timeouts when customers send payment after creating an order but blockchain delays prevent confirmation before the quote expires.
+**Blockchain Congestion** is the most frequent cause of funding timeouts when organizations send payment after creating an order but blockchain delays prevent confirmation before the quote expires.
 
 **Why this happens:**
 
 - High network activity delays transaction confirmation
-- Customer sets low gas fees to save money
+- Organization sets low gas fees to save money
 - Network validators prioritize higher-fee transactions
 - L1 networks (Ethereum) more susceptible than L2s (Solana)
 
-Understanding this timing dynamic is crucial for setting proper customer expectations and choosing appropriate payment methods.
+Understanding this timing dynamic is crucial for setting proper organization expectations and choosing appropriate payment methods.
 
 ## Successful Order States
 
 ### STEP_1_AWAITING_FUNDING
 
-**What's happening:** Order created, waiting for customer to send funds
+**What's happening:** Order created, waiting for organization to send funds
 
 The order exists but no payment has been detected yet. This is the initial state after order creation.
 
@@ -54,7 +54,7 @@ The order exists but no payment has been detected yet. This is the initial state
 
 - Order will remain in this state until funds arrive
 - Quote expiration timer is counting down (`funding_expires_at`)
-- Customer should send payment to the provided address/details
+- Organization should send payment to the provided address/details
 - Status will automatically advance when payment is detected
 
 **Typical duration:** A few minutes (limited by quote expiration)
@@ -70,7 +70,7 @@ Payment has been detected and confirmed. The liquidity provider is now executing
 - Funds are locked and being processed
 - Exchange rate is now fixed at the quoted rate
 - Liquidity provider is sourcing the destination currency
-- No customer action required
+- No organization action required
 
 **Typical duration:** 2-15 minutes during business hours
 
@@ -78,12 +78,12 @@ Payment has been detected and confirmed. The liquidity provider is now executing
 
 **What's happening:** Exchange complete, settling final payout
 
-The FX conversion is done. Funds are being sent to the customer's destination payment instrument.
+The FX conversion is done. Funds are being sent to the organization's destination payment instrument.
 
 **What to expect:**
 
 - Destination currency has been secured
-- Payout is being processed to customer's account
+- Payout is being processed to organization's account
 - Settlement time depends on destination payment method
 - Status will advance to completed once settlement confirms
 
@@ -93,11 +93,11 @@ The FX conversion is done. Funds are being sent to the customer's destination pa
 
 **What's happening:** Order successfully completed
 
-Terminal success state. Funds have been delivered to the customer's destination account.
+Terminal success state. Funds have been delivered to the organization's destination account.
 
 **What to expect:**
 
-- Customer has received funds in their destination account
+- Organization has received funds in their destination account
 - Order is finalized and cannot be modified
 - All fees and exchange rates are final
 - Transaction is complete
@@ -110,21 +110,21 @@ Not every order reaches completion. Here's what happens when orders fail and why
 
 ### FAILED_FUNDING_EXPIRED
 
-**Why this happens:** Customer funds arrive after the quote expiration time
+**Why this happens:** Organization funds arrive after the quote expiration time
 
 This is the most common failure scenario. Quotes have a limited time window (`funding_expires_at`) during which funding must arrive.
 
 **Common causes:**
 
 - **Blockchain congestion** - High network activity delays transaction confirmation
-- **Low gas fees** - Customer sets insufficient gas, causing slow processing
-- **Customer delay** - Taking too long to send payment after order creation
+- **Low gas fees** - Organization sets insufficient gas, causing slow processing
+- **Organization delay** - Taking too long to send payment after order creation
 - **Network timing** - Weekend/holiday periods when quotes may expire during off-hours
 
 **What happens:**
 
 - Order cannot be recovered or extended
-- Customer must create a new quote and order to retry
+- Organization must create a new quote and order to retry
 - Original exchange rate is no longer guaranteed
 - If funds arrive later, they may need to be refunded
 
@@ -144,21 +144,21 @@ This is a discretionary rejection by the liquidity provider during the FX fillin
 **What happens:**
 
 - Occurs during the FX filling stage (STEP_2)
-- Customer funds are typically refunded automatically
+- Organization funds are typically refunded automatically
 - Rare occurrence under normal conditions
 - May need to try different offering if recurring
 
 ### FAILED_REFUND_REQUESTED
 
-**Why this happens:** Customer or system initiates a refund request
+**Why this happens:** Organization or system initiates a refund request
 
 A refund has been requested before the order completed successfully.
 
 **Common causes:**
 
-- **Customer change of mind** - No longer wants the transaction
-- **Error correction** - Customer realizes they made a mistake
-- **Emergency situations** - Customer needs funds returned urgently
+- **Organization change of mind** - No longer wants the transaction
+- **Error correction** - Organization realizes they made a mistake
+- **Emergency situations** - Organization needs funds returned urgently
 - **System triggers** - Automatic refund for edge cases or compliance
 
 **What happens:**
@@ -176,9 +176,9 @@ Terminal failure state indicating the refund has been successfully processed.
 
 **What happens:**
 
-- Customer has received their refund
+- Organization has received their refund
 - Order is permanently closed
-- Customer can create new order if still needed
+- Organization can create new order if still needed
 
 **This is a terminal failure state**
 
@@ -186,10 +186,10 @@ Terminal failure state indicating the refund has been successfully processed.
 
 When orders fail, the system handles recovery automatically:
 
-- **FAILED_FUNDING_EXPIRED**: Customer must create new quote and order to retry
+- **FAILED_FUNDING_EXPIRED**: Organization must create new quote and order to retry
 - **FAILED_DECLINED_BY_LIQ_PROVIDER**: Automatic refund typically initiated
 - **FAILED_REFUND_REQUESTED**: Refund process begins immediately
-- **FAILED_REFUND_PROCESSED**: Customer has received refund, order closed
+- **FAILED_REFUND_PROCESSED**: Organization has received refund, order closed
 
 Some orders may have automatic retry mechanisms where a new order is created automatically when certain failures occur.
 
@@ -197,8 +197,8 @@ Some orders may have automatic retry mechanisms where a new order is created aut
 
 <Note>
   **Remember:** Order states reflect real-world payment and settlement
-  processes. Understanding each state helps you set proper customer expectations
-  and handle edge cases gracefully.
+  processes. Understanding each state helps you set proper organization
+  expectations and handle edge cases gracefully.
 </Note>
 
 - **JIT funding creates timing challenges** - blockchain congestion is the most common cause of failures
@@ -207,4 +207,4 @@ Some orders may have automatic retry mechanisms where a new order is created aut
 - **Timing matters most** for STEP_1_AWAITING_FUNDING due to quote expiration
 - **Automatic processes handle** most failure scenarios and refunds
 
-Understanding these states helps you communicate clearly with customers about where their order stands and what to expect next.
+Understanding these states helps you communicate clearly with organizations about where their order stands and what to expect next.

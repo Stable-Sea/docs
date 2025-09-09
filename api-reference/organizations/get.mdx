@@ -1,10 +1,10 @@
 ---
-title: "Get Customer"
-openapi: "GET /customers/{customer_id}"
-description: "Retrieve details for a specific customer"
+title: "Get Organization"
+openapi: "GET /organizations/{organization_id}"
+description: "Retrieve details for a specific organization"
 ---
 
-Retrieve details for a specific customer.
+Retrieve details for a specific organization.
 
 ## Common Headers
 
@@ -15,8 +15,8 @@ Retrieve details for a specific customer.
 
 ## Path
 
-<ParamField path="customer_id" type="string" required>
-  ID of customer to retrieve
+<ParamField path="organization_id" type="string" required>
+  ID of organization to retrieve
 </ParamField>
 
 ## Response
@@ -26,7 +26,7 @@ Retrieve details for a specific customer.
 ```json Response
 {
   "data": {
-    "id": "cust_123456789abcdef",
+    "id": "org_123456789abcdef",
     "name": "Acme Corporation",
     "contact": {
       "email": "john.doe@acme.com",

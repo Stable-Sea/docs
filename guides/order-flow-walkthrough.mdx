@@ -9,7 +9,7 @@ This guide provides a comprehensive walkthrough for implementing the Stable Sea 
 
 ## Step-by-Step Integration
 
-Follow these steps to implement the complete order flow from customer creation to settlement:
+Follow these steps to implement the complete order flow from organization creation to settlement:
 
 <Steps>
   <Step title="Authentication">
@@ -28,17 +28,17 @@ Follow these steps to implement the complete order flow from customer creation t
 
   </Step>
 
-  <Step title="Create Customer">
-    Create a customer entity to associate with your orders and payment instruments.
+  <Step title="Create Organization">
+    Create an organization entity to associate with your orders and payment instruments.
 
     ```bash
-    curl -X POST "https://api-sandbox.stablesea.xyz/v1/customers" \
+    curl -X POST "https://api-sandbox.stablesea.xyz/v1/organizations" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json" \
       -d '{
-        "name": "Test Customer Corp",
+        "name": "Test Organization Corp",
         "contact": {
-          "email": "contact@testcustomer.com",
+          "email": "contact@testorganization.com",
           "first_name": "John",
           "last_name": "Doe"
         }
@@ -50,9 +50,9 @@ Follow these steps to implement the complete order flow from customer creation t
     {
       "data": {
         "id": "org_01k4qmbcd5efk9zkhv32cqzjhq",
-        "name": "Test Customer Corp",
+        "name": "Test Organization Corp",
         "contact": {
-          "email": "contact@testcustomer.com",
+          "email": "contact@testorganization.com",
           "first_name": "John",
           "last_name": "Doe"
         },
@@ -72,17 +72,17 @@ Follow these steps to implement the complete order flow from customer creation t
     ```
 
     <Tip>
-      Save the customer `id` (starts with `org_`) as you'll need it for subsequent API calls. Note that new customers typically start in `COMPLIANCE_HOLD` status and may need approval before becoming `ACTIVE`.
+      Save the organization `id` (starts with `org_`) as you'll need it for subsequent API calls. Note that new organizations typically start in `COMPLIANCE_HOLD` status and may need approval before becoming `ACTIVE`.
     </Tip>
 
   </Step>
 
   <Step title="Create External Payment Instruments">
-    Set up both payin and payout payment methods for your customer.
+    Set up both payin and payout payment methods for your organization.
 
     **Create Payin Payment Instrument (USDC Solana Address):**
     ```bash
-    curl -X POST "https://api-sandbox.stablesea.xyz/v1/customers/CUSTOMER_ID/external_payment_instruments" \
+    curl -X POST "https://api-sandbox.stablesea.xyz/v1/organizations/ORGANIZATION_ID/external_payment_instruments" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json" \
       -d '{
@@ -97,7 +97,7 @@ Follow these steps to implement the complete order flow from customer creation t
 
     **Create Payout Payment Instrument (COP Bank Account):**
     ```bash
-    curl -X POST "https://api-sandbox.stablesea.xyz/v1/customers/CUSTOMER_ID/external_payment_instruments" \
+    curl -X POST "https://api-sandbox.stablesea.xyz/v1/organizations/ORGANIZATION_ID/external_payment_instruments" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json" \
       -d '{
@@ -227,10 +227,10 @@ Follow these steps to implement the complete order flow from customer creation t
   </Step>
 
   <Step title="Create Offerings">
-    Generate available payment corridors and rates for your customer.
+    Generate available payment corridors and rates for your organization.
 
     ```bash
-    curl -X POST "https://api-sandbox.stablesea.xyz/v1/customers/CUSTOMER_ID/offerings" \
+    curl -X POST "https://api-sandbox.stablesea.xyz/v1/organizations/ORGANIZATION_ID/offerings" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json"
     ```
@@ -334,7 +334,7 @@ Follow these steps to implement the complete order flow from customer creation t
     Get firm pricing with locked exchange rates and expiration times.
 
     ```bash
-    curl -X POST "https://api-sandbox.stablesea.xyz/v1/customers/CUSTOMER_ID/quotes" \
+    curl -X POST "https://api-sandbox.stablesea.xyz/v1/organizations/ORGANIZATION_ID/quotes" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json" \
       -d '{
@@ -377,7 +377,7 @@ Follow these steps to implement the complete order flow from customer creation t
     Convert your quote into an executable order before expiration.
 
     ```bash
-    curl -X POST "https://api-sandbox.stablesea.xyz/v1/customers/CUSTOMER_ID/orders" \
+    curl -X POST "https://api-sandbox.stablesea.xyz/v1/organizations/ORGANIZATION_ID/orders" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json" \
       -H "Idempotency-Key: $(uuidgen)" \
@@ -436,7 +436,7 @@ Follow these steps to implement the complete order flow from customer creation t
     Track your order through the complete settlement lifecycle.
 
     ```bash
-    curl -X GET "https://api-sandbox.stablesea.xyz/v1/customers/CUSTOMER_ID/orders/ORDER_ID" \
+    curl -X GET "https://api-sandbox.stablesea.xyz/v1/organizations/ORGANIZATION_ID/orders/ORDER_ID" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json"
     ```

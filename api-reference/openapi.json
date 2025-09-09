@@ -45,16 +45,16 @@
         }
       }
     },
-    "/customers": {
+    "/organizations": {
       "post": {
-        "summary": "Create Customer",
-        "description": "Creates a new customer",
+        "summary": "Create Organization",
+        "description": "Creates a new organization",
         "requestBody": {
-          "description": "Customer to create",
+          "description": "Organization to create",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/NewCustomer"
+                "$ref": "#/components/schemas/NewOrganization"
               }
             }
           },
@@ -62,14 +62,14 @@
         },
         "responses": {
           "201": {
-            "description": "Customer created successfully",
+            "description": "Organization created successfully",
             "content": {
               "application/json": {
                 "schema": {
                   "type": "object",
                   "properties": {
                     "data": {
-                      "$ref": "#/components/schemas/Customer"
+                      "$ref": "#/components/schemas/Organization"
                     }
                   }
                 }
@@ -79,11 +79,11 @@
         }
       },
       "get": {
-        "summary": "List Customers",
-        "description": "Returns all customers",
+        "summary": "List Organizations",
+        "description": "Returns all organizations",
         "responses": {
           "200": {
-            "description": "Customers response",
+            "description": "Organizations response",
             "content": {
               "application/json": {
                 "schema": {
@@ -92,7 +92,7 @@
                     "data": {
                       "type": "array",
                       "items": {
-                        "$ref": "#/components/schemas/Customer"
+                        "$ref": "#/components/schemas/Organization"
                       }
                     }
                   }
@@ -103,15 +103,15 @@
         }
       }
     },
-    "/customers/{customer_id}": {
+    "/organizations/{organization_id}": {
       "get": {
-        "summary": "Get Customer",
-        "description": "Retrieve details for a specific customer",
+        "summary": "Get Organization",
+        "description": "Retrieve details for a specific organization",
         "parameters": [
           {
-            "name": "customer_id",
+            "name": "organization_id",
             "in": "path",
-            "description": "ID of customer to retrieve",
+            "description": "ID of organization to retrieve",
             "required": true,
             "schema": {
               "type": "string"
@@ -127,7 +127,7 @@
                   "type": "object",
                   "properties": {
                     "data": {
-                      "$ref": "#/components/schemas/Customer"
+                      "$ref": "#/components/schemas/Organization"
                     }
                   }
                 }
@@ -137,15 +137,15 @@
         }
       }
     },
-    "/customers/{customer_id}/external_payment_instruments": {
+    "/organizations/{organization_id}/external_payment_instruments": {
       "post": {
         "summary": "Create External Payment Instrument",
-        "description": "Creates an external account for a customer to receive payouts",
+        "description": "Creates an external account for an organization to receive payouts",
         "parameters": [
           {
-            "name": "customer_id",
+            "name": "organization_id",
             "in": "path",
-            "description": "ID of customer",
+            "description": "ID of organization",
             "required": true,
             "schema": {
               "type": "string"
@@ -186,9 +186,9 @@
         "description": "Fetch all external payment instruments for a customer",
         "parameters": [
           {
-            "name": "customer_id",
+            "name": "organization_id",
             "in": "path",
-            "description": "ID of customer",
+            "description": "ID of organization",
             "required": true,
             "schema": {
               "type": "string"
@@ -217,15 +217,15 @@
         }
       }
     },
-    "/customers/{customer_id}/external_payment_instruments/{external_payment_instrument_id}": {
+    "/organizations/{organization_id}/external_payment_instruments/{external_payment_instrument_id}": {
       "get": {
         "summary": "Get External Payment Instrument",
-        "description": "Fetch a specific external payment instrument for a customer",
+        "description": "Fetch a specific external payment instrument for an organization",
         "parameters": [
           {
-            "name": "customer_id",
+            "name": "organization_id",
             "in": "path",
-            "description": "ID of customer",
+            "description": "ID of organization",
             "required": true,
             "schema": {
               "type": "string"
@@ -264,9 +264,9 @@
         "description": "Archive an external account for a customer",
         "parameters": [
           {
-            "name": "customer_id",
+            "name": "organization_id",
             "in": "path",
-            "description": "ID of customer",
+            "description": "ID of organization",
             "required": true,
             "schema": {
               "type": "string"
@@ -302,15 +302,15 @@
         }
       }
     },
-    "/customers/{customer_id}/offerings": {
+    "/organizations/{organization_id}/offerings": {
       "post": {
         "summary": "Create Offerings",
-        "description": "Creates offerings for a customer",
+        "description": "Creates offerings for an organization",
         "parameters": [
           {
-            "name": "customer_id",
+            "name": "organization_id",
             "in": "path",
-            "description": "ID of customer",
+            "description": "ID of organization",
             "required": true,
             "schema": {
               "type": "string"
@@ -339,15 +339,15 @@
         }
       }
     },
-    "/customers/{customer_id}/offerings/{offering_id}": {
+    "/organizations/{organization_id}/offerings/{offering_id}": {
       "get": {
         "summary": "Get Offering",
         "description": "Retrieve details for a specific offering",
         "parameters": [
           {
-            "name": "customer_id",
+            "name": "organization_id",
             "in": "path",
-            "description": "ID of customer",
+            "description": "ID of organization",
             "required": true,
             "schema": {
               "type": "string"
@@ -382,15 +382,15 @@
         }
       }
     },
-    "/customers/{customer_id}/quotes": {
+    "/organizations/{organization_id}/quotes": {
       "post": {
         "summary": "Create Quote",
-        "description": "Creates a quote for a customer",
+        "description": "Creates a quote for an organization",
         "parameters": [
           {
-            "name": "customer_id",
+            "name": "organization_id",
             "in": "path",
-            "description": "ID of customer",
+            "description": "ID of organization",
             "required": true,
             "schema": {
               "type": "string"
@@ -427,15 +427,15 @@
         }
       }
     },
-    "/customers/{customer_id}/quotes/{quote_id}": {
+    "/organizations/{organization_id}/quotes/{quote_id}": {
       "get": {
         "summary": "Get Quote",
         "description": "Retrieve details for a specific quote",
         "parameters": [
           {
-            "name": "customer_id",
+            "name": "organization_id",
             "in": "path",
-            "description": "ID of customer",
+            "description": "ID of organization",
             "required": true,
             "schema": {
               "type": "string"
@@ -470,15 +470,15 @@
         }
       }
     },
-    "/customers/{customer_id}/orders": {
+    "/organizations/{organization_id}/orders": {
       "post": {
         "summary": "Create Order",
-        "description": "Creates an order for a customer",
+        "description": "Creates an order for an organization",
         "parameters": [
           {
-            "name": "customer_id",
+            "name": "organization_id",
             "in": "path",
-            "description": "ID of customer",
+            "description": "ID of organization",
             "required": true,
             "schema": {
               "type": "string"
@@ -519,9 +519,9 @@
         "description": "Returns all orders for a customer",
         "parameters": [
           {
-            "name": "customer_id",
+            "name": "organization_id",
             "in": "path",
-            "description": "ID of customer",
+            "description": "ID of organization",
             "required": true,
             "schema": {
               "type": "string"
@@ -550,15 +550,15 @@
         }
       }
     },
-    "/customers/{customer_id}/orders/{order_id}": {
+    "/organizations/{organization_id}/orders/{order_id}": {
       "get": {
         "summary": "Get Order",
         "description": "Retrieve details for a specific order",
         "parameters": [
           {
-            "name": "customer_id",
+            "name": "organization_id",
             "in": "path",
-            "description": "ID of customer",
+            "description": "ID of organization",
             "required": true,
             "schema": {
               "type": "string"
@@ -599,21 +599,24 @@
       "DateTime": {
         "type": "string",
         "format": "date-time",
-        "description": "ISO 8601 UTC timestamp (RFC3339)"
+        "description": "ISO 8601 UTC timestamp (RFC3339)",
+        "example": "2024-01-15T10:00:00Z"
       },
       "PayinCurrency": {
         "type": "string",
         "enum": [
           "USDC",
           "...more to come..."
-        ]
+        ],
+        "example": "USDC"
       },
       "PayoutCurrency": {
         "type": "string",
         "enum": [
           "COP",
           "...more to come..."
-        ]
+        ],
+        "example": "COP"
       },
       "Currency": {
         "type": "string",
@@ -675,14 +678,15 @@
           }
         }
       },
-      "CustomerStatus": {
+      "OrganizationStatus": {
         "type": "string",
         "enum": [
           "ACTIVE",
           "COMPLIANCE_HOLD"
-        ]
+        ],
+        "example": "ACTIVE"
       },
-      "Customer": {
+      "Organization": {
         "type": "object",
         "required": [
           "id",
@@ -694,10 +698,12 @@
         ],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "example": "org_123456789abcdef"
           },
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "Acme Corporation"
           },
           "contact": {
             "$ref": "#/components/schemas/Contact"
@@ -710,7 +716,7 @@
             ],
             "properties": {
               "current_status": {
-                "$ref": "#/components/schemas/CustomerStatus"
+                "$ref": "#/components/schemas/OrganizationStatus"
               },
               "status_history": {
                 "type": "array",
@@ -722,7 +728,7 @@
                   ],
                   "properties": {
                     "status": {
-                      "$ref": "#/components/schemas/CustomerStatus"
+                      "$ref": "#/components/schemas/OrganizationStatus"
                     },
                     "created_at": {
                       "$ref": "#/components/schemas/DateTime"
@@ -730,13 +736,24 @@
                   }
                 }
               }
+            },
+            "example": {
+              "current_status": "ACTIVE",
+              "status_history": [
+                {
+                  "status": "ACTIVE",
+                  "created_at": "2024-01-15T10:00:00Z"
+                }
+              ]
             }
           },
           "created_at": {
-            "$ref": "#/components/schemas/DateTime"
+            "$ref": "#/components/schemas/DateTime",
+            "example": "2024-01-15T10:00:00Z"
           },
           "updated_at": {
-            "$ref": "#/components/schemas/DateTime"
+            "$ref": "#/components/schemas/DateTime",
+            "example": "2024-01-15T10:00:00Z"
           }
         }
       },
@@ -750,17 +767,20 @@
         "properties": {
           "email": {
             "type": "string",
-            "format": "email"
+            "format": "email",
+            "example": "john.doe@acme.com"
           },
           "first_name": {
-            "type": "string"
+            "type": "string",
+            "example": "John"
           },
           "last_name": {
-            "type": "string"
+            "type": "string",
+            "example": "Doe"
           }
         }
       },
-      "NewCustomer": {
+      "NewOrganization": {
         "type": "object",
         "required": [
           "name",
@@ -768,7 +788,8 @@
         ],
         "properties": {
           "name": {
-            "type": "string"
+            "type": "string",
+            "example": "Acme Corporation"
           },
           "contact": {
             "$ref": "#/components/schemas/Contact"

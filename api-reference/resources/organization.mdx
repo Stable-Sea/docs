@@ -3,7 +3,7 @@ title: "Organization"
 description: "Organization resource schema"
 ---
 
-An organization represents the business entity that has a direct engagement with Stable Sea to use our API or other services.
+An organization represents a business entity that leverages Stable Sea's APIs to facilitate payouts or other services. Organizations are managed by enterprises and must be created prior to using the platform's services.
 
 <ResponseField name="id" type="string">
   Unique identifier for the organization
@@ -11,4 +11,48 @@ An organization represents the business entity that has a direct engagement with
 
 <ResponseField name="name" type="string">
   The name of the organization
+</ResponseField>
+
+<ResponseField name="contact" type="object">
+  Contact information for the organization
+</ResponseField>
+
+<ResponseField name="contact.email" type="string">
+  Email address of the organization contact
+</ResponseField>
+
+<ResponseField name="contact.first_name" type="string">
+  First name of the organization contact
+</ResponseField>
+
+<ResponseField name="contact.last_name" type="string">
+  Last name of the organization contact
+</ResponseField>
+
+<ResponseField name="status" type="object">
+  Current status information for the organization
+</ResponseField>
+
+<ResponseField name="status.current_status" type="string">
+  Current status of the organization (see Organization Statuses)
+</ResponseField>
+
+<ResponseField name="status.status_history" type="object[]">
+  Historical record of status changes
+</ResponseField>
+
+<ResponseField name="status.status_history[].status" type="string">
+  The status value for this history entry
+</ResponseField>
+
+<ResponseField name="status.status_history[].created_at" type="string">
+  Timestamp when this status change occurred
+</ResponseField>
+
+<ResponseField name="created_at" type="string">
+  Timestamp when the organization was initially created
+</ResponseField>
+
+<ResponseField name="updated_at" type="string">
+  When the organization was last updated
 </ResponseField>

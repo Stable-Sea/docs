@@ -1,6 +1,6 @@
 ---
 title: "Get Quote"
-openapi: "GET /customers/{customer_id}/quotes/{quote_id}"
+openapi: "GET /organizations/{organization_id}/quotes/{quote_id}"
 description: "Retrieve details for a specific quote"
 ---
 
@@ -15,8 +15,8 @@ Retrieve details for a specific quote.
 
 ## Path
 
-<ParamField path="customer_id" type="string" required>
-  ID of customer
+<ParamField path="organization_id" type="string" required>
+  ID of organization
 </ParamField>
 
 <ParamField path="quote_id" type="string" required>

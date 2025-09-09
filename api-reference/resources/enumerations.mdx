@@ -3,12 +3,12 @@ title: "Enumerations"
 description: "Enumeration values used throughout the API"
 ---
 
-## Customer Statuses
+## Organization Statuses
 
-| Status            | Description                                                         |
-| ----------------- | ------------------------------------------------------------------- |
-| `COMPLIANCE_HOLD` | Customer is under compliance review and cannot perform transactions |
-| `ACTIVE`          | Customer has been approved and can perform transactions             |
+| Status            | Description                                                             |
+| ----------------- | ----------------------------------------------------------------------- |
+| `COMPLIANCE_HOLD` | Organization is under compliance review and cannot perform transactions |
+| `ACTIVE`          | Organization has been approved and can perform transactions             |
 
 ## Currency Symbols
 
@@ -44,5 +44,5 @@ description: "Enumeration values used throughout the API"
 | `STEP_4_COMPLETED`                | Terminal success state                                                                 |
 | `FAILED_FUNDING_EXPIRED`          | Failure state where funds did not arrive by the Quote's `funding_expires_at` timestamp |
 | `FAILED_DECLINED_BY_LIQ_PROVIDER` | Failure state where discretionary measure taken by the Liquidity Provider              |
-| `FAILED_REFUND_REQUESTED`         | Failure state wherein a refund was requested by the Customer                           |
+| `FAILED_REFUND_REQUESTED`         | Failure state wherein a refund was requested by the Organization                       |
 | `FAILED_REFUND_PROCESSED`         | Terminal failure state where the refund has settled                                    |

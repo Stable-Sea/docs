@@ -1,10 +1,10 @@
 ---
 title: "Create Order"
-openapi: "POST /customers/{customer_id}/orders"
-description: "Creates an order for a customer"
+openapi: "POST /organizations/{organization_id}/orders"
+description: "Creates an order for an organization"
 ---
 
-Creates an order for a customer based on a quote.
+Creates an order for an organization based on a quote.
 
 ## Common Headers
 
@@ -15,8 +15,8 @@ Creates an order for a customer based on a quote.
 
 ## Path
 
-<ParamField path="customer_id" type="string" required>
-  ID of customer
+<ParamField path="organization_id" type="string" required>
+  ID of organization
 </ParamField>
 
 ## Body

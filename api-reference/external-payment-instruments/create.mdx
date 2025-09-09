@@ -1,10 +1,10 @@
 ---
 title: "Create External Payment Instrument"
-openapi: "POST /customers/{customer_id}/external_payment_instruments"
-description: "Creates an external account for a customer to receive payouts"
+openapi: "POST /organizations/{organization_id}/external_payment_instruments"
+description: "Creates an external account for an organization to receive payouts"
 ---
 
-This endpoint is used to create an external account for a customer. External accounts are used to receive payouts from Stable Sea.
+This endpoint is used to create an external account for an organization. External accounts are used to receive payouts from Stable Sea.
 
 <Warning>
   Stable Sea will perform diligence on the external account to ensure it is
@@ -20,8 +20,8 @@ This endpoint is used to create an external account for a customer. External acc
 
 ## Path
 
-<ParamField path="customer_id" type="string" required>
-  ID of customer
+<ParamField path="organization_id" type="string" required>
+  ID of organization
 </ParamField>
 
 ## Body

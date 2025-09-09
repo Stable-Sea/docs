@@ -1,10 +1,10 @@
 ---
 title: "List Orders"
-openapi: "GET /customers/{customer_id}/orders"
-description: "Returns all orders for a customer"
+openapi: "GET /organizations/{organization_id}/orders"
+description: "Returns all orders for a organization"
 ---
 
-Returns all orders for a customer.
+Returns all orders for a organization.
 
 ## Common Headers
 
@@ -15,8 +15,8 @@ Returns all orders for a customer.
 
 ## Path
 
-<ParamField path="customer_id" type="string" required>
-  ID of customer
+<ParamField path="organization_id" type="string" required>
+  ID of organization
 </ParamField>
 
 ## Response
