@@ -19,6 +19,22 @@ Creates a new customer in the system.
   The name of the customer
 </ParamField>
 
+<ParamField body="contact" type="object" required>
+  Contact information for the customer
+</ParamField>
+
+<ParamField body="contact.email" type="string" required>
+  Email address of the customer contact
+</ParamField>
+
+<ParamField body="contact.first_name" type="string" required>
+  First name of the customer contact
+</ParamField>
+
+<ParamField body="contact.last_name" type="string" required>
+  Last name of the customer contact
+</ParamField>
+
 ## Response
 
 <ResponseExample>
@@ -26,19 +42,24 @@ Creates a new customer in the system.
 ```json Response
 {
   "data": {
-    "id": "string",
-    "name": "string",
+    "id": "cust_123456789abcdef",
+    "name": "Acme Corporation",
+    "contact": {
+      "email": "john.doe@acme.com",
+      "first_name": "John",
+      "last_name": "Doe"
+    },
     "status": {
-      "current_status": "string",
+      "current_status": "ACTIVE",
       "status_history": [
         {
-          "status": "string",
-          "created_at": "string"
+          "status": "ACTIVE",
+          "created_at": "2024-01-15T10:00:00Z"
         }
       ]
     },
-    "created_at": "string",
-    "updated_at": "string"
+    "created_at": "2024-01-15T10:00:00Z",
+    "updated_at": "2024-01-15T10:00:00Z"
   }
 }
 ```

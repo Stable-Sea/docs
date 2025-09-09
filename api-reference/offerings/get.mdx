@@ -30,32 +30,84 @@ Retrieve details for a specific offering.
 ```json Response
 {
   "data": {
-    "id": "string",
+    "id": "off_123456789abcdef",
+    "order_type": "QUOTED",
     "payin": {
-      "external_payment_instrument_id": "string",
+      "external_payment_instrument": {
+        "id": "epi_123456789abcdef",
+        "alias": "My Solana Wallet",
+        "currency": "USDC",
+        "method": "SOLANA_ADDRESS",
+        "status": {
+          "current_status": "ACTIVE",
+          "status_history": [
+            {
+              "status": "ACTIVE",
+              "created_at": "2024-01-15T10:00:00Z"
+            }
+          ]
+        },
+        "details": {
+          "address": "A1B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6"
+        },
+        "created_at": "2024-01-15T10:00:00Z",
+        "updated_at": "2024-01-15T10:00:00Z"
+      },
       "limits": {
-        "min": "string",
-        "max": "string"
+        "min": "100.00",
+        "max": "10000.00"
       },
       "indicative_cost_tiers": [
         {
-          "min": "string",
-          "max": "string",
-          "bps": "string"
+          "min": "100.00",
+          "max": "1000.00",
+          "bps": "150"
+        },
+        {
+          "min": "1000.01",
+          "max": "10000.00",
+          "bps": "100"
         }
       ]
     },
     "payout": {
-      "external_payment_instrument_id": "string"
+      "external_payment_instrument": {
+        "id": "epi_987654321zyxwvu",
+        "alias": "My COP Bank Account",
+        "currency": "COP",
+        "method": "COP_BANK_ACCOUNT",
+        "status": {
+          "current_status": "ACTIVE",
+          "status_history": [
+            {
+              "status": "ACTIVE",
+              "created_at": "2024-01-15T11:00:00Z"
+            }
+          ]
+        },
+        "details": {
+          "bank_account_number": "1234567890",
+          "bank_code": "001",
+          "account_holder_first_name": "John",
+          "account_holder_last_name": "Doe",
+          "legal_entity_name": "Acme Corporation",
+          "doc_type": "CC",
+          "doc_id": "1234567890",
+          "physical_address": "123 Main St, Bogota, Colombia",
+          "account_type": "SAVINGS"
+        },
+        "created_at": "2024-01-15T11:00:00Z",
+        "updated_at": "2024-01-15T11:00:00Z"
+      }
     },
-    "indicative_exchange_rate": "string",
+    "indicative_exchange_rate": "4250.00",
     "current_day_hours_of_operation": {
-      "open": "string",
-      "close": "string"
+      "open_utc": "2024-01-15T13:00:00Z",
+      "close_utc": "2024-01-15T21:00:00Z"
     },
-    "liquidity_provider": "string",
-    "estimated_settlement_time": "string",
-    "created_at": "string"
+    "liquidity_provider": "ALPHA",
+    "estimated_settlement_time": "T+0",
+    "created_at": "2024-01-15T10:00:00Z"
   }
 }
 ```

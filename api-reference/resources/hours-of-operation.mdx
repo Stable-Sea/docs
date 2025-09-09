@@ -19,14 +19,10 @@ description: "Hours of Operation resource schema"
   Array of operating hours by date
 </ResponseField>
 
-<ResponseField name="hours_of_operation[].calendar_date" type="string">
-  The specific date
+<ResponseField name="hours_of_operation[].open_time_utc" type="string">
+  Opening time in UTC (ISO 8601 format)
 </ResponseField>
 
-<ResponseField name="hours_of_operation[].open_time" type="string">
-  Opening time for this date
-</ResponseField>
-
-<ResponseField name="hours_of_operation[].close_time" type="string">
-  Closing time for this date
+<ResponseField name="hours_of_operation[].close_time_utc" type="string">
+  Closing time in UTC (ISO 8601 format)
 </ResponseField>

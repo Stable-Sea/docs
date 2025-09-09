@@ -21,19 +21,24 @@ Returns all customers for the organization.
 {
   "data": [
     {
-      "id": "string",
-      "name": "string",
+      "id": "cust_123456789abcdef",
+      "name": "Acme Corporation",
+      "contact": {
+        "email": "john.doe@acme.com",
+        "first_name": "John",
+        "last_name": "Doe"
+      },
       "status": {
-        "current_status": "string",
+        "current_status": "ACTIVE",
         "status_history": [
           {
-            "status": "string",
-            "created_at": "string"
+            "status": "ACTIVE",
+            "created_at": "2024-01-15T10:00:00Z"
           }
         ]
       },
-      "created_at": "string",
-      "updated_at": "string"
+      "created_at": "2024-01-15T10:00:00Z",
+      "updated_at": "2024-01-15T10:00:00Z"
     }
   ]
 }
