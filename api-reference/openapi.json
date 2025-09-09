@@ -609,6 +609,14 @@
         "type": "string",
         "enum": ["COP", "...more to come..."]
       },
+      "Currency": {
+        "type": "string",
+        "enum": ["USDC", "COP", "...more to come..."]
+      },
+      "PaymentMethod": {
+        "type": "string",
+        "enum": ["SOLANA_ADDRESS", "COP_BANK_ACCOUNT", "...more to come..."]
+      },
       "LiquidityProvider": {
         "type": "string",
         "enum": ["ALPHA"]
@@ -748,8 +756,22 @@
            }
         }
       },
+      "ExternalPaymentInstrumentStatus": {
+        "type": "string",
+        "enum": ["ACTIVE", "COMPLIANCE_HOLD", "ARCHIVED"]
+      },
       "ExternalPaymentInstrument": {
         "type": "object",
+        "required": [
+          "id",
+          "alias",
+          "currency",
+          "method",
+          "status",
+          "details",
+          "created_at",
+          "updated_at"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -758,16 +780,16 @@
             "type": "string"
           },
           "currency": {
-            "type": "string"
+            "$ref": "#/components/schemas/Currency"
           },
           "method": {
-            "type": "string"
+            "$ref": "#/components/schemas/PaymentMethod"
           },
           "status": {
             "type": "object",
             "properties": {
               "current_status": {
-                "type": "string"
+                "$ref": "#/components/schemas/ExternalPaymentInstrumentStatus"
               },
               "status_history": {
                 "type": "array",
@@ -775,10 +797,10 @@
                   "type": "object",
                   "properties": {
                     "status": {
-                      "type": "string"
+                      "$ref": "#/components/schemas/ExternalPaymentInstrumentStatus"
                     },
                     "created_at": {
-                      "type": "string"
+                      "$ref": "#/components/schemas/DateTime"
                     }
                   }
                 }
@@ -789,10 +811,10 @@
             "type": "object"
           },
           "created_at": {
-            "type": "string"
+            "$ref": "#/components/schemas/DateTime"
           },
           "updated_at": {
-            "type": "string"
+            "$ref": "#/components/schemas/DateTime"
           }
         }
       },
