@@ -45,20 +45,20 @@ Creates a quote for a customer.
 ```json Response
 {
   "data": {
-    "id": "string",
-    "offering_id": "string",
-    "exchange_rate": "string",
+    "id": "quote_123456789abcdef",
+    "offering_id": "off_123456789abcdef",
+    "exchange_rate": "4250.00",
     "payin": {
-      "total": "string",
-      "fee": "string",
-      "tax": "string"
+      "total": "1015.00",
+      "fee": "15.00",
+      "tax": "0.00"
     },
     "payout": {
-      "total": "string"
+      "total": "4250000.00"
     },
-    "submission_expires_at": "string",
-    "funding_expires_at": "string",
-    "created_at": "string"
+    "submission_expires_at": "2024-01-15T10:30:00Z",
+    "funding_expires_at": "2024-01-15T12:00:00Z",
+    "created_at": "2024-01-15T10:00:00Z"
   }
 }
 ```

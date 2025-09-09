@@ -30,22 +30,28 @@ This endpoint is used to fetch a specific external payment instrument for a cust
 ```json Response
 {
   "data": {
-    "id": "string",
-    "alias": "string",
-    "currency": "string",
-    "method": "string",
+    "id": "epi_123456789abcdef",
+    "alias": "My Solana Wallet",
+    "currency": "USDC",
+    "method": "SOLANA_ADDRESS",
     "status": {
-      "current_status": "string",
+      "current_status": "ACTIVE",
       "status_history": [
         {
-          "status": "string",
-          "created_at": "string"
+          "status": "COMPLIANCE_HOLD",
+          "created_at": "2024-01-15T10:00:00Z"
+        },
+        {
+          "status": "ACTIVE",
+          "created_at": "2024-01-15T12:00:00Z"
         }
       ]
     },
-    "details": {},
-    "created_at": "string",
-    "updated_at": "string"
+    "details": {
+      "address": "A1B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6"
+    },
+    "created_at": "2024-01-15T10:00:00Z",
+    "updated_at": "2024-01-15T12:00:00Z"
   }
 }
 ```

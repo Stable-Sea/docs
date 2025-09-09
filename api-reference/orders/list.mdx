@@ -27,38 +27,104 @@ Returns all orders for a customer.
 {
   "data": [
     {
-      "id": "string",
-      "quote_id": "string",
-      "offering_id": "string",
-      "reference_number": "string",
-      "external_reference_id": "string",
-      "exchange_rate": "string",
-      "effective_exchange_rate": "string",
+      "id": "order_123456789abcdef",
+      "quote_id": "quote_123456789abcdef",
+      "offering_id": "off_123456789abcdef",
+      "reference_number": "SS-ORD-20240115-001",
+      "external_reference_id": "ACME-REF-001",
+      "exchange_rate": "4250.00",
+      "effective_exchange_rate": "4248.75",
       "payin": {
-        "external_payment_instrument_id": "string",
-        "currency": "string",
-        "method": "string",
-        "total": "string",
-        "fee": "string",
-        "tax": "string"
+        "external_payment_instrument": {
+          "id": "epi_123456789abcdef",
+          "alias": "My Solana Wallet",
+          "currency": "USDC",
+          "method": "SOLANA_ADDRESS"
+        },
+        "total": "1015.00",
+        "fee": "15.00",
+        "tax": "0.00"
       },
       "payout": {
-        "external_payment_instrument_id": "string",
-        "currency": "string",
-        "method": "string"
+        "external_payment_instrument": {
+          "id": "epi_987654321zyxwvu",
+          "alias": "My COP Bank Account",
+          "currency": "COP",
+          "method": "COP_BANK_ACCOUNT"
+        },
+        "total": "4248750.00"
       },
       "status": {
-        "current_status": "string",
+        "current_status": "STEP_4_COMPLETED",
         "status_history": [
           {
-            "status": "string",
-            "created_at": "string"
+            "status": "STEP_1_AWAITING_FUNDING",
+            "created_at": "2024-01-15T10:00:00Z"
+          },
+          {
+            "status": "STEP_4_COMPLETED",
+            "created_at": "2024-01-15T11:00:00Z"
           }
         ]
       },
-      "retry_order_id": "string",
-      "created_at": "string",
-      "updated_at": "string"
+      "funding_instructions": {
+        "currency": "USDC",
+        "method": "SOLANA_ADDRESS",
+        "details": {
+          "address": "B2C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6A1"
+        }
+      },
+      "retry_order_id": null,
+      "created_at": "2024-01-15T10:00:00Z",
+      "updated_at": "2024-01-15T11:00:00Z"
+    },
+    {
+      "id": "order_987654321zyxwvu",
+      "quote_id": "quote_987654321zyxwvu",
+      "offering_id": "off_987654321zyxwvu",
+      "reference_number": "SS-ORD-20240114-005",
+      "external_reference_id": null,
+      "exchange_rate": "4260.00",
+      "effective_exchange_rate": "4260.00",
+      "payin": {
+        "external_payment_instrument": {
+          "id": "epi_456789abcdef123",
+          "alias": "My Other Solana Wallet",
+          "currency": "USDC",
+          "method": "SOLANA_ADDRESS"
+        },
+        "total": "505.00",
+        "fee": "5.00",
+        "tax": "0.00"
+      },
+      "payout": {
+        "external_payment_instrument": {
+          "id": "epi_789abcdef123456",
+          "alias": "Business COP Account",
+          "currency": "COP",
+          "method": "COP_BANK_ACCOUNT"
+        },
+        "total": "2130000.00"
+      },
+      "status": {
+        "current_status": "STEP_1_AWAITING_FUNDING",
+        "status_history": [
+          {
+            "status": "STEP_1_AWAITING_FUNDING",
+            "created_at": "2024-01-14T15:30:00Z"
+          }
+        ]
+      },
+      "funding_instructions": {
+        "currency": "USDC",
+        "method": "SOLANA_ADDRESS",
+        "details": {
+          "address": "C3D4E5F6G7H8I9J0K1L2M3N4O5P6Q7R8S9T0U1V2W3X4Y5Z6A1B2"
+        }
+      },
+      "retry_order_id": null,
+      "created_at": "2024-01-14T15:30:00Z",
+      "updated_at": "2024-01-14T15:30:00Z"
     }
   ]
 }

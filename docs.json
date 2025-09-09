@@ -12,7 +12,7 @@
     "dark": "/favicon-dark.png"
   },
   "api": {
-    "baseUrl": "https://sandbox.stablesea.com/terminal/v1",
+    "baseUrl": "https://api-sandbox.stablesea.xyz/v1",
     "auth": {
       "method": "bearer",
       "default": "DEFAULT-TOKEN-HERE"
@@ -21,7 +21,7 @@
       "mode": "show"
     },
     "mdx": {
-      "server": "https://sandbox.stablesea.com/terminal/v1",
+      "server": "https://api-sandbox.stablesea.xyz/v1",
       "auth": {
         "method": "bearer",
         "default": "DEFAULT-TOKEN-HERE"
@@ -109,8 +109,7 @@
           {
             "group": "Guides",
             "pages": [
-              "guides/order-flow-walkthrough",
-              "guides/understanding-order-states"
+              "guides/order-flow-walkthrough"
             ]
           }
         ]

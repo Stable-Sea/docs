@@ -23,12 +23,17 @@ The following endpoints support idempotency:
 Include an `Idempotency-Key` header with a unique identifier:
 
 ```bash
-curl -X POST "https://api.stablesea.com/terminal/v1/customers" \
-  -H "Authorization: Bearer sk_live_1234567890abcdef" \
+curl -X POST "https://api-sandbox.stablesea.xyz/v1/customers" \
+  -H "Authorization: Bearer YOUR_API_KEY" \
   -H "Content-Type: application/json" \
   -H "Idempotency-Key: 550e8400-e29b-41d4-a716-446655440000" \
   -d '{
-    "name": "Example Customer"
+    "name": "Example Customer",
+    "contact": {
+      "email": "contact@example.com",
+      "first_name": "John",
+      "last_name": "Doe"
+    }
   }'
 ```
 
@@ -50,15 +55,15 @@ import { v4 as uuidv4 } from "uuid";
 const idempotencyKey = uuidv4();
 
 // For retries, reuse the same key
-const response = await fetch("/api/orders", {
-  method: "POST",
-  headers: {
-    Authorization: "Bearer " + apiKey,
-    "Content-Type": "application/json",
-    "Idempotency-Key": idempotencyKey,
-  },
-  body: JSON.stringify(orderData),
-});
+  const response = await fetch("/api/orders", {
+    method: "POST",
+    headers: {
+      Authorization: "Bearer " + apiKey,
+      "Content-Type": "application/json",
+      "Idempotency-Key": idempotencyKey,
+    },
+    body: JSON.stringify(orderData),
+  });
 ```
 
 ### Retry Strategy Integration

@@ -35,16 +35,8 @@ description: "Order resource schema"
   Payment input details
 </ResponseField>
 
-<ResponseField name="payin.external_payment_instrument_id" type="string">
-  ID of the payment instrument for incoming payments
-</ResponseField>
-
-<ResponseField name="payin.currency" type="string">
-  Currency of the incoming payment
-</ResponseField>
-
-<ResponseField name="payin.method" type="string">
-  Payment method used
+<ResponseField name="payin.external_payment_instrument" type="object">
+  External payment instrument object for incoming payments
 </ResponseField>
 
 <ResponseField name="payin.total" type="string">
@@ -63,16 +55,12 @@ description: "Order resource schema"
   Payment output details
 </ResponseField>
 
-<ResponseField name="payout.external_payment_instrument_id" type="string">
-  ID of the payment instrument for outgoing payments
+<ResponseField name="payout.external_payment_instrument" type="object">
+  External payment instrument object for outgoing payments
 </ResponseField>
 
-<ResponseField name="payout.currency" type="string">
-  Currency of the outgoing payment
-</ResponseField>
-
-<ResponseField name="payout.method" type="string">
-  Payment method used for payout
+<ResponseField name="payout.total" type="string">
+  Total amount to be paid out
 </ResponseField>
 
 <ResponseField name="status" type="object">
@@ -93,6 +81,22 @@ description: "Order resource schema"
 
 <ResponseField name="status.status_history[].created_at" type="string">
   Timestamp when this status change occurred
+</ResponseField>
+
+<ResponseField name="funding_instructions" type="object">
+  Instructions for funding the order
+</ResponseField>
+
+<ResponseField name="funding_instructions.currency" type="string">
+  Currency for funding
+</ResponseField>
+
+<ResponseField name="funding_instructions.method" type="string">
+  Payment method for funding
+</ResponseField>
+
+<ResponseField name="funding_instructions.details" type="object">
+  Payment method-specific funding details
 </ResponseField>
 
 <ResponseField name="retry_order_id" type="string">

@@ -9,12 +9,16 @@ An offering represents instructive material for placing an order.
   Unique identifier for the offering
 </ResponseField>
 
+<ResponseField name="order_type" type="string">
+  The type of order (QUOTED, LIMIT, MARKET)
+</ResponseField>
+
 <ResponseField name="payin" type="object">
   Information about the payment input
 </ResponseField>
 
-<ResponseField name="payin.external_payment_instrument_id" type="string">
-  ID of the payment instrument for incoming payments
+<ResponseField name="payin.external_payment_instrument" type="object">
+  External payment instrument object for incoming payments
 </ResponseField>
 
 <ResponseField name="payin.limits" type="object">
@@ -49,8 +53,8 @@ An offering represents instructive material for placing an order.
   Information about the payment output
 </ResponseField>
 
-<ResponseField name="payout.external_payment_instrument_id" type="string">
-  ID of the payment instrument for outgoing payments
+<ResponseField name="payout.external_payment_instrument" type="object">
+  External payment instrument object for outgoing payments
 </ResponseField>
 
 <ResponseField name="indicative_exchange_rate" type="string">
@@ -61,12 +65,12 @@ An offering represents instructive material for placing an order.
   Operating hours for today
 </ResponseField>
 
-<ResponseField name="current_day_hours_of_operation.open" type="string">
-  Opening time
+<ResponseField name="current_day_hours_of_operation.open_utc" type="string">
+  Opening time in UTC (ISO 8601 format)
 </ResponseField>
 
-<ResponseField name="current_day_hours_of_operation.close" type="string">
-  Closing time
+<ResponseField name="current_day_hours_of_operation.close_utc" type="string">
+  Closing time in UTC (ISO 8601 format)
 </ResponseField>
 
 <ResponseField name="liquidity_provider" type="string">

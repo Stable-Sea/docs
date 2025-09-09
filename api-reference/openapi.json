@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "https://sandbox.stablesea.com/terminal/v1"
+      "url": "https://api-sandbox.stablesea.xyz/v1"
     }
   ],
   "security": [
@@ -603,23 +603,39 @@
       },
       "PayinCurrency": {
         "type": "string",
-        "enum": ["USDC", "...more to come..."]
+        "enum": [
+          "USDC",
+          "...more to come..."
+        ]
       },
       "PayoutCurrency": {
         "type": "string",
-        "enum": ["COP", "...more to come..."]
+        "enum": [
+          "COP",
+          "...more to come..."
+        ]
       },
       "Currency": {
         "type": "string",
-        "enum": ["USDC", "COP", "...more to come..."]
+        "enum": [
+          "USDC",
+          "COP",
+          "...more to come..."
+        ]
       },
       "PaymentMethod": {
         "type": "string",
-        "enum": ["SOLANA_ADDRESS", "COP_BANK_ACCOUNT", "...more to come..."]
+        "enum": [
+          "SOLANA_ADDRESS",
+          "COP_BANK_ACCOUNT",
+          "...more to come..."
+        ]
       },
       "LiquidityProvider": {
         "type": "string",
-        "enum": ["ALPHA"]
+        "enum": [
+          "ALPHA"
+        ]
       },
       "HoursOfOperation": {
         "type": "object",
@@ -661,7 +677,10 @@
       },
       "CustomerStatus": {
         "type": "string",
-        "enum": ["ACTIVE", "COMPLIANCE_HOLD"]
+        "enum": [
+          "ACTIVE",
+          "COMPLIANCE_HOLD"
+        ]
       },
       "Customer": {
         "type": "object",
@@ -751,14 +770,18 @@
           "name": {
             "type": "string"
           },
-           "contact": {
-             "$ref": "#/components/schemas/Contact"
-           }
+          "contact": {
+            "$ref": "#/components/schemas/Contact"
+          }
         }
       },
       "ExternalPaymentInstrumentStatus": {
         "type": "string",
-        "enum": ["ACTIVE", "COMPLIANCE_HOLD", "ARCHIVED"]
+        "enum": [
+          "ACTIVE",
+          "COMPLIANCE_HOLD",
+          "ARCHIVED"
+        ]
       },
       "PaymentMethodSolanaAddress": {
         "type": "object",
@@ -931,7 +954,11 @@
           },
           "order_type": {
             "type": "string",
-            "enum": ["QUOTED", "LIMIT", "MARKET"]
+            "enum": [
+              "QUOTED",
+              "LIMIT",
+              "MARKET"
+            ]
           },
           "payin": {
             "type": "object",
@@ -1017,7 +1044,11 @@
           },
           "estimated_settlement_time": {
             "type": "string",
-            "enum": ["T+0", "T+1", "T+2"]
+            "enum": [
+              "T+0",
+              "T+1",
+              "T+2"
+            ]
           },
           "created_at": {
             "$ref": "#/components/schemas/DateTime"
@@ -1099,7 +1130,9 @@
         },
         "oneOf": [
           {
-            "required": ["payin_amount"],
+            "required": [
+              "payin_amount"
+            ],
             "properties": {
               "payin_amount": {
                 "$ref": "#/components/schemas/DecimalString"
@@ -1107,7 +1140,9 @@
             }
           },
           {
-            "required": ["payout_amount"],
+            "required": [
+              "payout_amount"
+            ],
             "properties": {
               "payout_amount": {
                 "$ref": "#/components/schemas/DecimalString"
@@ -1119,13 +1154,13 @@
       "OrderStatus": {
         "type": "string",
         "enum": [
-          "STEP_1_AWAITING_FUNDING", 
-          "STEP_2_FILLING_FX", 
-          "STEP_3_SETTLING_PAYOUT", 
-          "STEP_4_COMPLETED", 
-          "FAILED_FUNDING_EXPIRED", 
-          "FAILED_DECLINED_BY_LIQ_PROVIDER", 
-          "FAILED_REFUND_REQUESTED", 
+          "STEP_1_AWAITING_FUNDING",
+          "STEP_2_FILLING_FX",
+          "STEP_3_SETTLING_PAYOUT",
+          "STEP_4_COMPLETED",
+          "FAILED_FUNDING_EXPIRED",
+          "FAILED_DECLINED_BY_LIQ_PROVIDER",
+          "FAILED_REFUND_REQUESTED",
           "FAILED_REFUND_PROCESSED"
         ]
       },
