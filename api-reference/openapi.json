@@ -643,6 +643,14 @@
       },
       "Customer": {
         "type": "object",
+        "required": [
+          "id",
+          "name",
+          "contact",
+          "status",
+          "created_at",
+          "updated_at"
+        ],
         "properties": {
           "id": {
             "type": "string"
@@ -650,11 +658,18 @@
           "name": {
             "type": "string"
           },
+          "contact": {
+            "$ref": "#/components/schemas/Contact"
+          },
           "status": {
             "type": "object",
             "properties": {
               "current_status": {
-                "type": "string"
+                "type": "string",
+                "enum": [
+                  "ACTIVE",
+                  "COMPLIANCE_HOLD"
+                ]
               },
               "status_history": {
                 "type": "array",
@@ -662,10 +677,16 @@
                   "type": "object",
                   "properties": {
                     "status": {
-                      "type": "string"
+                      "type": "string",
+                      "enum": [
+                        "ACTIVE",
+                        "COMPLIANCE_HOLD"
+                      ]
                     },
                     "created_at": {
-                      "type": "string"
+                      "type": "string",
+                      "format": "date-time",
+                      "description": "ISO 8601 UTC timestamp (RFC3339) for when this status change occurred"
                     }
                   }
                 }
@@ -673,9 +694,33 @@
             }
           },
           "created_at": {
-            "type": "string"
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 UTC timestamp (RFC3339) for when this customer was initially created"
           },
           "updated_at": {
+            "type": "string",
+            "format": "date-time",
+            "description": "ISO 8601 UTC timestamp (RFC3339) for when this customer was last updated"
+          }
+        }
+      },
+      "Contact": {
+        "type": "object",
+        "required": [
+          "email",
+          "first_name",
+          "last_name"
+        ],
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email"
+          },
+          "first_name": {
+            "type": "string"
+          },
+          "last_name": {
             "type": "string"
           }
         }
@@ -683,12 +728,16 @@
       "NewCustomer": {
         "type": "object",
         "required": [
-          "name"
+          "name",
+          "contact"
         ],
         "properties": {
           "name": {
             "type": "string"
-          }
+          },
+           "contact": {
+             "$ref": "#/components/schemas/Contact"
+           }
         }
       },
       "ExternalPaymentInstrument": {
