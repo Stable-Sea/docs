@@ -84,6 +84,17 @@
       "post": {
         "summary": "Create Organization",
         "description": "Creates a new organization",
+        "parameters": [
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Unique key to prevent duplicate operations",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "description": "Organization to create",
           "content": {
@@ -185,6 +196,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Unique key to prevent duplicate operations",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
@@ -224,6 +244,15 @@
             "name": "organization_id",
             "in": "path",
             "description": "ID of organization",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Unique key to prevent duplicate operations",
             "required": true,
             "schema": {
               "type": "string"
@@ -350,6 +379,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Unique key to prevent duplicate operations",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "responses": {
@@ -426,6 +464,15 @@
             "name": "organization_id",
             "in": "path",
             "description": "ID of organization",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Unique key to prevent duplicate operations",
             "required": true,
             "schema": {
               "type": "string"
@@ -518,6 +565,15 @@
             "schema": {
               "type": "string"
             }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Unique key to prevent duplicate operations",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
           }
         ],
         "requestBody": {
@@ -557,6 +613,15 @@
             "name": "organization_id",
             "in": "path",
             "description": "ID of organization",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Idempotency-Key",
+            "in": "header",
+            "description": "Unique key to prevent duplicate operations",
             "required": true,
             "schema": {
               "type": "string"
