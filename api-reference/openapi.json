@@ -91,7 +91,8 @@
             "description": "Unique key to prevent duplicate operations",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "550e8400-e29b-41d4-a716-446655440000"
             }
           }
         ],
@@ -160,7 +161,8 @@
             "description": "ID of organization to retrieve",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "org_01k2cm4r59e5z8k5ggrbbxjcwy"
             }
           }
         ],
@@ -194,7 +196,8 @@
             "description": "ID of organization",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "org_01k2cm4r59e5z8k5ggrbbxjcwy"
             }
           },
           {
@@ -203,7 +206,8 @@
             "description": "Unique key to prevent duplicate operations",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "550e8400-e29b-41d4-a716-446655440000"
             }
           }
         ],
@@ -246,16 +250,8 @@
             "description": "ID of organization",
             "required": true,
             "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Idempotency-Key",
-            "in": "header",
-            "description": "Unique key to prevent duplicate operations",
-            "required": true,
-            "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "org_01k2cm4r59e5z8k5ggrbbxjcwy"
             }
           }
         ],
@@ -292,7 +288,8 @@
             "description": "ID of organization",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "org_01k2cm4r59e5z8k5ggrbbxjcwy"
             }
           },
           {
@@ -301,7 +298,8 @@
             "description": "ID of external payment instrument",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "mnyacctcm_01k4r01nm4f41tcsws4sr9k8nn"
             }
           }
         ],
@@ -333,7 +331,8 @@
             "description": "ID of organization",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "org_01k2cm4r59e5z8k5ggrbbxjcwy"
             }
           },
           {
@@ -342,7 +341,8 @@
             "description": "ID of external payment instrument",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "mnyacctcm_01k4r01nm4f41tcsws4sr9k8nn"
             }
           }
         ],
@@ -377,7 +377,8 @@
             "description": "ID of organization",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "org_01k2cm4r59e5z8k5ggrbbxjcwy"
             }
           },
           {
@@ -386,7 +387,8 @@
             "description": "Unique key to prevent duplicate operations",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "550e8400-e29b-41d4-a716-446655440000"
             }
           }
         ],
@@ -423,7 +425,8 @@
             "description": "ID of organization",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "org_01k2cm4r59e5z8k5ggrbbxjcwy"
             }
           },
           {
@@ -432,7 +435,8 @@
             "description": "ID of offering",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "off_01k4qph5ezfsga7fkvbygsqq93"
             }
           }
         ],
@@ -466,7 +470,8 @@
             "description": "ID of organization",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "org_01k2cm4r59e5z8k5ggrbbxjcwy"
             }
           },
           {
@@ -475,7 +480,8 @@
             "description": "Unique key to prevent duplicate operations",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "550e8400-e29b-41d4-a716-446655440000"
             }
           }
         ],
@@ -520,7 +526,8 @@
             "description": "ID of organization",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "org_01k2cm4r59e5z8k5ggrbbxjcwy"
             }
           },
           {
@@ -529,7 +536,8 @@
             "description": "ID of quote",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "qt_01k4qpmvgxfsg9db9mjrtq9tk2"
             }
           }
         ],
@@ -563,7 +571,8 @@
             "description": "ID of organization",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "org_01k2cm4r59e5z8k5ggrbbxjcwy"
             }
           },
           {
@@ -572,7 +581,8 @@
             "description": "Unique key to prevent duplicate operations",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "550e8400-e29b-41d4-a716-446655440000"
             }
           }
         ],
@@ -615,16 +625,8 @@
             "description": "ID of organization",
             "required": true,
             "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "Idempotency-Key",
-            "in": "header",
-            "description": "Unique key to prevent duplicate operations",
-            "required": true,
-            "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "org_01k2cm4r59e5z8k5ggrbbxjcwy"
             }
           }
         ],
@@ -661,7 +663,8 @@
             "description": "ID of organization",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "org_01k2cm4r59e5z8k5ggrbbxjcwy"
             }
           },
           {
@@ -670,7 +673,8 @@
             "description": "ID of order",
             "required": true,
             "schema": {
-              "type": "string"
+              "type": "string",
+              "example": "ord_01k4qn3cxdefkargtccm4ycxsf"
             }
           }
         ],
@@ -980,7 +984,8 @@
         ],
         "properties": {
           "address": {
-            "type": "string"
+            "type": "string",
+            "example": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
           }
         }
       },
@@ -1000,31 +1005,40 @@
         ],
         "properties": {
           "bank_account_number": {
-            "type": "string"
+            "type": "string",
+            "example": "1234567890"
           },
           "bank_code": {
-            "type": "string"
+            "type": "string",
+            "example": "001"
           },
           "account_holder_first_name": {
-            "type": "string"
+            "type": "string",
+            "example": "Juan"
           },
           "account_holder_last_name": {
-            "type": "string"
+            "type": "string",
+            "example": "Perez"
           },
           "legal_entity_name": {
-            "type": "string"
+            "type": "string",
+            "example": "Juan Perez Empresa"
           },
           "doc_type": {
-            "type": "string"
+            "type": "string",
+            "example": "CC"
           },
           "doc_id": {
-            "type": "string"
+            "type": "string",
+            "example": "901458.6527"
           },
           "physical_address": {
-            "type": "string"
+            "type": "string",
+            "example": "Calle 123 #45-67, Bogotá, Colombia"
           },
           "account_type": {
-            "type": "string"
+            "type": "string",
+            "example": "CHECKING"
           }
         }
       },
@@ -1042,10 +1056,12 @@
         ],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "example": "mnyacct_01k4r01nm4f41tcsws4sr9k8nn"
           },
           "alias": {
-            "type": "string"
+            "type": "string",
+            "example": "My Primary Wallet"
           },
           "currency": {
             "$ref": "#/components/schemas/Currency"
@@ -1096,11 +1112,16 @@
       "NewExternalPaymentInstrument": {
         "type": "object",
         "required": [
+          "alias",
           "currency",
           "method",
           "details"
         ],
         "properties": {
+          "alias": {
+            "type": "string",
+            "example": "My Primary Wallet"
+          },
           "currency": {
             "$ref": "#/components/schemas/Currency"
           },
@@ -1139,7 +1160,8 @@
         ],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "example": "mnyacct_01k4r01nm4f41tcsws4sr9k8nn"
           },
           "order_type": {
             "type": "string",
@@ -1258,10 +1280,12 @@
         ],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "example": "mnyacct_01k4r01nm4f41tcsws4sr9k8nn"
           },
           "offering_id": {
-            "type": "string"
+            "type": "string",
+            "example": "off_01k4qph5ezfsga7fkvbygsqq93"
           },
           "exchange_rate": {
             "$ref": "#/components/schemas/DecimalString"
@@ -1397,19 +1421,24 @@
         ],
         "properties": {
           "id": {
-            "type": "string"
+            "type": "string",
+            "example": "mnyacct_01k4r01nm4f41tcsws4sr9k8nn"
           },
           "quote_id": {
-            "type": "string"
+            "type": "string",
+            "example": "qt_01k4qpmvgxfsg9db9mjrtq9tk2"
           },
           "offering_id": {
-            "type": "string"
+            "type": "string",
+            "example": "off_01k4qph5ezfsga7fkvbygsqq93"
           },
           "reference_number": {
-            "type": "string"
+            "type": "string",
+            "example": "SS-ORD-20240115-001"
           },
           "external_reference_id": {
-            "type": "string"
+            "type": "string",
+            "example": "ACME-REF-001"
           },
           "exchange_rate": {
             "$ref": "#/components/schemas/DecimalString"
@@ -1485,7 +1514,8 @@
             "$ref": "#/components/schemas/FundingInstructions"
           },
           "retry_order_id": {
-            "type": "string"
+            "type": "string",
+            "example": "ord_01k4qn4cxdefkargtccm4ycxth"
           },
           "created_at": {
             "$ref": "#/components/schemas/DateTime"
