@@ -17,7 +17,7 @@ Follow these steps to implement the complete order flow from customer creation t
 
     ```bash
     # Test authentication
-    curl -X GET "https://sandbox.stablesea.com/terminal/v1/hours-of-operation" \
+    curl -X GET "https://api-sandbox.stablesea.xyz/v1/hours-of-operations" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json"
     ```
@@ -32,11 +32,16 @@ Follow these steps to implement the complete order flow from customer creation t
     Create a customer entity to associate with your orders and payment instruments.
 
     ```bash
-    curl -X POST "https://sandbox.stablesea.com/terminal/v1/customers" \
+    curl -X POST "https://api-sandbox.stablesea.xyz/v1/customers" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json" \
       -d '{
-        "name": "Acme Corporation"
+        "name": "Test Customer Corp",
+        "contact": {
+          "email": "contact@testcustomer.com",
+          "first_name": "John",
+          "last_name": "Doe"
+        }
       }'
     ```
 
@@ -44,25 +49,30 @@ Follow these steps to implement the complete order flow from customer creation t
     ```json
     {
       "data": {
-        "id": "cust_7f8b9c2d3e4f5a6b",
-        "name": "Acme Corporation",
+        "id": "org_01k4qmbcd5efk9zkhv32cqzjhq",
+        "name": "Test Customer Corp",
+        "contact": {
+          "email": "contact@testcustomer.com",
+          "first_name": "John",
+          "last_name": "Doe"
+        },
         "status": {
-          "current_status": "ACTIVE",
+          "current_status": "COMPLIANCE_HOLD",
           "status_history": [
             {
-              "status": "ACTIVE",
-              "created_at": "2024-01-15T10:30:00Z"
+              "status": "COMPLIANCE_HOLD",
+              "created_at": "2025-09-09T12:18:40-04:00"
             }
           ]
         },
-        "created_at": "2024-01-15T10:30:00Z",
-        "updated_at": "2024-01-15T10:30:00Z"
+        "created_at": "2025-09-09T12:18:40-04:00",
+        "updated_at": "2025-09-09T12:18:40-04:00"
       }
     }
     ```
 
     <Tip>
-      Save the customer `id` as you'll need it for subsequent API calls.
+      Save the customer `id` (starts with `org_`) as you'll need it for subsequent API calls. Note that new customers typically start in `COMPLIANCE_HOLD` status and may need approval before becoming `ACTIVE`.
     </Tip>
 
   </Step>
@@ -70,67 +80,102 @@ Follow these steps to implement the complete order flow from customer creation t
   <Step title="Create External Payment Instruments">
     Set up both payin and payout payment methods for your customer.
 
-    **Create Payin Payment Instrument (Source):**
+    **Create Payin Payment Instrument (USDC Solana Address):**
     ```bash
-    curl -X POST "https://sandbox.stablesea.com/terminal/v1/customers/cust_7f8b9c2d3e4f5a6b/external_payment_instruments" \
+    curl -X POST "https://api-sandbox.stablesea.xyz/v1/customers/CUSTOMER_ID/external_payment_instruments" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json" \
       -d '{
-        "currency": "USD",
-        "method": "BANK_TRANSFER",
+        "alias": "Test Solana Address",
+        "currency": "USDC",
+        "method": "SOLANA_ADDRESS",
         "details": {
-          "account_number": "123456789",
-          "routing_number": "021000021",
-          "account_holder_name": "Acme Corporation"
+          "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
         }
       }'
     ```
 
-    **Create Payout Payment Instrument (Destination):**
+    **Create Payout Payment Instrument (COP Bank Account):**
     ```bash
-    curl -X POST "https://sandbox.stablesea.com/terminal/v1/customers/cust_7f8b9c2d3e4f5a6b/external_payment_instruments" \
+    curl -X POST "https://api-sandbox.stablesea.xyz/v1/customers/CUSTOMER_ID/external_payment_instruments" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json" \
       -d '{
-        "currency": "KES",
-        "method": "MOBILE_MONEY",
+        "alias": "Test COP Bank Account",
+        "currency": "COP",
+        "method": "COP_BANK_ACCOUNT",
         "details": {
-          "phone_number": "+254712345678",
-          "provider": "M-PESA"
+          "bank_account_number": "1234567890",
+          "bank_code": "001",
+          "account_holder_first_name": "Juan",
+          "account_holder_last_name": "Perez",
+          "legal_entity_name": "Juan Perez Empresa",
+          "doc_type": "CC",
+          "doc_id": "901458.6527",
+          "physical_address": "Calle 123 #45-67, Bogotá, Colombia",
+          "account_type": "savings"
         }
       }'
     ```
 
-    **Response:**
+    **USDC Solana Address Response:**
     ```json
     {
       "data": {
-        "id": "epi_abc123def456",
-        "alias": null,
-        "currency": "USD",
-        "method": "BANK_TRANSFER",
+        "id": "mnyacct_01k4qmv28kefk8mgxje22f360y",
+        "alias": "Test Solana Address",
+        "currency": "USDC",
+        "method": "SOLANA_ADDRESS",
         "status": {
-          "current_status": "ACTIVE",
+          "current_status": "COMPLIANCE_HOLD",
           "status_history": [
             {
-              "status": "ACTIVE",
-              "created_at": "2024-01-15T10:35:00Z"
+              "status": "COMPLIANCE_HOLD",
+              "created_at": "2025-09-09T12:27:14-04:00"
             }
           ]
         },
         "details": {
-          "account_number": "***6789",
-          "routing_number": "021000021",
-          "account_holder_name": "Acme Corporation"
+          "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+        }
+      }
+    }
+    ```
+
+    **COP Bank Account Response:**
+    ```json
+    {
+      "data": {
+        "id": "mnyacctcop_01k4qmx3fcefkaswg60jq2eafk",
+        "alias": "Test COP Bank Account",
+        "currency": "COP",
+        "method": "COP_BANK_ACCOUNT",
+        "status": {
+          "current_status": "COMPLIANCE_HOLD",
+          "status_history": [
+            {
+              "status": "COMPLIANCE_HOLD",
+              "created_at": "2025-09-09T12:28:21-04:00"
+            }
+          ]
         },
-        "created_at": "2024-01-15T10:35:00Z",
-        "updated_at": "2024-01-15T10:35:00Z"
+        "details": {
+          "bank_account_number": "1234567890",
+          "bank_code": "001",
+          "account_holder_first_name": "Juan",
+          "account_holder_last_name": "Perez",
+          "legal_entity_name": "Juan Perez Empresa",
+          "doc_type": "CC",
+          "doc_id": "901458.6527",
+          "physical_address": "Calle 123 #45-67, Bogotá, Colombia",
+          "account_type": "savings"
+        }
       }
     }
     ```
 
     <Warning>
-      Payment instrument details are partially masked in responses for security. Store the returned IDs for creating offerings.
+      Payment instruments start in `COMPLIANCE_HOLD` status and may need approval before becoming `ACTIVE`. Store the returned IDs (starting with `mnyacct_` or `mnyacctcop_`) for creating offerings.
     </Warning>
 
   </Step>
@@ -139,7 +184,7 @@ Follow these steps to implement the complete order flow from customer creation t
     Verify that liquidity providers are operating before creating offerings.
 
     ```bash
-    curl -X GET "https://sandbox.stablesea.com/terminal/v1/hours-of-operation" \
+    curl -X GET "https://api-sandbox.stablesea.xyz/v1/hours-of-operations" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json"
     ```
@@ -149,14 +194,25 @@ Follow these steps to implement the complete order flow from customer creation t
     {
       "data": [
         {
-          "liquidity_provider": "Provider_A",
-          "payin_currency": "USD",
-          "payout_currency": "KES",
+          "liquidity_provider": "ALPHA",
+          "payin_currency": "USDC",
+          "payout_currency": "COP",
           "hours_of_operation": [
             {
-              "calendar_date": "2024-01-15",
-              "open_time": "08:00:00",
-              "close_time": "17:00:00"
+              "open_time_utc": "2025-09-09T13:30:00Z",
+              "close_time_utc": "2025-09-09T20:00:00Z"
+            },
+            {
+              "open_time_utc": "2025-09-10T13:30:00Z",
+              "close_time_utc": "2025-09-10T20:00:00Z"
+            },
+            {
+              "open_time_utc": "2025-09-11T13:30:00Z",
+              "close_time_utc": "2025-09-11T20:00:00Z"
+            },
+            {
+              "open_time_utc": "2025-09-12T13:30:00Z",
+              "close_time_utc": "2025-09-12T20:00:00Z"
             }
           ]
         }
@@ -174,7 +230,7 @@ Follow these steps to implement the complete order flow from customer creation t
     Generate available payment corridors and rates for your customer.
 
     ```bash
-    curl -X POST "https://sandbox.stablesea.com/terminal/v1/customers/cust_7f8b9c2d3e4f5a6b/offerings" \
+    curl -X POST "https://api-sandbox.stablesea.xyz/v1/customers/CUSTOMER_ID/offerings" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json"
     ```
@@ -184,37 +240,85 @@ Follow these steps to implement the complete order flow from customer creation t
     {
       "data": [
         {
-          "id": "off_789xyz456abc",
+          "id": "off_01k4qmyaxsefkargtccm4ycxsf",
+          "order_type": "QUOTED",
           "payin": {
-            "external_payment_instrument_id": "epi_abc123def456",
+            "external_payment_instrument": {
+              "id": "mnyacct_01k4qmv28kefk8mgxje22f360y",
+              "alias": "Test Solana Address",
+              "currency": "USDC",
+              "method": "SOLANA_ADDRESS",
+              "status": {
+                "current_status": "COMPLIANCE_HOLD",
+                "status_history": [
+                  {
+                    "status": "COMPLIANCE_HOLD",
+                    "created_at": "2025-09-09T12:27:14-04:00"
+                  }
+                ]
+              },
+              "details": {
+                "address": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v"
+              }
+            },
             "limits": {
-              "min": "100.00",
-              "max": "50000.00"
+              "min": "0.01",
+              "max": "100"
             },
             "indicative_cost_tiers": [
               {
-                "min": "100.00",
-                "max": "1000.00",
-                "bps": "150"
+                "min": "0.01",
+                "max": "1",
+                "bps": "75"
               },
               {
-                "min": "1000.01",
-                "max": "50000.00",
-                "bps": "100"
+                "min": "1.01",
+                "max": "25",
+                "bps": "70"
+              },
+              {
+                "min": "25.01",
+                "max": "100",
+                "bps": "60"
               }
             ]
           },
           "payout": {
-            "external_payment_instrument_id": "epi_def456ghi789"
+            "external_payment_instrument": {
+              "id": "mnyacctcop_01k4qmx3fcefkaswg60jq2eafk",
+              "alias": "Test COP Bank Account",
+              "currency": "COP",
+              "method": "COP_BANK_ACCOUNT",
+              "status": {
+                "current_status": "COMPLIANCE_HOLD",
+                "status_history": [
+                  {
+                    "status": "COMPLIANCE_HOLD",
+                    "created_at": "2025-09-09T12:28:21-04:00"
+                  }
+                ]
+              },
+              "details": {
+                "bank_account_number": "1234567890",
+                "bank_code": "001",
+                "account_holder_first_name": "Juan",
+                "account_holder_last_name": "Perez",
+                "legal_entity_name": "Juan Perez Empresa",
+                "doc_type": "CC",
+                "doc_id": "901458.6527",
+                "physical_address": "Calle 123 #45-67, Bogotá, Colombia",
+                "account_type": "savings"
+              }
+            }
           },
-          "indicative_exchange_rate": "129.50",
+          "indicative_exchange_rate": "3290.5",
           "current_day_hours_of_operation": {
-            "open": "08:00:00",
-            "close": "17:00:00"
+            "open_utc": "2025-09-09T13:30:00Z",
+            "close_utc": "2025-09-09T20:00:00Z"
           },
-          "liquidity_provider": "Provider_A",
-          "estimated_settlement_time": "2-4 hours",
-          "created_at": "2024-01-15T10:40:00Z"
+          "liquidity_provider": "DLOCAL",
+          "estimated_settlement_time": "T+0",
+          "created_at": "2025-09-09T12:29:01-04:00"
         }
       ]
     }
@@ -230,12 +334,12 @@ Follow these steps to implement the complete order flow from customer creation t
     Get firm pricing with locked exchange rates and expiration times.
 
     ```bash
-    curl -X POST "https://sandbox.stablesea.com/terminal/v1/customers/cust_7f8b9c2d3e4f5a6b/quotes" \
+    curl -X POST "https://api-sandbox.stablesea.xyz/v1/customers/CUSTOMER_ID/quotes" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json" \
       -d '{
-        "offering_id": "off_789xyz456abc",
-        "payin_amount": "1000.00"
+        "offering_id": "string",
+        "payin_amount": "string"
       }'
     ```
 
@@ -273,12 +377,12 @@ Follow these steps to implement the complete order flow from customer creation t
     Convert your quote into an executable order before expiration.
 
     ```bash
-    curl -X POST "https://sandbox.stablesea.com/terminal/v1/customers/cust_7f8b9c2d3e4f5a6b/orders" \
+    curl -X POST "https://api-sandbox.stablesea.xyz/v1/customers/CUSTOMER_ID/orders" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json" \
       -H "Idempotency-Key: $(uuidgen)" \
       -d '{
-        "quote_id": "quo_mno456pqr789"
+        "quote_id": "string"
       }'
     ```
 
@@ -332,7 +436,7 @@ Follow these steps to implement the complete order flow from customer creation t
     Track your order through the complete settlement lifecycle.
 
     ```bash
-    curl -X GET "https://sandbox.stablesea.com/terminal/v1/customers/cust_7f8b9c2d3e4f5a6b/orders/ord_stu789vwx012" \
+    curl -X GET "https://api-sandbox.stablesea.xyz/v1/customers/CUSTOMER_ID/orders/ORDER_ID" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json"
     ```
