@@ -1161,7 +1161,7 @@
         "properties": {
           "id": {
             "type": "string",
-            "example": "mnyacct_01k4r01nm4f41tcsws4sr9k8nn"
+            "example": "off_01k4qph5ezfsga7fkvbygsqq93"
           },
           "order_type": {
             "type": "string",
