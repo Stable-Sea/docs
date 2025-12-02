@@ -17,7 +17,7 @@ Follow these steps to implement the complete order flow from organization creati
 
     ```bash
     # Test authentication
-    curl -X GET "https://api-sandbox.stablesea.xyz/v1/liquidity-providers" \
+    curl -X GET "https://api-sandbox.stablesea.com/v1/liquidity-providers" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json"
     ```
@@ -32,7 +32,7 @@ Follow these steps to implement the complete order flow from organization creati
     Create an organization entity to associate with your orders and payment instruments.
 
     ```bash
-    curl -X POST "https://api-sandbox.stablesea.xyz/v1/organizations" \
+    curl -X POST "https://api-sandbox.stablesea.com/v1/organizations" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json" \
       -d '{
@@ -82,7 +82,7 @@ Follow these steps to implement the complete order flow from organization creati
 
     **Create Payin Payment Instrument (USDC Solana Address):**
     ```bash
-    curl -X POST "https://api-sandbox.stablesea.xyz/v1/organizations/ORGANIZATION_ID/external_payment_instruments" \
+    curl -X POST "https://api-sandbox.stablesea.com/v1/organizations/ORGANIZATION_ID/external_payment_instruments" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json" \
       -d '{
@@ -97,7 +97,7 @@ Follow these steps to implement the complete order flow from organization creati
 
     **Create Payout Payment Instrument (COP Bank Account):**
     ```bash
-    curl -X POST "https://api-sandbox.stablesea.xyz/v1/organizations/ORGANIZATION_ID/external_payment_instruments" \
+    curl -X POST "https://api-sandbox.stablesea.com/v1/organizations/ORGANIZATION_ID/external_payment_instruments" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json" \
       -d '{
@@ -184,7 +184,7 @@ Follow these steps to implement the complete order flow from organization creati
     Get available liquidity providers with their trading pairs and operating hours.
 
     ```bash
-    curl -X GET "https://api-sandbox.stablesea.xyz/v1/liquidity-providers" \
+    curl -X GET "https://api-sandbox.stablesea.com/v1/liquidity-providers" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json"
     ```
@@ -234,7 +234,7 @@ Follow these steps to implement the complete order flow from organization creati
     Optionally fetch current exchange rates to display to end users. This is useful for showing indicative rates before creating formal quotes.
 
     ```bash
-    curl -X GET "https://api-sandbox.stablesea.xyz/v1/liquidity-providers/ALPHA/exchange-rate" \
+    curl -X GET "https://api-sandbox.stablesea.com/v1/liquidity-providers/ALPHA/exchange-rate" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json"
     ```
@@ -260,7 +260,7 @@ Follow these steps to implement the complete order flow from organization creati
     Generate available payment corridors and rates for your organization.
 
     ```bash
-    curl -X POST "https://api-sandbox.stablesea.xyz/v1/organizations/ORGANIZATION_ID/offerings" \
+    curl -X POST "https://api-sandbox.stablesea.com/v1/organizations/ORGANIZATION_ID/offerings" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json"
     ```
@@ -364,7 +364,7 @@ Follow these steps to implement the complete order flow from organization creati
     Get firm pricing with locked exchange rates and expiration times.
 
     ```bash
-    curl -X POST "https://api-sandbox.stablesea.xyz/v1/organizations/ORGANIZATION_ID/quotes" \
+    curl -X POST "https://api-sandbox.stablesea.com/v1/organizations/ORGANIZATION_ID/quotes" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json" \
       -d '{
@@ -407,7 +407,7 @@ Follow these steps to implement the complete order flow from organization creati
     Convert your quote into an executable order before expiration.
 
     ```bash
-    curl -X POST "https://api-sandbox.stablesea.xyz/v1/organizations/ORGANIZATION_ID/orders" \
+    curl -X POST "https://api-sandbox.stablesea.com/v1/organizations/ORGANIZATION_ID/orders" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json" \
       -H "Idempotency-Key: $(uuidgen)" \
@@ -516,7 +516,7 @@ Follow these steps to implement the complete order flow from organization creati
     Track your order through the complete settlement lifecycle.
 
     ```bash
-    curl -X GET "https://api-sandbox.stablesea.xyz/v1/organizations/ORGANIZATION_ID/orders/ORDER_ID" \
+    curl -X GET "https://api-sandbox.stablesea.com/v1/organizations/ORGANIZATION_ID/orders/ORDER_ID" \
       -H "Authorization: Bearer YOUR_API_KEY" \
       -H "Content-Type: application/json"
     ```

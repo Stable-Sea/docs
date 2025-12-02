@@ -12,7 +12,7 @@
     "dark": "/favicon-dark.png"
   },
   "api": {
-    "baseUrl": "https://api-sandbox.stablesea.xyz/v1",
+    "baseUrl": "https://api-sandbox.stablesea.com/v1",
     "auth": {
       "method": "bearer",
       "default": "DEFAULT-TOKEN-HERE"
@@ -21,7 +21,7 @@
       "mode": "show"
     },
     "mdx": {
-      "server": "https://api-sandbox.stablesea.xyz/v1",
+      "server": "https://api-sandbox.stablesea.com/v1",
       "auth": {
         "method": "bearer",
         "default": "DEFAULT-TOKEN-HERE"
@@ -124,7 +124,7 @@
     "links": [
       {
         "label": "Support",
-        "href": "mailto:support@stablesea.xyz"
+        "href": "mailto:support@stablesea.com"
       }
     ]
   },

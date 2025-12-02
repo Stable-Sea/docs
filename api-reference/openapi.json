@@ -10,7 +10,7 @@
   },
   "servers": [
     {
-      "url": "https://api-sandbox.stablesea.xyz/v1"
+      "url": "https://api-sandbox.stablesea.com/v1"
     }
   ],
   "security": [
