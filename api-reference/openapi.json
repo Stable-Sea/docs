@@ -710,7 +710,10 @@
         "type": "string",
         "enum": [
           "USDC",
-          "...more to come..."
+          "COP",
+          "MXN",
+          "BRL",
+          "NGN"
         ],
         "example": "USDC"
       },
@@ -718,7 +721,9 @@
         "type": "string",
         "enum": [
           "COP",
-          "...more to come..."
+          "MXN",
+          "BRL",
+          "NGN"
         ],
         "example": "COP"
       },
@@ -727,7 +732,9 @@
         "enum": [
           "USDC",
           "COP",
-          "...more to come..."
+          "MXN",
+          "BRL",
+          "NGN"
         ]
       },
       "PaymentMethod": {
@@ -735,7 +742,7 @@
         "enum": [
           "SOLANA_ADDRESS",
           "COP_BANK_ACCOUNT",
-          "...more to come..."
+          "NGN_BANK_ACCOUNT"
         ]
       },
       "LiquidityProvider": {
@@ -1039,6 +1046,35 @@
           "account_type": {
             "type": "string",
             "example": "CHECKING"
+          }
+        }
+      },
+      "PaymentMethodNgnFundingDetails": {
+        "type": "object",
+        "title": "NGN funding instructions (pay-in details)",
+        "description": "For NGN orders: bank details to show the end user where to send Naira. Surface via order funding_instructions.",
+        "required": [
+          "bank_name",
+          "bank_account_number",
+          "beneficiary",
+          "reference"
+        ],
+        "properties": {
+          "bank_name": {
+            "type": "string",
+            "description": "Nigerian bank name for the collection account"
+          },
+          "bank_account_number": {
+            "type": "string",
+            "description": "Bank account number the user must send NGN to"
+          },
+          "beneficiary": {
+            "type": "string",
+            "description": "Beneficiary name for the transfer"
+          },
+          "reference": {
+            "type": "string",
+            "description": "Payment reference the user must include with the transfer"
           }
         }
       },
@@ -1398,6 +1434,9 @@
               },
               {
                 "$ref": "#/components/schemas/PaymentMethodCopBankAccount"
+              },
+              {
+                "$ref": "#/components/schemas/PaymentMethodNgnFundingDetails"
               }
             ]
           }

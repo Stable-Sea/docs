@@ -84,20 +84,29 @@ description: "Order resource schema"
 </ResponseField>
 
 <ResponseField name="funding_instructions" type="object">
-  Instructions for funding the order
+  Instructions for funding the order. Use this to show the end user where and how to send funds (e.g. bank details for NGN). Structure depends on `funding_instructions.currency` and `funding_instructions.method`.
 </ResponseField>
 
 <ResponseField name="funding_instructions.currency" type="string">
-  Currency for funding
+  Currency for funding (see Currency Symbols). Determines the shape of `details`.
 </ResponseField>
 
 <ResponseField name="funding_instructions.method" type="string">
-  Payment method for funding
+  Payment method for funding (see Payment Methods). For NGN orders this is `NGN_BANK_ACCOUNT`.
 </ResponseField>
 
 <ResponseField name="funding_instructions.details" type="object">
-  Payment method-specific funding details
+  Payment method-specific funding details. For **NGN** orders (`currency` NGN, `method` NGN_BANK_ACCOUNT), this object contains the pay-in instructions the end user needs to send Nigerian Naira to a Nigerian bank: `bank_name`, `bank_account_number`, `beneficiary`, and `reference`. Display these to the user so they can complete the bank transfer; the user must include `reference` with the transfer. For other currencies (e.g. MXN, BRL), the structure differs; see the NGN pay-in flow guide for the full flow.
 </ResponseField>
+
+### Funding instructions by currency
+
+| Currency | Method | Details shape |
+| -------- | ------ | -------------- |
+| NGN | `NGN_BANK_ACCOUNT` | `bank_name`, `bank_account_number`, `beneficiary`, `reference` |
+| MXN | Bank transfer | CLABE, reference, bank name, account holder |
+| BRL | PIX | Pix copy-paste code, QR code (base64) |
+| USDC | `SOLANA_ADDRESS` | Blockchain address and reference |
 
 <ResponseField name="retry_order_id" type="string">
   ID of the retry order if this order was retried
