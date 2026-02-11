@@ -1,0 +1,59 @@
+---
+title: "NGN (Nigerian) pay-in flow"
+description: "Use the Terminal API to collect Nigerian Naira (NGN) and surface pay-in instructions to end users"
+---
+
+## Overview
+
+This guide describes how to implement **NGN pay-in** using the Stable Sea Terminal API: create an order with an NGN bank account as the pay-in instrument, then use the order's `funding_instructions` to display the payin instrument details (bank name, account number, document ID, account holder) to the end user. This flow supports cross-border use cases such as NGN→USDC and is relevant for partners integrating Nigerian bank collection (e.g. OneDosh).
+
+<CardGroup cols={2}>
+  <Card title="Order resource" icon="file-code" href="/api-reference/resources/order">
+    Order schema and funding_instructions fields
+  </Card>
+  <Card title="Order flow walkthrough" icon="list-checks" href="/guides/order-flow-walkthrough">
+    Full order flow from auth to settlement
+  </Card>
+</CardGroup>
+
+## Prerequisites
+
+- **Organization** — Create or use an existing organization (see [Order flow walkthrough](/guides/order-flow-walkthrough)).
+- **NGN bank account external payment instrument** — A payment instrument with `currency` **NGN** and `method` **NGN_BANK_ACCOUNT**. Your organization must have this configured so you can use it as the pay-in side of a quote/order.
+- **API authentication** — Bearer token; see [Authentication](/api-reference/overview/authentication).
+
+## Steps
+
+<Steps>
+  <Step title="Create or use an organization">
+    Use `POST /organizations` to create an organization or use an existing one. Ensure the organization is in a state that allows creating orders (e.g. `ACTIVE` after compliance approval).
+  </Step>
+
+  <Step title="Create NGN bank account payment instrument">
+    Create an external payment instrument for NGN with method `NGN_BANK_ACCOUNT`. The exact request body depends on your backend’s requirements for NGN (e.g. bank name, account number, account holder, document ID). Use the [Create External Payment Instrument](/api-reference/external-payment-instruments/create) endpoint with `currency`: `"NGN"` and `method`: `"NGN_BANK_ACCOUNT"`.
+  </Step>
+
+  <Step title="Get offerings and create a quote">
+    List [liquidity providers](/api-reference/liquidity-providers/list) and [offerings](/api-reference/offerings/get) to find an NGN→USDC (or your desired payout currency) offering. Then [create a quote](/api-reference/quotes/create) with `payin_amount` or `payout_amount` as needed. The quote’s pay-in side will reference the NGN instrument.
+  </Step>
+
+  <Step title="Create the order">
+    [Create an order](/api-reference/orders/create) with the `quote_id` from the previous step. The order is created in a state awaiting funding (e.g. `STEP_1_AWAITING_FUNDING`).
+  </Step>
+
+  <Step title="Surface funding instructions to the end user">
+    Use the order response’s **`funding_instructions`** to display pay-in details to the end user. For NGN orders, `funding_instructions.currency` is `NGN` and `funding_instructions.method` is `NGN_BANK_ACCOUNT`.     The `funding_instructions.details` object contains: `bank_name`, `bank_account_number`, `doc_id`, `account_holder_first_name`, `account_holder_last_name`, `account_holder_business_name` (matches the payin external payment instrument).
+
+    Display these to the user so they can complete the bank transfer in NGN. Funds will be collected via dLocal and converted according to the flow (e.g. to USDC).
+  </Step>
+</Steps>
+
+## Response shape
+
+The [Order](/api-reference/resources/order) resource includes `funding_instructions` with `currency`, `method`, and `details`. For NGN, `details` echoes the payin external payment instrument (`bank_name`, `bank_account_number`, `doc_id`, `account_holder_first_name`, `account_holder_last_name`, `account_holder_business_name`). See [Order resource — Funding instructions by currency](/api-reference/resources/order#funding-instructions-by-currency) for a summary.
+
+## See also
+
+- [Order flow walkthrough](/guides/order-flow-walkthrough) — End-to-end order flow from authentication to settlement.
+- [Order resource](/api-reference/resources/order) — Full order schema and funding_instructions documentation.
+- **Cross-Border NGN to USA:** For the full architecture (dLocal collection, NGN→USDC conversion, OneDosh wallet, and USA payouts via Brale RTP), see the **Cross-Border Payment Flow: NGN to USA** document in the stable-sea-docs repository.

@@ -109,7 +109,8 @@
           {
             "group": "Guides",
             "pages": [
-              "guides/order-flow-walkthrough"
+              "guides/order-flow-walkthrough",
+              "guides/ngn-payin-flow"
             ]
           }
         ]

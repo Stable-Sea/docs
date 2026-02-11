@@ -710,7 +710,10 @@
         "type": "string",
         "enum": [
           "USDC",
-          "...more to come..."
+          "COP",
+          "MXN",
+          "BRL",
+          "NGN"
         ],
         "example": "USDC"
       },
@@ -718,7 +721,9 @@
         "type": "string",
         "enum": [
           "COP",
-          "...more to come..."
+          "MXN",
+          "BRL",
+          "NGN"
         ],
         "example": "COP"
       },
@@ -727,7 +732,9 @@
         "enum": [
           "USDC",
           "COP",
-          "...more to come..."
+          "MXN",
+          "BRL",
+          "NGN"
         ]
       },
       "PaymentMethod": {
@@ -735,7 +742,7 @@
         "enum": [
           "SOLANA_ADDRESS",
           "COP_BANK_ACCOUNT",
-          "...more to come..."
+          "NGN_BANK_ACCOUNT"
         ]
       },
       "LiquidityProvider": {
@@ -1039,6 +1046,36 @@
           "account_type": {
             "type": "string",
             "example": "CHECKING"
+          }
+        }
+      },
+      "PaymentMethodNgnFundingDetails": {
+        "type": "object",
+        "title": "NGN_BANK_ACCOUNT (payin instrument details)",
+        "description": "For NGN orders: echoes the payin external payment instrument. Order funding_instructions.details returns this shape.",
+        "required": [
+          "bank_name",
+          "bank_account_number",
+          "doc_id"
+        ],
+        "properties": {
+          "bank_name": {
+            "type": "string"
+          },
+          "bank_account_number": {
+            "type": "string"
+          },
+          "doc_id": {
+            "type": "string"
+          },
+          "account_holder_first_name": {
+            "type": "string"
+          },
+          "account_holder_last_name": {
+            "type": "string"
+          },
+          "account_holder_business_name": {
+            "type": "string"
           }
         }
       },
@@ -1398,6 +1435,9 @@
               },
               {
                 "$ref": "#/components/schemas/PaymentMethodCopBankAccount"
+              },
+              {
+                "$ref": "#/components/schemas/PaymentMethodNgnFundingDetails"
               }
             ]
           }
