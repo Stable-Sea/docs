@@ -5,7 +5,7 @@ description: "Use the Terminal API to collect Nigerian Naira (NGN) and surface p
 
 ## Overview
 
-This guide describes how to implement **NGN pay-in** using the Stable Sea Terminal API: create an order with an NGN bank account as the pay-in instrument, then use the order's `funding_instructions` to show the end user where to send Nigerian Naira (bank name, account number, beneficiary, and reference). This flow supports cross-border use cases such as NGN→USDC and is relevant for partners integrating Nigerian bank collection (e.g. OneDosh).
+This guide describes how to implement **NGN pay-in** using the Stable Sea Terminal API: create an order with an NGN bank account as the pay-in instrument, then use the order's `funding_instructions` to display the payin instrument details (bank name, account number, document ID, account holder) to the end user. This flow supports cross-border use cases such as NGN→USDC and is relevant for partners integrating Nigerian bank collection (e.g. OneDosh).
 
 <CardGroup cols={2}>
   <Card title="Order resource" icon="file-code" href="/api-reference/resources/order">
@@ -42,11 +42,7 @@ This guide describes how to implement **NGN pay-in** using the Stable Sea Termin
   </Step>
 
   <Step title="Surface funding instructions to the end user">
-    Use the order response’s **`funding_instructions`** to display pay-in details to the end user. For NGN orders, `funding_instructions.currency` is `NGN` and `funding_instructions.method` is `NGN_BANK_ACCOUNT`. The `funding_instructions.details` object contains:
-    - **`bank_name`** — Nigerian bank name for the collection account
-    - **`bank_account_number`** — Account number the user must send NGN to
-    - **`beneficiary`** — Beneficiary name for the transfer
-    - **`reference`** — Payment reference the user **must** include with the transfer
+    Use the order response’s **`funding_instructions`** to display pay-in details to the end user. For NGN orders, `funding_instructions.currency` is `NGN` and `funding_instructions.method` is `NGN_BANK_ACCOUNT`.     The `funding_instructions.details` object contains: `bank_name`, `bank_account_number`, `doc_id`, `account_holder_first_name`, `account_holder_last_name`, `account_holder_business_name` (matches the payin external payment instrument).
 
     Display these to the user so they can complete the bank transfer in NGN. Funds will be collected via dLocal and converted according to the flow (e.g. to USDC).
   </Step>
@@ -54,7 +50,7 @@ This guide describes how to implement **NGN pay-in** using the Stable Sea Termin
 
 ## Response shape
 
-The [Order](/api-reference/resources/order) resource includes `funding_instructions` with `currency`, `method`, and `details`. For NGN, `details` matches the NGN funding instructions schema (bank name, account number, beneficiary, reference). See [Order resource — Funding instructions by currency](/api-reference/resources/order#funding-instructions-by-currency) for a summary of details by currency.
+The [Order](/api-reference/resources/order) resource includes `funding_instructions` with `currency`, `method`, and `details`. For NGN, `details` echoes the payin external payment instrument (`bank_name`, `bank_account_number`, `doc_id`, `account_holder_first_name`, `account_holder_last_name`, `account_holder_business_name`). See [Order resource — Funding instructions by currency](/api-reference/resources/order#funding-instructions-by-currency) for a summary.
 
 ## See also
 

@@ -96,14 +96,14 @@ description: "Order resource schema"
 </ResponseField>
 
 <ResponseField name="funding_instructions.details" type="object">
-  Payment method-specific funding details. For **NGN** orders (`currency` NGN, `method` NGN_BANK_ACCOUNT), this object contains the pay-in instructions the end user needs to send Nigerian Naira to a Nigerian bank: `bank_name`, `bank_account_number`, `beneficiary`, and `reference`. Display these to the user so they can complete the bank transfer; the user must include `reference` with the transfer. For other currencies (e.g. MXN, BRL), the structure differs; see the NGN pay-in flow guide for the full flow.
+  Payment method-specific funding details. Echoes the payin external payment instrument. For **NGN** (`currency` NGN, `method` NGN_BANK_ACCOUNT): `bank_name`, `bank_account_number`, `doc_id`, `account_holder_first_name`, `account_holder_last_name`, `account_holder_business_name`. For other currencies (e.g. MXN, BRL), the structure differs.
 </ResponseField>
 
 ### Funding instructions by currency
 
 | Currency | Method | Details shape |
 | -------- | ------ | -------------- |
-| NGN | `NGN_BANK_ACCOUNT` | `bank_name`, `bank_account_number`, `beneficiary`, `reference` |
+| NGN | `NGN_BANK_ACCOUNT` | `bank_name`, `bank_account_number`, `doc_id`, `account_holder_first_name`, `account_holder_last_name`, `account_holder_business_name` |
 | MXN | Bank transfer | CLABE, reference, bank name, account holder |
 | BRL | PIX | Pix copy-paste code, QR code (base64) |
 | USDC | `SOLANA_ADDRESS` | Blockchain address and reference |
