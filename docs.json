@@ -15,7 +15,7 @@
     "baseUrl": "https://api-sandbox.stablesea.com/v1",
     "auth": {
       "method": "bearer",
-      "default": "DEFAULT-TOKEN-HERE"
+      "default": ""
     },
     "playground": {
       "mode": "show"
@@ -24,7 +24,7 @@
       "server": "https://api-sandbox.stablesea.com/v1",
       "auth": {
         "method": "bearer",
-        "default": "DEFAULT-TOKEN-HERE"
+        "default": ""
       }
     }
   },
@@ -38,6 +38,7 @@
             "group": "Overview",
             "pages": [
               "api-reference/overview/authentication",
+              "api-reference/overview/api-key-management",
               "api-reference/overview/making-requests",
               "api-reference/overview/error-handling",
               "api-reference/overview/idempotency",
@@ -109,7 +110,8 @@
           {
             "group": "Guides",
             "pages": [
-              "guides/order-flow-walkthrough"
+              "guides/order-flow-walkthrough",
+              "guides/ngn-payin-flow"
             ]
           }
         ]

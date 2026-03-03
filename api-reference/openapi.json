@@ -23,6 +23,23 @@
       "get": {
         "summary": "List Liquidity Providers",
         "description": "Returns all available liquidity providers with their trading pairs and hours of operation",
+        "x-codeSamples": [
+          {
+            "lang": "TypeScript",
+            "label": "TypeScript SDK",
+            "source": "import { createClient } from '@stablesea/sdk';\n\nconst client = createClient({ apiKey: process.env.STABLESEA_API_KEY! });\nconst providers = await client.liquidityProviders.list();"
+          },
+          {
+            "lang": "Go",
+            "label": "Go SDK",
+            "source": "import \"github.com/stablesea/sdk-go\"\n\nclient := sdk.NewClient(os.Getenv(\"STABLESEA_API_KEY\"), \"\")\nproviders, err := client.ListLiquidityProviders(ctx)"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "from stablesea import StableseaClient\n\nclient = StableseaClient(api_key=os.environ[\"STABLESEA_API_KEY\"])\nproviders = client.liquidity_providers.list()"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Liquidity providers response",
@@ -49,6 +66,23 @@
       "get": {
         "summary": "Get Exchange Rate",
         "description": "Get current exchange rate for a specific liquidity provider",
+        "x-codeSamples": [
+          {
+            "lang": "TypeScript",
+            "label": "TypeScript SDK",
+            "source": "import { createClient } from '@stablesea/sdk';\n\nconst client = createClient({ apiKey: process.env.STABLESEA_API_KEY! });\nconst rate = await client.liquidityProviders.getExchangeRate('ALPHA');"
+          },
+          {
+            "lang": "Go",
+            "label": "Go SDK",
+            "source": "import \"github.com/stablesea/sdk-go\"\n\nclient := sdk.NewClient(os.Getenv(\"STABLESEA_API_KEY\"), \"\")\nrate, err := client.GetExchangeRate(ctx, \"ALPHA\")"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "from stablesea import StableseaClient\n\nclient = StableseaClient(api_key=os.environ[\"STABLESEA_API_KEY\"])\nrate = client.liquidity_providers.get_exchange_rate(\"ALPHA\")"
+          }
+        ],
         "parameters": [
           {
             "name": "provider_name",
@@ -80,10 +114,208 @@
         }
       }
     },
+    "/api-keys": {
+      "post": {
+        "summary": "Create API Key",
+        "description": "Create a new API key. The raw key is returned once and must be stored securely.",
+        "x-codeSamples": [
+          {
+            "lang": "TypeScript",
+            "label": "TypeScript SDK",
+            "source": "import { createClient } from '@stablesea/sdk';\n\nconst client = createClient({ apiKey: process.env.STABLESEA_API_KEY! });\nconst key = await client.apiKeys.create({ name: 'My Key', permission_level: 'STANDARD', environment: 'SANDBOX' });"
+          },
+          {
+            "lang": "Go",
+            "label": "Go SDK",
+            "source": "import (\n  \"github.com/stablesea/sdk-go\"\n  \"github.com/stablesea/sdk-go/api\"\n)\n\nclient := sdk.NewClient(os.Getenv(\"STABLESEA_API_KEY\"), \"\")\nkey, err := client.CreateApiKey(ctx, api.CreateApiKeyRequest{Name: \"My Key\", PermissionLevel: \"STANDARD\", Environment: \"SANDBOX\"})"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "from stablesea import StableseaClient\n\nclient = StableseaClient(api_key=os.environ[\"STABLESEA_API_KEY\"])\nkey = client.api_keys.create(name=\"My Key\", environment=\"SANDBOX\", permission_level=\"STANDARD\")"
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateApiKeyRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "API key created successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ApiKeyWithSecret"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "List API Keys",
+        "description": "List all API keys for the authenticated enterprise (masked)",
+        "x-codeSamples": [
+          {
+            "lang": "TypeScript",
+            "label": "TypeScript SDK",
+            "source": "import { createClient } from '@stablesea/sdk';\n\nconst client = createClient({ apiKey: process.env.STABLESEA_API_KEY! });\nconst keys = await client.apiKeys.list();"
+          },
+          {
+            "lang": "Go",
+            "label": "Go SDK",
+            "source": "import \"github.com/stablesea/sdk-go\"\n\nclient := sdk.NewClient(os.Getenv(\"STABLESEA_API_KEY\"), \"\")\nkeys, err := client.ListApiKeys(ctx)"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "from stablesea import StableseaClient\n\nclient = StableseaClient(api_key=os.environ[\"STABLESEA_API_KEY\"])\nkeys = client.api_keys.list()"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "API keys response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/ApiKey"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api-keys/{api_key_id}/rotate": {
+      "post": {
+        "summary": "Rotate API Key",
+        "description": "Rotate an API key. The current key is revoked and a new key is returned once.",
+        "x-codeSamples": [
+          {
+            "lang": "TypeScript",
+            "label": "TypeScript SDK",
+            "source": "import { createClient } from '@stablesea/sdk';\n\nconst client = createClient({ apiKey: process.env.STABLESEA_API_KEY! });\nconst key = await client.apiKeys.rotate('apkey_01k4r01nm4f41tcsws4sr9k8nn');"
+          },
+          {
+            "lang": "Go",
+            "label": "Go SDK",
+            "source": "import \"github.com/stablesea/sdk-go\"\n\nclient := sdk.NewClient(os.Getenv(\"STABLESEA_API_KEY\"), \"\")\nkey, err := client.RotateApiKey(ctx, \"apkey_01k4r01nm4f41tcsws4sr9k8nn\")"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "from stablesea import StableseaClient\n\nclient = StableseaClient(api_key=os.environ[\"STABLESEA_API_KEY\"])\nkey = client.api_keys.rotate(\"apkey_01k4r01nm4f41tcsws4sr9k8nn\")"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "api_key_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "apkey_01k4r01nm4f41tcsws4sr9k8nn"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "API key rotated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "data": {
+                      "$ref": "#/components/schemas/ApiKeyWithSecret"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api-keys/{api_key_id}": {
+      "delete": {
+        "summary": "Revoke API Key",
+        "description": "Permanently revoke an API key",
+        "x-codeSamples": [
+          {
+            "lang": "TypeScript",
+            "label": "TypeScript SDK",
+            "source": "import { createClient } from '@stablesea/sdk';\n\nconst client = createClient({ apiKey: process.env.STABLESEA_API_KEY! });\nawait client.apiKeys.revoke('apkey_01k4r01nm4f41tcsws4sr9k8nn');"
+          },
+          {
+            "lang": "Go",
+            "label": "Go SDK",
+            "source": "import \"github.com/stablesea/sdk-go\"\n\nclient := sdk.NewClient(os.Getenv(\"STABLESEA_API_KEY\"), \"\")\nerr := client.RevokeApiKey(ctx, \"apkey_01k4r01nm4f41tcsws4sr9k8nn\")"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "from stablesea import StableseaClient\n\nclient = StableseaClient(api_key=os.environ[\"STABLESEA_API_KEY\"])\nclient.api_keys.revoke(\"apkey_01k4r01nm4f41tcsws4sr9k8nn\")"
+          }
+        ],
+        "parameters": [
+          {
+            "name": "api_key_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "apkey_01k4r01nm4f41tcsws4sr9k8nn"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "API key revoked successfully"
+          }
+        }
+      }
+    },
     "/organizations": {
       "post": {
         "summary": "Create Organization",
         "description": "Creates a new organization",
+        "x-codeSamples": [
+          {
+            "lang": "TypeScript",
+            "label": "TypeScript SDK",
+            "source": "import { createClient } from '@stablesea/sdk';\n\nconst client = createClient({ apiKey: process.env.STABLESEA_API_KEY! });\nconst org = await client.organizations.create(\n  { name: 'Acme Inc', contact: { email: 'admin@acme.com', first_name: 'Jane', last_name: 'Doe' } },\n  'unique-idempotency-key'\n);"
+          },
+          {
+            "lang": "Go",
+            "label": "Go SDK",
+            "source": "import (\n  \"github.com/stablesea/sdk-go\"\n  \"github.com/stablesea/sdk-go/api\"\n)\n\nclient := sdk.NewClient(os.Getenv(\"STABLESEA_API_KEY\"), \"\")\norg, err := client.CreateOrganization(ctx, \"unique-idempotency-key\", api.NewOrganization{\n  Name: \"Acme Inc\",\n  Contact: api.Contact{Email: \"admin@acme.com\", FirstName: \"Jane\", LastName: \"Doe\"},\n})"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "from stablesea import StableseaClient\n\nclient = StableseaClient(api_key=os.environ[\"STABLESEA_API_KEY\"])\norg = client.organizations.create(\n  name=\"Acme Inc\",\n  contact={\"email\": \"admin@acme.com\", \"first_name\": \"Jane\", \"last_name\": \"Doe\"},\n  idempotency_key=\"unique-idempotency-key\"\n)"
+          }
+        ],
         "parameters": [
           {
             "name": "Idempotency-Key",
@@ -128,6 +360,23 @@
       "get": {
         "summary": "List Organizations",
         "description": "Returns all organizations",
+        "x-codeSamples": [
+          {
+            "lang": "TypeScript",
+            "label": "TypeScript SDK",
+            "source": "import { createClient } from '@stablesea/sdk';\n\nconst client = createClient({ apiKey: process.env.STABLESEA_API_KEY! });\nconst orgs = await client.organizations.list();"
+          },
+          {
+            "lang": "Go",
+            "label": "Go SDK",
+            "source": "import \"github.com/stablesea/sdk-go\"\n\nclient := sdk.NewClient(os.Getenv(\"STABLESEA_API_KEY\"), \"\")\norgs, err := client.ListOrganizations(ctx)"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "from stablesea import StableseaClient\n\nclient = StableseaClient(api_key=os.environ[\"STABLESEA_API_KEY\"])\norgs = client.organizations.list()"
+          }
+        ],
         "responses": {
           "200": {
             "description": "Organizations response",
@@ -154,6 +403,23 @@
       "get": {
         "summary": "Get Organization",
         "description": "Retrieve details for a specific organization",
+        "x-codeSamples": [
+          {
+            "lang": "TypeScript",
+            "label": "TypeScript SDK",
+            "source": "import { createClient } from '@stablesea/sdk';\n\nconst client = createClient({ apiKey: process.env.STABLESEA_API_KEY! });\nconst org = await client.organizations.get('org_01k2cm4r59e5z8k5ggrbbxjcwy');"
+          },
+          {
+            "lang": "Go",
+            "label": "Go SDK",
+            "source": "import \"github.com/stablesea/sdk-go\"\n\nclient := sdk.NewClient(os.Getenv(\"STABLESEA_API_KEY\"), \"\")\norg, err := client.GetOrganization(ctx, \"org_01k2cm4r59e5z8k5ggrbbxjcwy\")"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "from stablesea import StableseaClient\n\nclient = StableseaClient(api_key=os.environ[\"STABLESEA_API_KEY\"])\norg = client.organizations.get(\"org_01k2cm4r59e5z8k5ggrbbxjcwy\")"
+          }
+        ],
         "parameters": [
           {
             "name": "organization_id",
@@ -189,6 +455,13 @@
       "post": {
         "summary": "Create External Payment Instrument",
         "description": "Creates an external account for an organization to receive payouts",
+        "x-codeSamples": [
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "from stablesea import StableseaClient\n\nclient = StableseaClient(api_key=os.environ[\"STABLESEA_API_KEY\"])\nepi = client.external_payment_instruments.create(\n  organization_id=\"org_01k2cm4r59e5z8k5ggrbbxjcwy\",\n  alias=\"My Bank\",\n  currency=\"COP\",\n  method=\"COP_BANK_ACCOUNT\",\n  details={\"account_number\": \"123\", \"account_type\": \"CHECKING\"},\n  idempotency_key=\"unique-key\"\n)"
+          }
+        ],
         "parameters": [
           {
             "name": "organization_id",
@@ -243,6 +516,13 @@
       "get": {
         "summary": "List External Payment Instruments",
         "description": "Fetch all external payment instruments for a customer",
+        "x-codeSamples": [
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "from stablesea import StableseaClient\n\nclient = StableseaClient(api_key=os.environ[\"STABLESEA_API_KEY\"])\nepis = client.external_payment_instruments.list(\"org_01k2cm4r59e5z8k5ggrbbxjcwy\")"
+          }
+        ],
         "parameters": [
           {
             "name": "organization_id",
@@ -281,6 +561,13 @@
       "get": {
         "summary": "Get External Payment Instrument",
         "description": "Fetch a specific external payment instrument for an organization",
+        "x-codeSamples": [
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "from stablesea import StableseaClient\n\nclient = StableseaClient(api_key=os.environ[\"STABLESEA_API_KEY\"])\nepi = client.external_payment_instruments.get(\n  \"org_01k2cm4r59e5z8k5ggrbbxjcwy\",\n  \"mnyacctcm_01k4r01nm4f41tcsws4sr9k8nn\"\n)"
+          }
+        ],
         "parameters": [
           {
             "name": "organization_id",
@@ -324,6 +611,13 @@
       "delete": {
         "summary": "Archive External Payment Instrument",
         "description": "Archive an external account for a customer",
+        "x-codeSamples": [
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "from stablesea import StableseaClient\n\nclient = StableseaClient(api_key=os.environ[\"STABLESEA_API_KEY\"])\nclient.external_payment_instruments.archive(\n  \"org_01k2cm4r59e5z8k5ggrbbxjcwy\",\n  \"mnyacctcm_01k4r01nm4f41tcsws4sr9k8nn\"\n)"
+          }
+        ],
         "parameters": [
           {
             "name": "organization_id",
@@ -370,6 +664,13 @@
       "post": {
         "summary": "Create Offerings",
         "description": "Creates offerings for an organization",
+        "x-codeSamples": [
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "from stablesea import StableseaClient\n\nclient = StableseaClient(api_key=os.environ[\"STABLESEA_API_KEY\"])\nofferings = client.offerings.create(\n  organization_id=\"org_01k2cm4r59e5z8k5ggrbbxjcwy\",\n  idempotency_key=\"unique-key\"\n)"
+          }
+        ],
         "parameters": [
           {
             "name": "organization_id",
@@ -418,6 +719,13 @@
       "get": {
         "summary": "Get Offering",
         "description": "Retrieve details for a specific offering",
+        "x-codeSamples": [
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "from stablesea import StableseaClient\n\nclient = StableseaClient(api_key=os.environ[\"STABLESEA_API_KEY\"])\noffering = client.offerings.get(\n  \"org_01k2cm4r59e5z8k5ggrbbxjcwy\",\n  \"off_01k4qph5ezfsga7fkvbygsqq93\"\n)"
+          }
+        ],
         "parameters": [
           {
             "name": "organization_id",
@@ -463,6 +771,23 @@
       "post": {
         "summary": "Create Quote",
         "description": "Creates a quote for an organization",
+        "x-codeSamples": [
+          {
+            "lang": "TypeScript",
+            "label": "TypeScript SDK",
+            "source": "import { createClient } from '@stablesea/sdk';\n\nconst client = createClient({ apiKey: process.env.STABLESEA_API_KEY! });\nconst quote = await client.quotes.create(\n  'org_01k2cm4r59e5z8k5ggrbbxjcwy',\n  { offering_id: 'off_01k4qph5ezfsga7fkvbygsqq93', payin_amount: '100' },\n  'unique-idempotency-key'\n);"
+          },
+          {
+            "lang": "Go",
+            "label": "Go SDK",
+            "source": "import (\n  \"github.com/stablesea/sdk-go\"\n  \"github.com/stablesea/sdk-go/api\"\n)\n\nclient := sdk.NewClient(os.Getenv(\"STABLESEA_API_KEY\"), \"\")\npayinAmount := \"100\"\nquote, err := client.CreateQuote(ctx, \"org_01k2cm4r59e5z8k5ggrbbxjcwy\", \"unique-idempotency-key\", api.NewQuote{\n  OfferingID: \"off_01k4qph5ezfsga7fkvbygsqq93\",\n  PayinAmount: &payinAmount,\n})"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "from stablesea import StableseaClient\n\nclient = StableseaClient(api_key=os.environ[\"STABLESEA_API_KEY\"])\nquote = client.quotes.create(\n  organization_id=\"org_01k2cm4r59e5z8k5ggrbbxjcwy\",\n  offering_id=\"off_01k4qph5ezfsga7fkvbygsqq93\",\n  payin_amount=\"100\",\n  idempotency_key=\"unique-idempotency-key\"\n)"
+          }
+        ],
         "parameters": [
           {
             "name": "organization_id",
@@ -519,6 +844,23 @@
       "get": {
         "summary": "Get Quote",
         "description": "Retrieve details for a specific quote",
+        "x-codeSamples": [
+          {
+            "lang": "TypeScript",
+            "label": "TypeScript SDK",
+            "source": "import { createClient } from '@stablesea/sdk';\n\nconst client = createClient({ apiKey: process.env.STABLESEA_API_KEY! });\nconst quote = await client.quotes.get('org_01k2cm4r59e5z8k5ggrbbxjcwy', 'qt_01k4qpmvgxfsg9db9mjrtq9tk2');"
+          },
+          {
+            "lang": "Go",
+            "label": "Go SDK",
+            "source": "import \"github.com/stablesea/sdk-go\"\n\nclient := sdk.NewClient(os.Getenv(\"STABLESEA_API_KEY\"), \"\")\nquote, err := client.GetQuote(ctx, \"org_01k2cm4r59e5z8k5ggrbbxjcwy\", \"qt_01k4qpmvgxfsg9db9mjrtq9tk2\")"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "from stablesea import StableseaClient\n\nclient = StableseaClient(api_key=os.environ[\"STABLESEA_API_KEY\"])\nquote = client.quotes.get(\n  \"org_01k2cm4r59e5z8k5ggrbbxjcwy\",\n  \"qt_01k4qpmvgxfsg9db9mjrtq9tk2\"\n)"
+          }
+        ],
         "parameters": [
           {
             "name": "organization_id",
@@ -564,6 +906,23 @@
       "post": {
         "summary": "Create Order",
         "description": "Creates an order for an organization",
+        "x-codeSamples": [
+          {
+            "lang": "TypeScript",
+            "label": "TypeScript SDK",
+            "source": "import { createClient } from '@stablesea/sdk';\n\nconst client = createClient({ apiKey: process.env.STABLESEA_API_KEY! });\nconst order = await client.orders.create(\n  'org_01k2cm4r59e5z8k5ggrbbxjcwy',\n  { quote_id: 'qt_01k4qpmvgxfsg9db9mjrtq9tk2' },\n  'unique-idempotency-key'\n);"
+          },
+          {
+            "lang": "Go",
+            "label": "Go SDK",
+            "source": "import (\n  \"github.com/stablesea/sdk-go\"\n  \"github.com/stablesea/sdk-go/api\"\n)\n\nclient := sdk.NewClient(os.Getenv(\"STABLESEA_API_KEY\"), \"\")\norder, err := client.CreateOrder(ctx, \"org_01k2cm4r59e5z8k5ggrbbxjcwy\", \"unique-idempotency-key\", api.NewOrder{QuoteID: \"qt_01k4qpmvgxfsg9db9mjrtq9tk2\"})"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "from stablesea import StableseaClient\n\nclient = StableseaClient(api_key=os.environ[\"STABLESEA_API_KEY\"])\norder = client.orders.create(\n  organization_id=\"org_01k2cm4r59e5z8k5ggrbbxjcwy\",\n  quote_id=\"qt_01k4qpmvgxfsg9db9mjrtq9tk2\",\n  idempotency_key=\"unique-idempotency-key\"\n)"
+          }
+        ],
         "parameters": [
           {
             "name": "organization_id",
@@ -618,6 +977,23 @@
       "get": {
         "summary": "List Orders",
         "description": "Returns all orders for a customer",
+        "x-codeSamples": [
+          {
+            "lang": "TypeScript",
+            "label": "TypeScript SDK",
+            "source": "import { createClient } from '@stablesea/sdk';\n\nconst client = createClient({ apiKey: process.env.STABLESEA_API_KEY! });\nconst orders = await client.orders.list('org_01k2cm4r59e5z8k5ggrbbxjcwy');"
+          },
+          {
+            "lang": "Go",
+            "label": "Go SDK",
+            "source": "import \"github.com/stablesea/sdk-go\"\n\nclient := sdk.NewClient(os.Getenv(\"STABLESEA_API_KEY\"), \"\")\norders, err := client.ListOrders(ctx, \"org_01k2cm4r59e5z8k5ggrbbxjcwy\")"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "from stablesea import StableseaClient\n\nclient = StableseaClient(api_key=os.environ[\"STABLESEA_API_KEY\"])\norders = client.orders.list(\"org_01k2cm4r59e5z8k5ggrbbxjcwy\")"
+          }
+        ],
         "parameters": [
           {
             "name": "organization_id",
@@ -656,6 +1032,23 @@
       "get": {
         "summary": "Get Order",
         "description": "Retrieve details for a specific order",
+        "x-codeSamples": [
+          {
+            "lang": "TypeScript",
+            "label": "TypeScript SDK",
+            "source": "import { createClient } from '@stablesea/sdk';\n\nconst client = createClient({ apiKey: process.env.STABLESEA_API_KEY! });\nconst order = await client.orders.get('org_01k2cm4r59e5z8k5ggrbbxjcwy', 'ord_01k4qn3cxdefkargtccm4ycxsf');"
+          },
+          {
+            "lang": "Go",
+            "label": "Go SDK",
+            "source": "import \"github.com/stablesea/sdk-go\"\n\nclient := sdk.NewClient(os.Getenv(\"STABLESEA_API_KEY\"), \"\")\norder, err := client.GetOrder(ctx, \"org_01k2cm4r59e5z8k5ggrbbxjcwy\", \"ord_01k4qn3cxdefkargtccm4ycxsf\")"
+          },
+          {
+            "lang": "Python",
+            "label": "Python SDK",
+            "source": "from stablesea import StableseaClient\n\nclient = StableseaClient(api_key=os.environ[\"STABLESEA_API_KEY\"])\norder = client.orders.get(\n  \"org_01k2cm4r59e5z8k5ggrbbxjcwy\",\n  \"ord_01k4qn3cxdefkargtccm4ycxsf\"\n)"
+          }
+        ],
         "parameters": [
           {
             "name": "organization_id",
@@ -1536,6 +1929,92 @@
           }
         }
       },
+      "ApiKey": {
+        "type": "object",
+        "required": ["id", "name", "permission_level", "environment", "created_ts", "masked_key"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "apkey_01k4r01nm4f41tcsws4sr9k8nn"
+          },
+          "name": {
+            "type": "string",
+            "example": "Production API"
+          },
+          "permission_level": {
+            "type": "string",
+            "enum": ["READ_ONLY", "STANDARD", "ADMIN"]
+          },
+          "environment": {
+            "type": "string",
+            "enum": ["SANDBOX", "PRODUCTION"]
+          },
+          "created_ts": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "last_used_ts": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "revoked_ts": {
+            "type": "string",
+            "format": "date-time",
+            "nullable": true
+          },
+          "masked_key": {
+            "type": "string",
+            "description": "Masked key for display, e.g. sk_...xyz",
+            "example": "sk_...xyz"
+          }
+        }
+      },
+      "ApiKeyWithSecret": {
+        "type": "object",
+        "required": ["id", "name", "permission_level", "environment", "api_key"],
+        "properties": {
+          "id": {
+            "type": "string",
+            "example": "apkey_01k4r01nm4f41tcsws4sr9k8nn"
+          },
+          "name": {
+            "type": "string",
+            "example": "Production API"
+          },
+          "permission_level": {
+            "type": "string",
+            "enum": ["READ_ONLY", "STANDARD", "ADMIN"]
+          },
+          "environment": {
+            "type": "string",
+            "enum": ["SANDBOX", "PRODUCTION"]
+          },
+          "api_key": {
+            "type": "string",
+            "description": "Raw API key - only returned once on creation or rotation"
+          }
+        }
+      },
+      "CreateApiKeyRequest": {
+        "type": "object",
+        "required": ["name", "permission_level", "environment"],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Production API"
+          },
+          "permission_level": {
+            "type": "string",
+            "enum": ["READ_ONLY", "STANDARD", "ADMIN"],
+            "default": "STANDARD"
+          },
+          "environment": {
+            "type": "string",
+            "enum": ["SANDBOX", "PRODUCTION"]
+          }
+        }
+      },
       "Error": {
         "type": "object",
         "required": [
@@ -1561,8 +2040,8 @@
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "description": "Use your API key as the bearer token",
-        "x-default": "DEFAULT-TOKEN-HERE"
+        "description": "Enter your sandbox API key to try requests. Use only sandbox keys here—never production keys.",
+        "x-default": ""
       }
     }
   }

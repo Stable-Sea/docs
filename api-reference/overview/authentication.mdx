@@ -1,14 +1,21 @@
 ## API Key Authentication
 
-Stable Sea uses API keys to authenticate your requests. You can generate them from the **Terminal**.
+Stable Sea uses API keys to authenticate your requests. You can create and manage API keys in two ways:
+
+- **Terminal** (self-service): Log in to the Terminal app, go to **Account → API Keys**, and create keys for your organization.
+- **OpsDash** (for customers): Operations staff can create keys for any organization from OpsDash under **Organizations → [Org] → API Keys**.
 
 <Warning>
-  API keys are shown only once at the time of creation. Be sure to copy and
+  API keys are shown only once at the time of creation or rotation. Be sure to copy and
   store them securely — they cannot be retrieved from the dashboard after
   creation.
 </Warning>
 
 All API requests must include an `Authorization` header with: `Bearer <api-key>`
+
+### Try it from the docs
+
+Use the **Try it** button on any endpoint to send requests directly from the documentation. Enter your sandbox API key when prompted—never use production keys in the docs playground.
 
 ### Request Example
 
