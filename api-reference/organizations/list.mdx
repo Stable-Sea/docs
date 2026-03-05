@@ -12,3 +12,43 @@ Returns all organizations for the enterprise.
 | :-------------- | :----------------- | :------- | :------------------------------ |
 | `Authorization` | `Bearer <api-key>` | true     | Your API key for authentication |
 | `Content-Type`  | `application/json` | true     | Content type of the request     |
+
+## Code examples
+
+<CodeGroup>
+  ```bash curl
+  curl -X GET "https://api-sandbox.stablesea.com/v1/organizations" \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json"
+  ```
+  ```go Go
+  package main
+
+  import (
+      "context"
+      "github.com/stablesea/sdk-go"
+  )
+
+  func main() {
+      client := sdk.NewClient("YOUR_API_KEY", "")
+      orgs, err := client.ListOrganizations(context.Background())
+      if err != nil {
+          panic(err)
+      }
+      _ = orgs
+  }
+  ```
+  ```typescript TypeScript
+  import { createClient } from '@stablesea/sdk';
+
+  const client = createClient({ apiKey: 'YOUR_API_KEY' });
+  const organizations = await client.organizations.list();
+  ```
+  ```python Python
+  from stablesea import StableseaClient
+
+  client = StableseaClient(api_key="YOUR_API_KEY")
+  organizations = client.organizations.list()
+  client.close()
+  ```
+</CodeGroup>

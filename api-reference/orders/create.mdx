@@ -26,6 +26,59 @@ Creates an order for an organization based on a quote.
   ID of the quote to create an order from
 </ParamField>
 
+## Code examples
+
+<CodeGroup>
+  ```bash curl
+  curl -X POST "https://api-sandbox.stablesea.com/v1/organizations/{organization_id}/orders" \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "Idempotency-Key: $(uuidgen)" \
+    -d '{"quote_id": "qt_01k4qpmvgxfsg9db9mjrtq9tk2"}'
+  ```
+  ```go Go
+  package main
+
+  import (
+      "context"
+      "github.com/google/uuid"
+      "github.com/stablesea/sdk-go/api"
+      "github.com/stablesea/sdk-go"
+  )
+
+  func main() {
+      client := sdk.NewClient("YOUR_API_KEY", "")
+      order, err := client.CreateOrder(context.Background(), "org_01k2cm4r59e5z8k5ggrbbxjcwy", uuid.New().String(), api.NewOrder{QuoteID: "qt_01k4qpmvgxfsg9db9mjrtq9tk2"})
+      if err != nil {
+          panic(err)
+      }
+      _ = order
+  }
+  ```
+  ```typescript TypeScript
+  import { createClient } from '@stablesea/sdk';
+
+  const client = createClient({ apiKey: 'YOUR_API_KEY' });
+  const order = await client.orders.create(
+    'org_01k2cm4r59e5z8k5ggrbbxjcwy',
+    { quote_id: 'qt_01k4qpmvgxfsg9db9mjrtq9tk2' },
+    'unique-idempotency-key-123'
+  );
+  ```
+  ```python Python
+  from stablesea import StableseaClient
+  import uuid
+
+  client = StableseaClient(api_key="YOUR_API_KEY")
+  order = client.orders.create(
+      organization_id="org_01k2cm4r59e5z8k5ggrbbxjcwy",
+      quote_id="qt_01k4qpmvgxfsg9db9mjrtq9tk2",
+      idempotency_key=str(uuid.uuid4()),
+  )
+  client.close()
+  ```
+</CodeGroup>
+
 ## Response
 
 <ResponseExample>

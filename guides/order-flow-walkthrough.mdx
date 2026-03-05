@@ -5,7 +5,16 @@ description: "Production-ready integration guide for implementing the Stable Sea
 
 ## Overview
 
-This guide provides a comprehensive walkthrough for implementing the Stable Sea Terminal API in production. It covers the complete order flow from authentication to settlement, including security, monitoring, error handling, and best practices.
+This guide provides a comprehensive walkthrough for implementing the Stable Sea Terminal API in production. It covers the complete order flow from authentication to settlement, including security, monitoring, error handling, and best practices. Each step includes **curl** and **Python SDK** examples — use the tabs to switch between them.
+
+<CardGroup cols={2}>
+  <Card title="SDK Quickstart" icon="book" href="/guides/sdk-quickstart">
+    Install and use the Python SDK
+  </Card>
+  <Card title="Authentication" icon="key" href="/api-reference/overview/authentication">
+    API key auth (curl & SDK)
+  </Card>
+</CardGroup>
 
 ## Step-by-Step Integration
 
@@ -15,12 +24,21 @@ Follow these steps to implement the complete order flow from organization creati
   <Step title="Authentication">
     All API requests require Bearer token authentication. Your API key serves as the bearer token.
 
-    ```bash
-    # Test authentication
-    curl -X GET "https://api-sandbox.stablesea.com/v1/liquidity-providers" \
-      -H "Authorization: Bearer YOUR_API_KEY" \
-      -H "Content-Type: application/json"
-    ```
+    <CodeGroup>
+      ```bash curl
+      # Test authentication
+      curl -X GET "https://api-sandbox.stablesea.com/v1/liquidity-providers" \
+        -H "Authorization: Bearer YOUR_API_KEY" \
+        -H "Content-Type: application/json"
+      ```
+      ```python Python
+      from stablesea import StableseaClient
+
+      client = StableseaClient(api_key="YOUR_API_KEY")
+      providers = client.liquidity_providers.list()
+      client.close()
+      ```
+    </CodeGroup>
 
     <Note>
       Replace `YOUR_API_KEY` with your actual API key. Store this securely and never expose it in client-side code.
@@ -31,19 +49,37 @@ Follow these steps to implement the complete order flow from organization creati
   <Step title="Create Organization">
     Create an organization entity to associate with your orders and payment instruments.
 
-    ```bash
-    curl -X POST "https://api-sandbox.stablesea.com/v1/organizations" \
-      -H "Authorization: Bearer YOUR_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{
-        "name": "Test Organization Corp",
-        "contact": {
-          "email": "contact@testorganization.com",
-          "first_name": "John",
-          "last_name": "Doe"
-        }
-      }'
-    ```
+    <CodeGroup>
+      ```bash curl
+      curl -X POST "https://api-sandbox.stablesea.com/v1/organizations" \
+        -H "Authorization: Bearer YOUR_API_KEY" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "name": "Test Organization Corp",
+          "contact": {
+            "email": "contact@testorganization.com",
+            "first_name": "John",
+            "last_name": "Doe"
+          }
+        }'
+      ```
+      ```python Python
+      from stablesea import StableseaClient
+
+      client = StableseaClient(api_key="YOUR_API_KEY")
+      org = client.organizations.create(
+          name="Test Organization Corp",
+          contact={
+              "email": "contact@testorganization.com",
+              "first_name": "John",
+              "last_name": "Doe",
+          },
+          idempotency_key="unique-org-key-123",
+      )
+      # Use org["id"] for subsequent calls
+      client.close()
+      ```
+    </CodeGroup>
 
     **Response:**
     ```json
@@ -183,11 +219,20 @@ Follow these steps to implement the complete order flow from organization creati
   <Step title="Check Liquidity Providers">
     Get available liquidity providers with their trading pairs and operating hours.
 
-    ```bash
-    curl -X GET "https://api-sandbox.stablesea.com/v1/liquidity-providers" \
-      -H "Authorization: Bearer YOUR_API_KEY" \
-      -H "Content-Type: application/json"
-    ```
+    <CodeGroup>
+      ```bash curl
+      curl -X GET "https://api-sandbox.stablesea.com/v1/liquidity-providers" \
+        -H "Authorization: Bearer YOUR_API_KEY" \
+        -H "Content-Type: application/json"
+      ```
+      ```python Python
+      from stablesea import StableseaClient
+
+      client = StableseaClient(api_key="YOUR_API_KEY")
+      providers = client.liquidity_providers.list()
+      client.close()
+      ```
+    </CodeGroup>
 
     **Response:**
     ```json
@@ -363,15 +408,30 @@ Follow these steps to implement the complete order flow from organization creati
   <Step title="Create Quote">
     Get firm pricing with locked exchange rates and expiration times.
 
-    ```bash
-    curl -X POST "https://api-sandbox.stablesea.com/v1/organizations/ORGANIZATION_ID/quotes" \
-      -H "Authorization: Bearer YOUR_API_KEY" \
-      -H "Content-Type: application/json" \
-      -d '{
-        "offering_id": "off_01k4qph5ezfsga7fkvbygsqq93",
-        "payin_amount": "0.01"
-      }'
-    ```
+    <CodeGroup>
+      ```bash curl
+      curl -X POST "https://api-sandbox.stablesea.com/v1/organizations/ORGANIZATION_ID/quotes" \
+        -H "Authorization: Bearer YOUR_API_KEY" \
+        -H "Content-Type: application/json" \
+        -d '{
+          "offering_id": "off_01k4qph5ezfsga7fkvbygsqq93",
+          "payin_amount": "0.01"
+        }'
+      ```
+      ```python Python
+      from stablesea import StableseaClient
+
+      client = StableseaClient(api_key="YOUR_API_KEY")
+      quote = client.quotes.create(
+          organization_id="ORGANIZATION_ID",
+          offering_id="off_01k4qph5ezfsga7fkvbygsqq93",
+          payin_amount="0.01",
+          idempotency_key="unique-quote-key-456",
+      )
+      # Use quote["id"] when creating the order
+      client.close()
+      ```
+    </CodeGroup>
 
     **Response:**
     ```json
@@ -406,15 +466,29 @@ Follow these steps to implement the complete order flow from organization creati
   <Step title="Create Order">
     Convert your quote into an executable order before expiration.
 
-    ```bash
-    curl -X POST "https://api-sandbox.stablesea.com/v1/organizations/ORGANIZATION_ID/orders" \
-      -H "Authorization: Bearer YOUR_API_KEY" \
-      -H "Content-Type: application/json" \
-      -H "Idempotency-Key: $(uuidgen)" \
-      -d '{
-        "quote_id": "qt_01k4qpmvgxfsg9db9mjrtq9tk2"
-      }'
-    ```
+    <CodeGroup>
+      ```bash curl
+      curl -X POST "https://api-sandbox.stablesea.com/v1/organizations/ORGANIZATION_ID/orders" \
+        -H "Authorization: Bearer YOUR_API_KEY" \
+        -H "Content-Type: application/json" \
+        -H "Idempotency-Key: $(uuidgen)" \
+        -d '{
+          "quote_id": "qt_01k4qpmvgxfsg9db9mjrtq9tk2"
+        }'
+      ```
+      ```python Python
+      from stablesea import StableseaClient
+      import uuid
+
+      client = StableseaClient(api_key="YOUR_API_KEY")
+      order = client.orders.create(
+          organization_id="ORGANIZATION_ID",
+          quote_id="qt_01k4qpmvgxfsg9db9mjrtq9tk2",
+          idempotency_key=str(uuid.uuid4()),
+      )
+      client.close()
+      ```
+    </CodeGroup>
 
     **Response:**
     ```json
@@ -515,11 +589,23 @@ Follow these steps to implement the complete order flow from organization creati
   <Step title="Monitor Order Status">
     Track your order through the complete settlement lifecycle.
 
-    ```bash
-    curl -X GET "https://api-sandbox.stablesea.com/v1/organizations/ORGANIZATION_ID/orders/ORDER_ID" \
-      -H "Authorization: Bearer YOUR_API_KEY" \
-      -H "Content-Type: application/json"
-    ```
+    <CodeGroup>
+      ```bash curl
+      curl -X GET "https://api-sandbox.stablesea.com/v1/organizations/ORGANIZATION_ID/orders/ORDER_ID" \
+        -H "Authorization: Bearer YOUR_API_KEY" \
+        -H "Content-Type: application/json"
+      ```
+      ```python Python
+      from stablesea import StableseaClient
+
+      client = StableseaClient(api_key="YOUR_API_KEY")
+      order = client.orders.get(
+          organization_id="ORGANIZATION_ID",
+          order_id="ORDER_ID",
+      )
+      client.close()
+      ```
+    </CodeGroup>
 
     **Order Status Progression:**
     - `STEP_1_AWAITING_FUNDING` - Waiting for payin funds
