@@ -39,6 +39,60 @@ Creates a quote for an organization.
   Either `payin_amount` or `payout_amount` may be specified but not both.
 </Warning>
 
+## Code examples
+
+<CodeGroup>
+  ```bash curl
+  curl -X POST "https://api-sandbox.stablesea.com/v1/organizations/{organization_id}/quotes" \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "Idempotency-Key: $(uuidgen)" \
+    -d '{"offering_id": "off_01k4qph5ezfsga7fkvbygsqq93", "payin_amount": "100"}'
+  ```
+  ```go Go
+  package main
+
+  import (
+      "context"
+      "github.com/google/uuid"
+      "github.com/stablesea/sdk-go/api"
+      "github.com/stablesea/sdk-go"
+  )
+
+  func main() {
+      client := sdk.NewClient("YOUR_API_KEY", "")
+      quote, err := client.CreateQuote(context.Background(), "org_01k2cm4r59e5z8k5ggrbbxjcwy", uuid.New().String(), api.NewQuote{OfferingID: "off_01k4qph5ezfsga7fkvbygsqq93", PayinAmount: "100"})
+      if err != nil {
+          panic(err)
+      }
+      _ = quote
+  }
+  ```
+  ```typescript TypeScript
+  import { createClient } from '@stablesea/sdk';
+
+  const client = createClient({ apiKey: 'YOUR_API_KEY' });
+  const quote = await client.quotes.create(
+    'org_01k2cm4r59e5z8k5ggrbbxjcwy',
+    { offering_id: 'off_01k4qph5ezfsga7fkvbygsqq93', payin_amount: '100' },
+    'unique-idempotency-key-123'
+  );
+  ```
+  ```python Python
+  from stablesea import StableseaClient
+  import uuid
+
+  client = StableseaClient(api_key="YOUR_API_KEY")
+  quote = client.quotes.create(
+      organization_id="org_01k2cm4r59e5z8k5ggrbbxjcwy",
+      offering_id="off_01k4qph5ezfsga7fkvbygsqq93",
+      payin_amount="100",
+      idempotency_key=str(uuid.uuid4()),
+  )
+  client.close()
+  ```
+</CodeGroup>
+
 ## Response
 
 <ResponseExample>

@@ -109,6 +109,7 @@
           {
             "group": "Guides",
             "pages": [
+              "guides/sdk-quickstart",
               "guides/order-flow-walkthrough",
               "guides/ngn-payin-flow"
             ]

@@ -1,0 +1,159 @@
+---
+title: "SDK Quickstart"
+description: "Get started with the Stable Sea Python SDK for organizations, quotes, orders, and API keys"
+---
+
+## Overview
+
+The official **Python SDK** provides a simple way to integrate with the Stable Sea Terminal API. This guide walks you through installation and common operations.
+
+<CardGroup cols={2}>
+  <Card title="Authentication" icon="key" href="/api-reference/overview/authentication">
+    API key authentication (curl & SDK)
+  </Card>
+  <Card title="Order flow walkthrough" icon="list-checks" href="/guides/order-flow-walkthrough">
+    Full flow from auth to settlement
+  </Card>
+</CardGroup>
+
+## Installation
+
+```bash
+pip install stablesea
+```
+
+Or install from source (e.g. from the terminal repo):
+
+```bash
+pip install /path/to/stable-sea-terminal/sdk/python
+```
+
+## Quickstart
+
+```python
+from stablesea import StableseaClient
+
+# Initialize with your API key (sandbox by default)
+client = StableseaClient(api_key="sk_your_api_key")
+
+# List organizations
+organizations = client.organizations.list()
+
+# Create an organization
+org = client.organizations.create(
+    name="Acme Corp",
+    contact={"email": "john@acme.com", "first_name": "John", "last_name": "Doe"},
+    idempotency_key="unique-key-123",
+)
+
+# Create a quote (organization-scoped)
+quote = client.quotes.create(
+    organization_id="org_01k2cm4r59e5z8k5ggrbbxjcwy",
+    offering_id="off_01k4qph5ezfsga7fkvbygsqq93",
+    payin_amount="100",
+    idempotency_key="quote-key-456",
+)
+
+# Create an order from the quote
+order = client.orders.create(
+    organization_id="org_01k2cm4r59e5z8k5ggrbbxjcwy",
+    quote_id=quote["id"],
+    idempotency_key="order-key-789",
+)
+
+# List liquidity providers
+providers = client.liquidity_providers.list()
+
+# Get exchange rate for a provider
+rate = client.liquidity_providers.get_exchange_rate("ALPHA")
+
+client.close()
+```
+
+<Tip>
+  Save the organization `id` (starts with `org_`) from `org["id"]` for subsequent calls. New organizations typically start in `COMPLIANCE_HOLD` and may need approval before becoming `ACTIVE`.
+</Tip>
+
+## API key management
+
+```python
+from stablesea import StableseaClient
+
+client = StableseaClient(api_key="sk_your_api_key")
+
+# List API keys
+api_keys = client.api_keys.list()
+
+# Create a new API key
+new_key = client.api_keys.create(
+    name="Production API",
+    environment="PRODUCTION",
+    permission_level="STANDARD",
+)
+# Store new_key["api_key"] securely — it's only returned once!
+
+client.close()
+```
+
+<Warning>
+  API keys are shown only once at creation. Store them securely; they cannot be retrieved from the dashboard later.
+</Warning>
+
+## Async support
+
+For async/await, use `AsyncStableseaClient`:
+
+```python
+import asyncio
+from stablesea import AsyncStableseaClient
+
+async def main():
+    async with AsyncStableseaClient(api_key="sk_your_api_key") as client:
+        orgs = await client.organizations.list()
+        quote = await client.quotes.create(
+            organization_id="org_...",
+            offering_id="off_...",
+            payin_amount="100",
+            idempotency_key="unique-key",
+        )
+        print(orgs, quote)
+
+asyncio.run(main())
+```
+
+## Configuration
+
+| Parameter   | Default                               | Description                              |
+| ----------- | ------------------------------------- | ---------------------------------------- |
+| `api_key`   | (required)                             | Your Stable Sea API key                   |
+| `base_url`  | `https://api-sandbox.stablesea.com/v1` | API base URL (use production URL for live) |
+| `timeout`   | `30.0`                                | Request timeout in seconds                |
+
+## API resources
+
+| Resource                         | Methods                                                                 |
+| -------------------------------- | ----------------------------------------------------------------------- |
+| `client.organizations`           | `list()`, `create()`, `get()`                                           |
+| `client.quotes`                  | `create()`, `get()`                                                     |
+| `client.orders`                  | `create()`, `list()`, `get()`                                           |
+| `client.api_keys`                | `list()`, `create()`, `rotate()`, `revoke()`                            |
+| `client.liquidity_providers`     | `list()`, `get_exchange_rate()`                                        |
+| `client.offerings`               | `create()`, `get()`                                                     |
+| `client.external_payment_instruments` | `list()`, `create()`, `get()`, `archive()`                         |
+
+## Error handling
+
+```python
+from stablesea import StableseaClient, APIError
+
+client = StableseaClient(api_key="sk_...")
+try:
+    client.organizations.create(...)
+except APIError as e:
+    print(f"API error {e.status_code}: {e.message}")
+```
+
+## See also
+
+- [Order flow walkthrough](/guides/order-flow-walkthrough) — Step-by-step integration with curl and SDK examples
+- [Authentication](/api-reference/overview/authentication) — API key auth and security

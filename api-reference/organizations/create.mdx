@@ -36,6 +36,61 @@ Creates a new organization in the system.
   Last name of the organization contact
 </ParamField>
 
+## Code examples
+
+<CodeGroup>
+  ```bash curl
+  curl -X POST "https://api-sandbox.stablesea.com/v1/organizations" \
+    -H "Authorization: Bearer YOUR_API_KEY" \
+    -H "Content-Type: application/json" \
+    -H "Idempotency-Key: $(uuidgen)" \
+    -d '{"name": "Acme Corp", "contact": {"email": "john@acme.com", "first_name": "John", "last_name": "Doe"}}'
+  ```
+  ```go Go
+  package main
+
+  import (
+      "context"
+      "github.com/google/uuid"
+      "github.com/stablesea/sdk-go/api"
+      "github.com/stablesea/sdk-go"
+  )
+
+  func main() {
+      client := sdk.NewClient("YOUR_API_KEY", "")
+      org, err := client.CreateOrganization(context.Background(), uuid.New().String(), api.NewOrganization{
+          Name: "Acme Corp",
+          Contact: api.Contact{Email: "john@acme.com", FirstName: "John", LastName: "Doe"},
+      })
+      if err != nil {
+          panic(err)
+      }
+      _ = org
+  }
+  ```
+  ```typescript TypeScript
+  import { createClient } from '@stablesea/sdk';
+
+  const client = createClient({ apiKey: 'YOUR_API_KEY' });
+  const org = await client.organizations.create(
+    { name: 'Acme Corp', contact: { email: 'john@acme.com', first_name: 'John', last_name: 'Doe' } },
+    'unique-idempotency-key-123'
+  );
+  ```
+  ```python Python
+  from stablesea import StableseaClient
+  import uuid
+
+  client = StableseaClient(api_key="YOUR_API_KEY")
+  org = client.organizations.create(
+      name="Acme Corp",
+      contact={"email": "john@acme.com", "first_name": "John", "last_name": "Doe"},
+      idempotency_key=str(uuid.uuid4()),
+  )
+  client.close()
+  ```
+</CodeGroup>
+
 ## Response
 
 <ResponseExample>
